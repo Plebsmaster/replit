@@ -56,6 +56,13 @@ export const wizardActions = {
       if (event.type !== 'UPDATE_FORM_DATA') return context.formData
       return { ...context.formData, ...event.data }
     },
+    // COMPREHENSIVE FIX: Always ensure current step is in visitedSteps
+    visitedSteps: ({ context }) => {
+      if (!context.visitedSteps.includes(context.currentStepId)) {
+        return [...context.visitedSteps, context.currentStepId]
+      }
+      return context.visitedSteps
+    },
   }),
   
   validateCurrentStep: assign({
@@ -96,6 +103,15 @@ export const wizardActions = {
     },
   }),
   
+  ensureCurrentStepInVisited: assign({
+    visitedSteps: ({ context }) => {
+      if (!context.visitedSteps.includes(context.currentStepId)) {
+        return [...context.visitedSteps, context.currentStepId]
+      }
+      return context.visitedSteps
+    },
+  }),
+  
   moveToNextStep: assign({
     currentStepId: ({ context }) => {
       let nextStepId = getNextStepId(context.currentStepId, context.formData)
@@ -108,6 +124,21 @@ export const wizardActions = {
       return nextStepId || context.currentStepId
     },
     previousStepId: ({ context }) => context.currentStepId,
+    // CRITICAL FIX: Add the new step to visitedSteps when we arrive at it
+    visitedSteps: ({ context }) => {
+      let nextStepId = getNextStepId(context.currentStepId, context.formData)
+      
+      // Skip steps that should be skipped
+      while (nextStepId && shouldSkipStep(nextStepId, context.formData)) {
+        nextStepId = getNextStepId(nextStepId, context.formData)
+      }
+      
+      if (nextStepId && !context.visitedSteps.includes(nextStepId)) {
+        return [...context.visitedSteps, nextStepId]
+      }
+      
+      return context.visitedSteps
+    },
   }),
   
   moveToPreviousStep: assign({
@@ -353,7 +384,7 @@ export const wizardMachine = createMachine({
         },
         
         movingForward: {
-          entry: ['saveCurrentStep', 'moveToNextStep'],
+          entry: ['moveToNextStep', 'ensureCurrentStepInVisited'],
           always: [
             {
               target: 'checkingOtp',
@@ -371,7 +402,7 @@ export const wizardMachine = createMachine({
         },
         
         jumping: {
-          entry: 'jumpToStep',
+          entry: ['jumpToStep', 'ensureCurrentStepInVisited'],
           always: 'idle',
         },
         
