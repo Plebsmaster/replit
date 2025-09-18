@@ -23,7 +23,7 @@ export async function createClient() {
 }
 
 export function createServiceRoleClient() {
-  return createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, {
+  return createServerClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, {
     cookies: {
       getAll() {
         return []
