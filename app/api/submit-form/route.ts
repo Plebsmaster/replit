@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
+import { createDesignData, createSubmissionData } from "@/lib/database/field-mappings"
 
 const CURRENT_SCHEMA_VERSION = 1
 
@@ -14,19 +15,8 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient()
     console.log("[v0] Supabase client created successfully")
 
-    const normalizedData = {
-      first_name: formData.firstName,
-      last_name: formData.lastName,
-      phone: formData.phone || null,
-      style: formData.style || null,
-      text_color: formData.textColor || null,
-      color_palette: formData.colorPalette || null,
-      color_mode: formData.colorMode || null,
-      ingredients: formData.ingredients || [],
-      product_colors: formData.productColors || {},
-      agree_terms: formData.agreeTerms || false,
-      subscribe_newsletter: formData.subscribeNewsletter || false,
-    }
+    // Use centralized mapping system for design data
+    const normalizedData = createDesignData(formData)
 
     const { data: transactionResult, error: transactionError } = await supabase.rpc("handle_form_submission", {
       p_email: formData.email,
@@ -54,20 +44,8 @@ export async function POST(request: NextRequest) {
       throw new Error(`Database error: ${transactionError.message}`)
     }
 
-    const submissionData = {
-      first_name: formData.firstName,
-      last_name: formData.lastName,
-      email: formData.email,
-      phone: formData.phone || null,
-      style: formData.style || null,
-      text_color: formData.textColor || null,
-      color_palette: formData.colorPalette || null,
-      color_mode: formData.colorMode || null,
-      ingredients: formData.ingredients || [],
-      product_colors: formData.productColors || {},
-      agree_terms: formData.agreeTerms || false,
-      subscribe_newsletter: formData.subscribeNewsletter || false,
-    }
+    // Use centralized mapping system for submission data
+    const submissionData = createSubmissionData(formData)
 
     const { data: logData, error: logError } = await supabase.from("form_submissions").insert(submissionData).select()
 
