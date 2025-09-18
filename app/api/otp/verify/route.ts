@@ -27,70 +27,82 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      console.log("[v0] Verifying OTP with Twilio Verify API...")
-      const twilioUrl = `https://verify.twilio.com/v2/Services/${requiredEnvVars.TWILIO_VERIFY_SERVICE_SID}/VerificationCheck`
-
-      const verificationData = new URLSearchParams({
-        To: email,
-        Code: code,
-      })
-
-      const authHeader = Buffer.from(
-        `${requiredEnvVars.TWILIO_ACCOUNT_SID}:${requiredEnvVars.TWILIO_AUTH_TOKEN}`,
-      ).toString("base64")
-
-      const twilioResponse = await fetch(twilioUrl, {
-        method: "POST",
-        headers: {
-          Authorization: `Basic ${authHeader}`,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: verificationData.toString(),
-      })
-
-      console.log("[v0] Twilio verification response status:", twilioResponse.status)
-
-      if (!twilioResponse.ok) {
-        const errorText = await twilioResponse.text()
-        console.error("[v0] Twilio verification error:", errorText)
-
-        if (twilioResponse.status === 404) {
-          return NextResponse.json({ error: "Invalid or expired code." }, { status: 400 })
-        } else if (twilioResponse.status === 429) {
-          return NextResponse.json({ error: "Too many attempts" }, { status: 423 })
-        } else {
-          return NextResponse.json({ error: "Verification failed" }, { status: 400 })
-        }
-      }
-
-      const twilioResult = await twilioResponse.json()
-      console.log("[v0] Twilio verification result:", twilioResult.status)
-
-      if (twilioResult.status !== "approved") {
-        console.log("[v0] OTP verification failed with status:", twilioResult.status)
-        return NextResponse.json({ error: "Invalid code" }, { status: 401 })
-      }
-
-      console.log("[v0] OTP verified successfully with Twilio")
-
-      const verifiedEmail = twilioResult.to
-      console.log("[v0] Using verified email from Twilio:", verifiedEmail)
-
       const supabase = await createClient()
 
-      console.log("[v0] Looking up client with verified email:", verifiedEmail)
+      // First verify that this is an existing user (only existing users should be verifying OTP)
+      console.log("[v0] Checking if user exists and is eligible for OTP verification...")
       const { data: client, error: clientError } = await supabase
         .from("clients")
         .select("id, email, first_name, last_name")
-        .eq("email", verifiedEmail) // Use verified email instead of client-provided email
+        .eq("email", email.toLowerCase().trim())
         .single()
 
       if (clientError || !client) {
-        console.log("[v0] Client not found after verification")
-        return NextResponse.json({ error: "Client not found" }, { status: 400 })
+        console.log("[v0] Client not found - verification not allowed for new users")
+        return NextResponse.json({ error: "User not found or not eligible for verification" }, { status: 400 })
       }
 
-      console.log("[v0] OTP verified successfully for client:", client.id)
+      // Verify the OTP code from our database (since we generated and sent it via SendGrid)
+      console.log("[v0] Looking up OTP in database...")
+      const { data: otpRecord, error: otpError } = await supabase
+        .from("email_otps")
+        .select("*")
+        .eq("email", email.toLowerCase().trim())
+        .eq("otp_code", code)
+        .eq("verified", false)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle()
+
+      if (otpError) {
+        console.error("[v0] Database error during OTP lookup:", otpError)
+        return NextResponse.json({ error: "Database query failed" }, { status: 500 })
+      }
+
+      if (!otpRecord) {
+        console.log("[v0] OTP not found or already verified")
+        
+        // Increment attempts counter for existing OTPs to prevent brute force
+        await supabase
+          .from("email_otps")
+          .update({ attempts: supabase.raw('attempts + 1') })
+          .eq("email", email.toLowerCase().trim())
+          .eq("verified", false)
+          .gt("expires_at", new Date().toISOString())
+        
+        return NextResponse.json({ error: "Invalid or expired code" }, { status: 400 })
+      }
+
+      // Check if OTP has expired
+      const now = new Date()
+      const expiresAt = new Date(otpRecord.expires_at)
+      if (now > expiresAt) {
+        console.log("[v0] OTP has expired")
+        return NextResponse.json({ error: "Code has expired" }, { status: 400 })
+      }
+
+      // Check attempt limits (prevent brute force)
+      if (otpRecord.attempts >= 5) {
+        console.log("[v0] Too many attempts for this OTP")
+        return NextResponse.json({ error: "Too many attempts" }, { status: 423 })
+      }
+
+      // Mark OTP as verified
+      const { error: updateError } = await supabase
+        .from("email_otps")
+        .update({ 
+          verified: true, 
+          verified_at: new Date().toISOString(),
+          attempts: otpRecord.attempts + 1
+        })
+        .eq("id", otpRecord.id)
+
+      if (updateError) {
+        console.error("[v0] Failed to update OTP record:", updateError)
+        return NextResponse.json({ error: "Verification update failed" }, { status: 500 })
+      }
+
+      console.log("[v0] OTP verified successfully for existing client:", client.id)
 
       console.log("[v0] Setting session cookie for client:", client.id)
       const response = NextResponse.json({ ok: true })

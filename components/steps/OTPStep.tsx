@@ -9,7 +9,7 @@ import { ArrowRight, Mail, Clock, RefreshCw } from "lucide-react"
 import { getTypographyClasses } from "@/lib/typography"
 import type { StepProps } from "@/lib/form/steps"
 
-export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp }: StepProps) {
+export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, formData }: StepProps) {
   const [otp, setOtp] = useState(["", "", "", "", "", ""])
   const [isVerifying, setIsVerifying] = useState(false)
   const [error, setError] = useState("")
@@ -34,9 +34,16 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp }: 
     return () => clearTimeout(resendTimer)
   }, [])
 
+  // Guard: Only generate OTP for existing users
   // Automatically generate OTP when component mounts with valid email
   useEffect(() => {
     const generateInitialOtp = async () => {
+      // GUARD: Only generate OTP for existing users
+      if (!formData || !formData.isExistingUser) {
+        console.log('[OTPStep] Skipping OTP generation for new user')
+        return
+      }
+      
       if (!email || initialOtpGenerated || isGeneratingInitial) {
         return
       }
@@ -45,7 +52,7 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp }: 
       setError("")
 
       try {
-        console.log('[OTPStep] Generating initial OTP for:', email)
+        console.log('[OTPStep] Generating initial OTP for existing user:', email)
         
         // Call the API to actually generate and send the OTP
         const response = await fetch("/api/otp/generate", {
@@ -80,7 +87,7 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp }: 
     if (email) {
       generateInitialOtp()
     }
-  }, [email, initialOtpGenerated, isGeneratingInitial, sendOtp])
+  }, [email, initialOtpGenerated, isGeneratingInitial, sendOtp, formData])
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)

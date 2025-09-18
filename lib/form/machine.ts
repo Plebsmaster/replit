@@ -254,25 +254,28 @@ export const wizardGuards = {
     if (context.formData.isExistingUser) {
       // Existing users: Email → OTP → Dashboard (minimal validation)
       // No need to validate questionnaire steps for existing users
+      // But we do need OTP verification for existing users
+      return context.otpVerified
     } else {
-      // New users: Email → Name/Phone → OTP → Questionnaire
+      // New users: Email → Name/Phone → Questionnaire (NO OTP required)
       requiredSteps = [
         'email',
         'name-phone',
         'style-selection',
         'ingredients',
       ]
-    }
-    
-    for (const stepId of requiredSteps) {
-      const validation = validateStepData(stepId, context.formData)
-      if (!validation.isValid) {
-        return false
+      
+      // Validate required steps for new users
+      for (const stepId of requiredSteps) {
+        const validation = validateStepData(stepId, context.formData)
+        if (!validation.isValid) {
+          return false
+        }
       }
+      
+      // New users don't need OTP verification
+      return true
     }
-    
-    // Check OTP verification
-    return context.otpVerified
   },
 }
 
