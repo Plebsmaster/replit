@@ -3,10 +3,7 @@ import { useState } from "react"
 import { SlideContainer } from "@/components/ui/slide-container"
 import { ChoiceCard } from "@/components/ui/choice-card"
 import { getTypographyClasses } from "@/lib/typography"
-
-type FormData = {
-  style: "elegant" | "modern" | null
-}
+import type { FormData } from "@/lib/form/schema"
 
 type Props = {
   formData: FormData

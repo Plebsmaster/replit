@@ -1,25 +1,7 @@
 "use client"
 
 import { createContext, useContext, type ReactNode } from "react"
-
-export interface FormData {
-  ingredients: string[]
-  style: "elegant" | "modern" | null
-  elegantStyle: string
-  styleVariant: string
-  colorScheme: string // Added colorScheme field for Slide6
-  variantNumber: string
-  textColor: "black" | "white" | ""
-  colorPalette: string
-  productColors: Record<string, string>
-  colorMode?: "variation" | "uniform"
-  firstName: string
-  lastName: string
-  email: string
-  phone: string
-  agreeTerms: boolean
-  subscribeNewsletter: boolean
-}
+import type { FormData } from "@/lib/form/schema"
 
 interface FormDataContextType {
   formData: FormData

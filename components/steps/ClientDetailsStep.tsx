@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ArrowRight, Mail, ChevronDown, User, AlertCircle, CheckCircle } from "lucide-react"
 import { useState, useEffect } from "react"
-import type { FormData } from "./IngredientsStep"
+import type { FormData } from "@/lib/form/schema"
 
 interface ClientDetailsStepProps {
   formData: FormData

@@ -1,16 +1,5 @@
-export interface FormData {
-  ingredients: string[]
-  style: string
-  textColor: string
-  colorPalette: string
-  productColors: Record<string, string>
-  firstName: string
-  lastName: string
-  email: string
-  phone: string
-  agreeTerms: boolean
-  subscribeNewsletter: boolean
-}
+// FormData is now defined in lib/form/schema.ts as a single source of truth
+export type { FormData } from './form/schema'
 
 export interface Submission {
   id: string

@@ -2,7 +2,7 @@
 import { Input } from "@/components/ui/input"
 import { User, ChevronDown, AlertCircle, CheckCircle } from "lucide-react"
 import { useState, useEffect } from "react"
-import type { FormData } from "./IngredientsStep"
+import type { FormData } from "@/lib/form/schema"
 import { getTypographyClasses } from "@/lib/typography"
 
 interface NamePhoneStepProps {

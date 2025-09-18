@@ -3,24 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Leaf, Droplets, Shield, Grape, Wheat, Circle, Moon, Zap, Square } from "lucide-react"
 import { getTypographyClasses } from "@/lib/typography"
-
-export interface FormData {
-  ingredients: string[]
-  style: "elegant" | "modern" | null
-  elegantStyle: string // Added elegantStyle field for Slide3 selection
-  styleVariant: string // Added new fields for Slide4 variant selection
-  variantNumber: string
-  textColor: "black" | "white" | ""
-  colorPalette: string
-  productColors: Record<string, string>
-  colorMode?: "variation" | "uniform"
-  firstName: string
-  lastName: string
-  email: string
-  phone: string
-  agreeTerms: boolean
-  subscribeNewsletter: boolean
-}
+import type { FormData } from "@/lib/form/schema"
 
 interface Slide12Props {
   formData: FormData
