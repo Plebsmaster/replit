@@ -83,12 +83,9 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Database query failed" }, { status: 500 })
       }
 
-      if (!client) {
-        console.log("[v0] New client - proceeding with normal flow")
-        return NextResponse.json({ sent: false })
-      }
-
-      console.log("[v0] Existing client found, sending OTP...")
+      // Send OTP for both new and existing users
+      const userType = client ? "existing client" : "new client"
+      console.log(`[v0] ${userType} - sending OTP...`)
 
       try {
         const twilioUrl = `https://verify.twilio.com/v2/Services/${requiredEnvVars.TWILIO_VERIFY_SERVICE_SID}/Verifications`
