@@ -1,16 +1,37 @@
 "use client"
 
-import { useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { SlideContainer } from "@/components/ui/slide-container"
+import { ChoiceCard } from "@/components/ui/choice-card"
 import { getTypographyClasses } from "@/lib/typography"
-import Card from "./Card" // Import Card component
+import { Button } from "@/components/ui/button"
 
 type Props = {
   onBack: () => void
   onNext: (selectedStyle?: string) => void
+  selectedStyle?: string | null
+  onSelectionChange?: (style: string | null) => void
 }
 
-export default function Slide11({ onBack, onNext }: Props) {
+export default function Slide11({ onBack, onNext, selectedStyle: globalSelectedStyle, onSelectionChange }: Props) {
+  const [localSelectedStyle, setLocalSelectedStyle] = useState<string | null>(globalSelectedStyle || null)
+  const [hasExistingSelection, setHasExistingSelection] = useState(false)
+  
+  const selectedStyle = globalSelectedStyle !== undefined ? globalSelectedStyle : localSelectedStyle
+
+  // Check for existing selection on mount
+  useEffect(() => {
+    try {
+      const existing = localStorage.getItem("salonid:styleChoice")
+      if (existing) {
+        setHasExistingSelection(true)
+        if (!selectedStyle) {
+          setLocalSelectedStyle(existing)
+        }
+      }
+    } catch {}
+  }, [selectedStyle])
+
   const items = useMemo(
     () => [
       { key: "Modern 1.", label: "Modern 1", src: "/img/modern/m1.jpg" },
@@ -24,13 +45,23 @@ export default function Slide11({ onBack, onNext }: Props) {
   )
 
   const handleChoose = (key: string, label: string) => {
+    setLocalSelectedStyle(key)
+    onSelectionChange?.(key)
+
     try {
       localStorage.setItem("salonid:styleChoice", key)
       localStorage.setItem("salonid:dateISO", new Date().toISOString())
     } catch {}
 
-    // Geef de gekozen style door aan de parent component
-    onNext(key)
+    setTimeout(() => {
+      onNext(key)
+    }, 500)
+  }
+
+  const handleContinue = () => {
+    if (selectedStyle) {
+      onNext(selectedStyle)
+    }
   }
 
   return (
@@ -52,17 +83,30 @@ export default function Slide11({ onBack, onNext }: Props) {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-2 gap-6 max-w-[900px] mx-auto">
-          {items.map((it) => (
-            <Card
-              key={it.key}
-              label={it.label}
-              src={it.src}
-              onClick={() => handleChoose(it.key, it.label)}
-              fullRow={false} // No fullRow needed since we have 6 items (even number)
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {items.map((item) => (
+            <ChoiceCard
+              key={item.key}
+              label={item.label}
+              imageSrc={item.src}
+              alt={`${item.label} mockup`}
+              isSelected={selectedStyle === item.key}
+              onClick={() => handleChoose(item.key, item.label)}
             />
           ))}
         </div>
+
+        {/* Conditional Continue Button */}
+        {hasExistingSelection && selectedStyle && (
+          <div className="mt-8 text-center">
+            <Button
+              onClick={handleContinue}
+              className="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
+            >
+              Doorgaan met {items.find(item => item.key === selectedStyle)?.label}
+            </Button>
+          </div>
+        )}
       </section>
     </SlideContainer>
   )

@@ -21,6 +21,7 @@ interface WizardContextValue {
   goToNext: () => void
   goToPrevious: () => void
   goToStep: (stepId: string) => void
+  debugGoToStep: (stepId: string) => void  // Debug-only bypass for development
   submitForm: () => void
   resetForm: () => void
   validateCurrentStep: () => boolean
@@ -83,6 +84,62 @@ export function WizardProvider({ children }: { children: ReactNode }) {
     send({ type: 'GO_TO_STEP', stepId })
   }, [send])
   
+  // Debug-only method that bypasses all guards and validation
+  // Only works in development mode  
+  const debugGoToStep = React.useCallback((stepId: string) => {
+    if (process.env.NODE_ENV !== 'development') {
+      console.warn('[Wizard] debugGoToStep is only available in development mode')
+      return
+    }
+    
+    // Check if step exists
+    const step = getStep(stepId)
+    if (!step) {
+      console.warn(`[Wizard] Debug navigation: Step "${stepId}" does not exist`)
+      return
+    }
+    
+    console.log(`[Wizard] Debug navigation: Bypassing all checks and jumping to "${stepId}"`)
+    
+    // Simple approach: just try normal navigation first
+    send({ type: 'GO_TO_STEP', stepId })
+    
+    // If that didn't work (due to guards), force it by updating the context
+    setTimeout(() => {
+      const currentState = service.getSnapshot()
+      if (currentState.context.currentStepId !== stepId) {
+        console.log(`[Wizard] Normal navigation blocked, forcing debug navigation to ${stepId}`)
+        
+        // Force the step change by sending UPDATE_FORM_DATA events
+        send({ 
+          type: 'UPDATE_FORM_DATA', 
+          data: { 
+            ...currentState.context.formData,
+            __debugCurrentStep: stepId 
+          } 
+        })
+        
+        // Update the internal state by patching the machine context directly
+        const machine = service.getSnapshot()
+        if (machine.context.currentStepId !== stepId) {
+          // Last resort: direct property assignment (dev only)
+          try {
+            Object.assign(machine.context, {
+              currentStepId: stepId,
+              visitedSteps: machine.context.visitedSteps.includes(stepId) 
+                ? machine.context.visitedSteps 
+                : [...machine.context.visitedSteps, stepId]
+            })
+            // Trigger re-render
+            send({ type: 'UPDATE_FORM_DATA', data: {} })
+          } catch (error) {
+            console.error('[Wizard] Debug navigation failed:', error)
+          }
+        }
+      }
+    }, 50)
+  }, [send, service])
+  
   const submitForm = React.useCallback(() => {
     send({ type: 'SUBMIT' })
   }, [send])
@@ -131,6 +188,7 @@ export function WizardProvider({ children }: { children: ReactNode }) {
     goToNext,
     goToPrevious,
     goToStep,
+    debugGoToStep,
     submitForm,
     resetForm,
     validateCurrentStep,

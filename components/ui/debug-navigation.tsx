@@ -9,7 +9,7 @@ import { ChevronDown, ChevronUp, Bug } from 'lucide-react'
 const isDev = process.env.NODE_ENV === 'development'
 
 export function DebugNavigation() {
-  const { currentStepId, goToStep, visitedSteps } = useWizard()
+  const { currentStepId, debugGoToStep, visitedSteps } = useWizard()
   const [isExpanded, setIsExpanded] = React.useState(false)
   
   // Don't render in production
@@ -51,7 +51,7 @@ export function DebugNavigation() {
               return (
                 <button
                   key={step.id}
-                  onClick={() => goToStep(step.id)}
+                  onClick={() => debugGoToStep(step.id)}
                   className={`
                     p-2 text-xs rounded border transition-all hover:scale-105
                     ${isActive 

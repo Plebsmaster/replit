@@ -2,26 +2,61 @@
 
 import { useEffect, useState } from "react"
 import { SlideContainer } from "@/components/ui/slide-container"
+import { ChoiceCard } from "@/components/ui/choice-card"
 import { getTypographyClasses } from "@/lib/typography"
+import { Button } from "@/components/ui/button"
 
 type Props = {
   onBack: () => void
   onNext: () => void
+  selectedVariant?: string | null
+  onSelectionChange?: (variant: string | null) => void
 }
 
-export default function Slide13({ onBack, onNext }: Props) {
+export default function Slide13({ onBack, onNext, selectedVariant: globalSelectedVariant, onSelectionChange }: Props) {
   const [selectedStyle, setSelectedStyle] = useState<string>("")
+  const [localSelectedVariant, setLocalSelectedVariant] = useState<string | null>(globalSelectedVariant || null)
+  const [hasExistingSelection, setHasExistingSelection] = useState(false)
+  
+  const selectedVariant = globalSelectedVariant !== undefined ? globalSelectedVariant : localSelectedVariant
 
   useEffect(() => {
     try {
       const style = localStorage.getItem("salonid:styleChoice") || ""
       setSelectedStyle(style)
+      
+      const existing = localStorage.getItem("salonid:styleVariant")
+      if (existing && existing.includes(style)) {
+        setHasExistingSelection(true)
+        if (!selectedVariant) {
+          const variantNumber = existing.replace(style, "")
+          setLocalSelectedVariant(variantNumber)
+        }
+      }
     } catch (error) {
-      console.log("Could not load style from localStorage")
+      console.log("Could not load from localStorage")
     }
-  }, [])
+  }, [selectedVariant])
+
+  const variants = [
+    {
+      id: "1",
+      label: "Uitlijning links",
+      imageSrc: "/img/modern2/variant1.jpg",
+      alt: "Modern 2 Variant 1 - Left alignment",
+    },
+    {
+      id: "2",
+      label: "Uitlijning midden",
+      imageSrc: "/img/modern2/variant2.jpg",
+      alt: "Modern 2 Variant 2 - Center alignment",
+    },
+  ]
 
   const handleChooseVariant = (variantNumber: string) => {
+    setLocalSelectedVariant(variantNumber)
+    onSelectionChange?.(variantNumber)
+
     try {
       const finalStyle = `${selectedStyle}${variantNumber}`
       localStorage.setItem("salonid:styleVariant", finalStyle)
@@ -29,7 +64,16 @@ export default function Slide13({ onBack, onNext }: Props) {
     } catch (error) {
       console.log("Could not save variant to localStorage")
     }
-    onNext()
+    
+    setTimeout(() => {
+      onNext()
+    }, 500)
+  }
+
+  const handleContinue = () => {
+    if (selectedVariant) {
+      onNext()
+    }
   }
 
   return (
@@ -48,35 +92,30 @@ export default function Slide13({ onBack, onNext }: Props) {
         </div>
 
         {/* Grid met 2 varianten */}
-        <div className="grid grid-cols-2 gap-10 max-w-[800px] mx-auto">
-          <div onClick={() => handleChooseVariant("1")} className="cursor-pointer">
-            <div className="bg-[#F5F2EF] border border-[#E3DED9] rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="bg-black text-white text-center font-extrabold py-3 px-4 text-base">Uitlijning links</div>
-              <div className="aspect-[3/4] bg-white p-5 flex items-center justify-center">
-                <img
-                  src="/img/modern2/variant1.jpg"
-                  alt="Modern 2 Variant 1"
-                  className="max-w-full max-h-full object-contain"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div onClick={() => handleChooseVariant("2")} className="cursor-pointer">
-            <div className="bg-[#F5F2EF] border border-[#E3DED9] rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="bg-black text-white text-center font-extrabold py-3 px-4 text-base">
-                Uitlijning midden
-              </div>
-              <div className="aspect-[3/4] bg-white p-5 flex items-center justify-center">
-                <img
-                  src="/img/modern2/variant2.jpg"
-                  alt="Modern 2 Variant 2"
-                  className="max-w-full max-h-full object-contain"
-                />
-              </div>
-            </div>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {variants.map((variant) => (
+            <ChoiceCard
+              key={variant.id}
+              label={variant.label}
+              imageSrc={variant.imageSrc}
+              alt={variant.alt}
+              isSelected={selectedVariant === variant.id}
+              onClick={() => handleChooseVariant(variant.id)}
+            />
+          ))}
         </div>
+
+        {/* Conditional Continue Button */}
+        {hasExistingSelection && selectedVariant && (
+          <div className="mt-8 text-center">
+            <Button
+              onClick={handleContinue}
+              className="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
+            >
+              Doorgaan met {variants.find(variant => variant.id === selectedVariant)?.label}
+            </Button>
+          </div>
+        )}
 
         {/* Debug info */}
         {selectedStyle && <div className="mt-10 text-center text-xs opacity-60">Gekozen style: {selectedStyle}</div>}
