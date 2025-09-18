@@ -54,3 +54,5 @@ export function DashboardLoginStep({ onNext }: DashboardLoginStepProps) {
     </div>
   )
 }
+
+export default DashboardLoginStep

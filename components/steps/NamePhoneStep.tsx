@@ -255,3 +255,5 @@ export function NamePhoneStep({ formData, updateFormData, onNext }: StepProps) {
     </div>
   )
 }
+
+export default NamePhoneStep

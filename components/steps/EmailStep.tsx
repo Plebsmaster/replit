@@ -204,3 +204,5 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
     </div>
   )
 }
+
+export default EmailStep

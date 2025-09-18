@@ -302,3 +302,5 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, fo
     </div>
   )
 }
+
+export default OTPStep

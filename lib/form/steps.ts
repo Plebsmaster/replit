@@ -75,13 +75,13 @@ const WelcomeStep = lazy(() =>
   import('@/components/steps/Slide1').then(m => ({ default: m.WelcomeStep }))
 )
 const EmailStep = lazy(() => 
-  import('@/components/steps/EmailStep').then(m => ({ default: m.EmailStep }))
+  import('@/components/steps/EmailStep')
 )
 const NamePhoneStep = lazy(() => 
-  import('@/components/steps/NamePhoneStep').then(m => ({ default: m.NamePhoneStep }))
+  import('@/components/steps/NamePhoneStep')
 )
 const OTPStep = lazy(() => 
-  import('@/components/steps/OTPStep').then(m => ({ default: m.OTPStep }))
+  import('@/components/steps/OTPStep')
 )
 const StyleSelectionStep = lazy(() => 
   import('@/components/steps/Slide2')
@@ -129,7 +129,7 @@ const IngredientsStep = lazy(() =>
   import('@/components/steps/Slide30')
 )
 const DashboardLoginStep = lazy(() => 
-  import('@/components/steps/DashboardLoginStep').then(m => ({ default: m.DashboardLoginStep }))
+  import('@/components/steps/DashboardLoginStep')
 )
 
 // ===== Step Registry =====
