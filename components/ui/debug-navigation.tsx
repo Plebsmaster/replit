@@ -61,10 +61,11 @@ export function DebugNavigation() {
                         : 'bg-white text-red-700 border-red-300 hover:bg-red-100'
                     }
                   `}
-                  title={`${step.title} (${step.id})`}
+                  title={`${step.title} (${step.id}) - ${step.componentFile || 'N/A'}`}
                 >
                   <div className="font-medium truncate">{step.title}</div>
                   <div className="text-[10px] opacity-75 truncate">{step.id}</div>
+                  {step.componentFile && <div className="text-[10px] opacity-60 truncate">{step.componentFile}</div>}
                   {isActive && <div className="text-[10px] font-bold">CURRENT</div>}
                   {isVisited && !isActive && <div className="text-[10px]">✓</div>}
                 </button>

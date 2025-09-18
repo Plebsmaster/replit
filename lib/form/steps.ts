@@ -56,6 +56,7 @@ export interface StepDefinition {
   title: string
   Component: ComponentType<StepProps>
   schema?: z.ZodSchema<Partial<FormData>>
+  componentFile?: string  // TSX filename for debug navigation
   guards?: {
     canEnter?: (formData: Partial<FormData>) => boolean
     canLeave?: (formData: Partial<FormData>) => boolean
@@ -213,6 +214,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Stijl Selectie',
     Component: StyleSelectionStep,
     schema: styleSelectionSchema,
+    componentFile: 'Slide2.tsx',
     showGlobalNext: false, // Auto-continue
     showGlobalPrev: true,
     nextStep: (formData: Partial<FormData>): string | null => {
@@ -229,6 +231,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Elegante Stijlen',
     Component: ElegantStyleStep,
     schema: elegantStyleSchema,
+    componentFile: 'Slide3.tsx',
     showGlobalNext: false, // Auto-continue
     showGlobalPrev: true,
     guards: {
@@ -248,6 +251,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Elegante Variant 1',
     Component: ElegantVariant1Step,
     schema: styleVariantSchema,
+    componentFile: 'Slide4.tsx',
     showGlobalNext: false, // Auto-continue
     showGlobalPrev: true,
     guards: {
@@ -262,6 +266,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Elegante Variant 2',
     Component: ElegantVariant2Step,
     schema: styleVariantSchema,
+    componentFile: 'Slide5.tsx',
     showGlobalNext: false, // Auto-continue
     showGlobalPrev: true,
     guards: {
@@ -277,6 +282,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Moderne Stijlen',
     Component: ModernStyleStep,
     schema: modernStyleSchema,
+    componentFile: 'Slide11.tsx',
     showGlobalNext: false, // Auto-continue
     showGlobalPrev: true,
     guards: {
@@ -298,6 +304,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Modern 1 Variant',
     Component: Modern1VariantStep,
     schema: styleVariantSchema,
+    componentFile: 'Slide12.tsx',
     showGlobalNext: false, // Auto-continue
     showGlobalPrev: true,
     guards: {
@@ -312,6 +319,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Modern 2 Variant',
     Component: Modern2VariantStep,
     schema: styleVariantSchema,
+    componentFile: 'Slide13.tsx',
     showGlobalNext: false, // Auto-continue
     showGlobalPrev: true,
     guards: {
@@ -326,6 +334,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Modern 3 Variant',
     Component: Modern3VariantStep,
     schema: styleVariantSchema,
+    componentFile: 'Slide14.tsx',
     showGlobalNext: false, // Auto-continue
     showGlobalPrev: true,
     guards: {
@@ -340,6 +349,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Modern 6 Variant',
     Component: Modern6VariantStep,
     schema: styleVariantSchema,
+    componentFile: 'Slide15.tsx',
     showGlobalNext: false, // Auto-continue
     showGlobalPrev: true,
     guards: {
@@ -355,6 +365,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Kleur Selectie',
     Component: ColorSchemeStep,
     schema: colorSchemeSchema,
+    componentFile: 'Slide6.tsx',
     showGlobalNext: false, // Auto-continue
     showGlobalPrev: true,
     nextStep: (formData: Partial<FormData>): string => 'final-color',
