@@ -120,6 +120,10 @@ export const FormDataSchema = z.object({
   lastName: z.string().default(''),
   phone: z.string().default(''),
   
+  // User Type and Status
+  isExistingUser: z.boolean().optional().default(false),
+  userId: z.string().optional().default(''),
+  
   // Style Selection
   style: z.enum(['elegant', 'modern']).nullable().default(null),
   elegantStyle: z.string().default(''),
@@ -185,6 +189,8 @@ export const getDefaultFormData = (): FormData => {
     firstName: '',
     lastName: '',
     phone: '',
+    isExistingUser: false,
+    userId: '',
     style: null,
     elegantStyle: '',
     modernStyle: '',

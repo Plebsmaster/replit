@@ -148,7 +148,14 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'E-mail',
     Component: EmailStep,
     schema: emailStepSchema,
-    nextStep: (formData: Partial<FormData>): string => 'name-phone',
+    nextStep: (formData: Partial<FormData>): string => {
+      // If existing user, skip name-phone and go directly to OTP
+      if (formData.isExistingUser) {
+        return 'otp-verification'
+      }
+      // If new user, proceed to name-phone collection
+      return 'name-phone'
+    },
   }],
   
   ['name-phone', {
@@ -166,7 +173,14 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Verificatie',
     Component: OTPStep,
     schema: otpSchema,
-    nextStep: (formData: Partial<FormData>): string => 'style-selection',
+    nextStep: (formData: Partial<FormData>): string => {
+      // If existing user, go to dashboard login after OTP verification
+      if (formData.isExistingUser) {
+        return 'dashboard-login'
+      }
+      // If new user, proceed to questionnaire (style selection)
+      return 'style-selection'
+    },
   }],
   
   // Style Selection Flow

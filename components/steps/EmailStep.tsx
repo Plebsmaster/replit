@@ -4,7 +4,7 @@ import type React from "react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { ArrowRight, Mail, AlertCircle, CheckCircle } from "lucide-react"
+import { ArrowRight, Mail, AlertCircle, CheckCircle, Loader2 } from "lucide-react"
 import { useState, useEffect } from "react"
 import type { FormData } from "@/lib/form/schema"
 import { getTypographyClasses } from "@/lib/typography"
@@ -15,6 +15,7 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
   const [error, setError] = useState("")
   const [validationState, setValidationState] = useState<"idle" | "valid" | "invalid">("idle")
   const [touched, setTouched] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     if (touched) {
@@ -44,19 +45,77 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
     setTouched(true)
   }
 
-  const handleNext = () => {
+  const checkUserExistence = async (email: string) => {
+    try {
+      const response = await fetch('/api/user/check', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to check user existence')
+      }
+
+      const data = await response.json()
+      return data
+    } catch (error) {
+      console.error('[v0] EmailStep: Error checking user existence:', error)
+      throw error
+    }
+  }
+
+  const handleNext = async () => {
     console.log("[v0] EmailStep: Next button clicked with email:", email)
     console.log("[v0] EmailStep: Validation state:", validationState)
-    if (validationState === "valid") {
+    
+    if (validationState !== "valid") {
+      console.log("[v0] EmailStep: Email validation failed, not proceeding")
+      return
+    }
+
+    setIsLoading(true)
+    setError("")
+
+    try {
+      console.log("[v0] EmailStep: Checking user existence...")
+      const userCheckResult = await checkUserExistence(email)
+      
+      if (userCheckResult.exists) {
+        console.log("[v0] EmailStep: Existing user found")
+        // Update form data with existing user information
+        updateFormData({
+          email: email,
+          isExistingUser: true,
+          userId: userCheckResult.user.id,
+          firstName: userCheckResult.user.firstName,
+          lastName: userCheckResult.user.lastName,
+          phone: userCheckResult.user.phone,
+        })
+      } else {
+        console.log("[v0] EmailStep: New user - proceeding with questionnaire flow")
+        // Update form data for new user
+        updateFormData({
+          email: email,
+          isExistingUser: false,
+          userId: '',
+        })
+      }
+
       console.log("[v0] EmailStep: Calling onNext")
       onNext()
-    } else {
-      console.log("[v0] EmailStep: Email validation failed, not proceeding")
+    } catch (error) {
+      console.error("[v0] EmailStep: Error during user check:", error)
+      setError("Er is een probleem opgetreden. Probeer het opnieuw.")
+    } finally {
+      setIsLoading(false)
     }
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && validationState === "valid") {
+    if (e.key === "Enter" && validationState === "valid" && !isLoading) {
       console.log("[v0] EmailStep: Enter key pressed, proceeding")
       handleNext()
     }
@@ -119,11 +178,20 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
         <div className="mt-6">
           <Button
             onClick={handleNext}
-            disabled={validationState !== "valid"}
+            disabled={validationState !== "valid" || isLoading}
             className="w-full bg-gray-900 text-white hover:bg-gray-800 py-4 text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
           >
-            Doorgaan
-            <ArrowRight className="w-5 h-5 ml-2" />
+            {isLoading ? (
+              <>
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                Controleren...
+              </>
+            ) : (
+              <>
+                Doorgaan
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </>
+            )}
           </Button>
         </div>
 
