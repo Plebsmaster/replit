@@ -1,6 +1,7 @@
 "use client"
 import { Input } from "@/components/ui/input"
-import { User, ChevronDown, AlertCircle, CheckCircle } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { User, ChevronDown, AlertCircle, CheckCircle, ArrowRight } from "lucide-react"
 import { useState, useEffect } from "react"
 import type { FormData } from "@/lib/form/schema"
 import type { StepProps } from "@/lib/form/steps"
@@ -141,6 +142,12 @@ export function NamePhoneStep({ formData, updateFormData, onNext }: StepProps) {
     return null
   }
 
+  const handleNext = () => {
+    if (isFormValid()) {
+      onNext()
+    }
+  }
+
   return (
     <div className="space-y-8">
       <div className="text-center">
@@ -232,6 +239,17 @@ export function NamePhoneStep({ formData, updateFormData, onNext }: StepProps) {
           <p className={`${getTypographyClasses("paragraph", { removeSpacing: true })} mt-1 text-blue-700`}>
             Met dit e-mailadres kun je later inloggen om al je ontwerpen te bekijken en beheren.
           </p>
+        </div>
+
+        <div className="mt-6">
+          <Button
+            onClick={handleNext}
+            disabled={!isFormValid()}
+            className="w-full bg-gray-900 text-white hover:bg-gray-800 py-4 text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+          >
+            Doorgaan
+            <ArrowRight className="w-5 h-5 ml-2" />
+          </Button>
         </div>
       </div>
     </div>
