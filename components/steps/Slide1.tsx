@@ -23,8 +23,8 @@ export function WelcomeStep({ onNext }: StepProps) {
 
         <div className="space-y-6 text-left leading-relaxed">
           <p className={getTypographyClasses("paragraph", { alignment: "left" })}>
-            <span className="font-semibold text-blue-600">Gefeliciteerd</span> met deze stap naar de toekomst van{" "}
-            <span className="font-semibold text-blue-600">jouw salon!</span> We kijken ernaar uit om samen een{" "}
+            <span className="font-semibold text-black">Gefeliciteerd</span> met deze stap naar de toekomst van{" "}
+            <span className="font-semibold text-black">jouw salon!</span> We kijken ernaar uit om samen een{" "}
             <span className="font-semibold">unieke productlijn</span> te creëren die jouw merk perfect weergeeft.
           </p>
 

@@ -419,8 +419,8 @@ export default function ClientDashboard() {
                       )}
                       {designStatus === "processing" && (
                         <>
-                          <RefreshCw className="w-5 h-5 text-blue-500 animate-spin" />
-                          <Badge variant="secondary" className="bg-blue-50 text-blue-700 border-blue-200">
+                          <RefreshCw className="w-5 h-5 text-black animate-spin" />
+                          <Badge variant="secondary" className="bg-gray-50 text-black border-gray-300">
                             Processing
                           </Badge>
                           <p className="text-muted-foreground">
@@ -460,9 +460,9 @@ export default function ClientDashboard() {
                     )}
 
                     {designStatus === "processing" && (
-                      <div className="bg-blue-50 px-4 py-3 rounded-lg border border-blue-200">
-                        <p className="text-sm text-blue-700 font-medium">Your design is being processed</p>
-                        <p className="text-xs text-blue-600 mt-1">
+                      <div className="bg-gray-50 px-4 py-3 rounded-lg border border-gray-300">
+                        <p className="text-sm text-black font-medium">Your design is being processed</p>
+                        <p className="text-xs text-gray-700 mt-1">
                           You'll be able to review it once processing is complete.
                         </p>
                       </div>

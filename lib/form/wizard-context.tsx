@@ -222,7 +222,7 @@ export function WizardProgressBar() {
   return (
     <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
       <div
-        className="h-full bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-300 ease-out"
+        className="h-full bg-gradient-to-r from-gray-800 to-black transition-all duration-300 ease-out"
         style={{ width: `${progress}%` }}
       />
     </div>
@@ -256,7 +256,7 @@ export function StepNavigation() {
         <button
           onClick={goToNext}
           disabled={!canGoNext()}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
+          className="px-4 py-2 bg-black text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-800 transition-colors"
         >
           Doorgaan
         </button>

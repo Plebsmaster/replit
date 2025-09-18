@@ -116,7 +116,7 @@ export function ContactStep({
               {formData.agreeTerms && <div className="w-2 h-2 bg-white rounded-full"></div>}
             </div>
             <div className="text-sm text-gray-700">
-              Ik ga akkoord met de <span className="text-blue-600 underline cursor-pointer">algemene voorwaarden</span>{" "}
+              Ik ga akkoord met de <span className="text-black underline cursor-pointer font-semibold">algemene voorwaarden</span>{" "}
               *
             </div>
           </div>
@@ -148,13 +148,13 @@ export function ContactStep({
       )}
 
       {submitStatus === "success" && (
-        <div className="bg-blue-50 p-6 rounded-lg text-center">
-          <h3 className="font-semibold text-blue-900 mb-2">Ontwerp succesvol opgeslagen!</h3>
-          <p className="text-blue-800 mb-4">
+        <div className="bg-gray-50 p-6 rounded-lg text-center">
+          <h3 className="font-semibold text-black mb-2">Ontwerp succesvol opgeslagen!</h3>
+          <p className="text-gray-700 mb-4">
             Je kunt nu al je ontwerpen bekijken en beheren via je persoonlijke dashboard.
           </p>
           <Link href="/dashboard">
-            <Button className="bg-blue-600 text-white hover:bg-blue-700">
+            <Button className="bg-black text-white hover:bg-gray-800">
               <Eye className="w-4 h-4 mr-2" />
               Bekijk mijn ontwerpen
             </Button>

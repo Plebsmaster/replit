@@ -204,7 +204,7 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, fo
     <div className="space-y-8 text-center max-w-md mx-auto">
       {/* Icon */}
       <div className="flex justify-center mb-8">
-        <div className="w-20 h-20 bg-gradient-to-br from-blue-400 to-purple-400 rounded-full flex items-center justify-center">
+        <div className="w-20 h-20 bg-gradient-to-br from-gray-700 to-black rounded-full flex items-center justify-center">
           <Mail className="w-10 h-10 text-white" />
         </div>
       </div>
@@ -213,13 +213,13 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, fo
       <div className="space-y-2">
         <h1 className={getTypographyClasses("title", { alignment: "center" })}>Verify Your Email</h1>
         {isGeneratingInitial ? (
-          <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} text-blue-600`}>
+          <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} text-black`}>
             Sending verification code to {email}...
           </p>
         ) : (
           <>
             <p className={getTypographyClasses("paragraph", { alignment: "center" })}>We've sent a 6-digit code to</p>
-            <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} font-semibold text-blue-600`}>
+            <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} font-semibold text-black`}>
               {email}
             </p>
           </>
@@ -239,7 +239,7 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, fo
               value={digit}
               onChange={(e) => handleOtpChange(index, e.target.value.replace(/\D/g, ""))}
               onKeyDown={(e) => handleKeyDown(index, e)}
-              className="w-12 h-12 text-center text-xl font-bold border-2 bg-white text-gray-900 focus:border-blue-500 focus:bg-white"
+              className="w-12 h-12 text-center text-xl font-bold border-2 bg-white text-gray-900 focus:border-black focus:bg-white"
               disabled={isVerifying || isGeneratingInitial}
             />
           ))}
@@ -262,7 +262,7 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, fo
           <button
             onClick={handleResend}
             disabled={!canResend || isResending}
-            className="text-blue-600 hover:text-blue-800 disabled:text-gray-400 disabled:cursor-not-allowed"
+            className="text-black hover:text-gray-700 disabled:text-gray-400 disabled:cursor-not-allowed"
           >
             {isResending ? (
               <span className="flex items-center gap-1">

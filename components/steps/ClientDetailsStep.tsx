@@ -294,8 +294,8 @@ export function ClientDetailsStep({ formData, updateFormData, onNext }: ClientDe
           )}
         </div>
 
-        <div className="bg-blue-50 p-4 rounded-lg">
-          <p className="text-sm text-blue-800">
+        <div className="bg-gray-50 p-4 rounded-lg">
+          <p className="text-sm text-gray-700">
             <strong>Tip:</strong> Met je e-mailadres kun je later inloggen om al je ontwerpen te bekijken, te beheren en
             de juiste te selecteren voor productie.
           </p>

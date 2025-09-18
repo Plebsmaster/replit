@@ -12,7 +12,7 @@ export function DashboardLoginStep({ onNext }: DashboardLoginStepProps) {
     <div className="space-y-8 text-center">
       {/* Avatar */}
       <div className="flex justify-center mb-8">
-        <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-blue-400 rounded-full flex items-center justify-center">
+        <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-gray-700 rounded-full flex items-center justify-center">
           <div className="w-10 h-10 bg-black rounded-full"></div>
         </div>
       </div>
@@ -34,7 +34,7 @@ export function DashboardLoginStep({ onNext }: DashboardLoginStepProps) {
         </p>
 
         <p>
-          Je ontvangt een <span className="font-semibold text-blue-600">verificatiecode</span> via e-mail die je kunt
+          Je ontvangt een <span className="font-semibold text-black">verificatiecode</span> via e-mail die je kunt
           gebruiken om veilig toegang te krijgen tot je dashboard.
         </p>
 

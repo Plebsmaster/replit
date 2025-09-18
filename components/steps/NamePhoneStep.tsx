@@ -232,11 +232,11 @@ export function NamePhoneStep({ formData, updateFormData, onNext }: StepProps) {
           )}
         </div>
 
-        <div className="bg-blue-50 p-4 rounded-lg">
+        <div className="bg-gray-50 p-4 rounded-lg">
           <p className={getTypographyClasses("paragraph", { removeSpacing: true })}>
             <strong>E-mailadres:</strong> {formData.email}
           </p>
-          <p className={`${getTypographyClasses("paragraph", { removeSpacing: true })} mt-1 text-blue-700`}>
+          <p className={`${getTypographyClasses("paragraph", { removeSpacing: true })} mt-1 text-gray-700`}>
             Met dit e-mailadres kun je later inloggen om al je ontwerpen te bekijken en beheren.
           </p>
         </div>

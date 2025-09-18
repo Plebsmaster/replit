@@ -164,7 +164,7 @@ export default function AdminManagePage() {
                           </Badge>
                         )}
                         {admin.email === currentAdminEmail && (
-                          <Badge variant="outline" className="border-blue-300 text-blue-700">
+                          <Badge variant="outline" className="border-gray-300 text-black">
                             You
                           </Badge>
                         )}
