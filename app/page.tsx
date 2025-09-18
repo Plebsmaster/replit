@@ -1,6 +1,6 @@
 "use client"
 
-import { WizardProvider, StepRenderer, WizardProgressBar } from '@/lib/form/wizard-context'
+import { WizardProvider, StepRenderer, WizardProgressBar, StepNavigation } from '@/lib/form/wizard-context'
 import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
@@ -26,10 +26,17 @@ function WizardNavigation() {
       </div>
       
       {/* Main Content */}
-      <div className="pt-28 pb-8">
+      <div className="pt-28 pb-24">
         <div className="max-w-4xl mx-auto px-4">
           {/* Step Renderer - Dynamically renders the current step */}
           <StepRenderer />
+        </div>
+      </div>
+      
+      {/* Sticky Footer with Navigation */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-lg border-t border-gray-200 shadow-lg">
+        <div className="max-w-4xl mx-auto px-4 py-4">
+          <StepNavigation />
         </div>
       </div>
     </div>

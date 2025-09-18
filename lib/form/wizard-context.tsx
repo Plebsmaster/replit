@@ -240,7 +240,7 @@ export function StepNavigation() {
         disabled={!canGoPrevious()}
         className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300 transition-colors"
       >
-        Previous
+        Terug
       </button>
       
       <button
@@ -248,7 +248,7 @@ export function StepNavigation() {
         disabled={!canGoNext()}
         className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
       >
-        Next
+        Doorgaan
       </button>
     </div>
   )
