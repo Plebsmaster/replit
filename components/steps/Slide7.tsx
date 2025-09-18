@@ -1,6 +1,6 @@
 "use client"
 
-import { useFormData } from "@/contexts/FormDataContext"
+import { useWizard } from "@/lib/form/wizard-context"
 import { SlideContainer } from "@/components/ui/slide-container"
 import { ChoiceCard } from "@/components/ui/choice-card"
 import { getTypographyClasses } from "@/lib/typography"
@@ -11,7 +11,7 @@ type Props = {
 }
 
 export default function Slide7({ onBack, onNext }: Props) {
-  const { formData, updateFormData } = useFormData()
+  const { formData, updateFormData } = useWizard()
 
   const handleChooseColor = (colorChoice: string) => {
     updateFormData({ finalColorChoice: colorChoice })

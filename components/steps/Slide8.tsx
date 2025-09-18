@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react"
 import { SlideContainer } from "@/components/ui/slide-container"
-import { useFormData } from "@/contexts/FormDataContext"
+import { useWizard } from "@/lib/form/wizard-context"
 
 // Interfaces voor datastructuur
 interface Color {
@@ -64,7 +64,7 @@ export default function Slide8({ onBack, onNext }: Slide8Props) {
   const [colorMode, setColorMode] = useState<ColorMode>("variation")
   const pickerRef = useRef<HTMLDivElement | null>(null)
 
-  const { formData, updateFormData } = useFormData()
+  const { formData, updateFormData } = useWizard()
 
   // === DATA DEFINITIONS ===
   const whiteTextPalettes = {
