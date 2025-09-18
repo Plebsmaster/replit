@@ -377,6 +377,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Finale Kleur',
     Component: FinalColorStep,
     schema: finalColorSchema,
+    componentFile: 'Slide7.tsx',
     showGlobalNext: false, // Auto-continue
     showGlobalPrev: true,
     nextStep: (formData: Partial<FormData>): string => 'color-palette',
@@ -388,6 +389,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Kleur Palet',
     Component: ColorPaletteStep,
     schema: colorPaletteSchema,
+    componentFile: 'Slide8.tsx',
     showGlobalNext: true,  // Manual continue - SPECIAL CASE: Slide8 requires manual continue
     showGlobalPrev: true,
     nextStep: (formData: Partial<FormData>): string => 'icon-choice',
@@ -399,6 +401,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     key: 'iconChoice',
     title: 'Icoon Keuze',
     Component: IconChoiceStep,
+    componentFile: 'Slide9.tsx',
     showGlobalNext: false, // Auto-continue
     showGlobalPrev: true,
     nextStep: (formData: Partial<FormData>): string => 'icon-selection',
@@ -410,6 +413,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Icoon Selectie',
     Component: IconSelectionStep,
     schema: iconSelectionSchema,
+    componentFile: 'Slide10.tsx',
     showGlobalNext: false, // Auto-continue
     showGlobalPrev: true,
     nextStep: (formData: Partial<FormData>): string => 'ingredients',
@@ -422,6 +426,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Ingrediënten',
     Component: IngredientsStep,
     schema: ingredientsSchema,
+    componentFile: 'Slide30.tsx',
     showGlobalNext: true,  // Manual continue
     showGlobalPrev: true,
     nextStep: (): string => 'dashboard-login',
