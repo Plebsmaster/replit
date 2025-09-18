@@ -38,10 +38,10 @@ export default function Slide3({ onBack, onNext, updateFormData, formData, selec
       localStorage.setItem("salonid:dateISO", new Date().toISOString())
     } catch {}
 
-    // Auto-progress using microtask to allow state updates to complete
-    queueMicrotask(() => {
+    // Auto-progress with delay to allow state machine to process the update
+    setTimeout(() => {
       onNext()
-    })
+    }, 100)
   }
 
   return (
