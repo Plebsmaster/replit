@@ -64,6 +64,9 @@ export interface StepDefinition {
   onLeave?: (formData: Partial<FormData>) => void
   skipIf?: (formData: Partial<FormData>) => boolean
   nextStep?: (formData: Partial<FormData>) => string | null
+  // Navigation button visibility controls
+  showGlobalNext?: boolean  // Show "Doorgaan" button (default: true for manual steps)
+  showGlobalPrev?: boolean  // Show "Terug" button (default: true)
 }
 
 // ===== Step Components with Dynamic Imports =====
@@ -138,6 +141,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Welkom',
     Component: WelcomeStep,
     schema: welcomeSchema,
+    showGlobalNext: true,  // Manual continue
+    showGlobalPrev: true,
     nextStep: (formData: Partial<FormData>): string => 'email',
   }],
   
@@ -148,6 +153,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'E-mail',
     Component: EmailStep,
     schema: emailStepSchema,
+    showGlobalNext: true,  // Manual continue
+    showGlobalPrev: true,
     nextStep: (formData: Partial<FormData>): string => {
       // If existing user, skip name-phone and go directly to OTP
       if (formData.isExistingUser) {
@@ -164,6 +171,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Gegevens',
     Component: NamePhoneStep,
     schema: namePhoneSchema,
+    showGlobalNext: true,  // Manual continue
+    showGlobalPrev: true,
     nextStep: (formData: Partial<FormData>): string => {
       // For new users, skip OTP and go directly to questionnaire
       if (!formData.isExistingUser) {
@@ -181,6 +190,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Verificatie',
     Component: OTPStep,
     schema: otpSchema,
+    showGlobalNext: false, // Has own button
+    showGlobalPrev: true,
     guards: {
       canEnter: (formData: Partial<FormData>) => formData.isExistingUser === true,
     },
@@ -202,6 +213,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Stijl Selectie',
     Component: StyleSelectionStep,
     schema: styleSelectionSchema,
+    showGlobalNext: false, // Auto-continue
+    showGlobalPrev: true,
     nextStep: (formData: Partial<FormData>): string | null => {
       if (formData.style === 'elegant') return 'elegant-styles'
       if (formData.style === 'modern') return 'modern-styles'
@@ -216,6 +229,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Elegante Stijlen',
     Component: ElegantStyleStep,
     schema: elegantStyleSchema,
+    showGlobalNext: false, // Auto-continue
+    showGlobalPrev: true,
     guards: {
       canEnter: (formData: Partial<FormData>) => formData.style === 'elegant',
     },
@@ -233,6 +248,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Elegante Variant 1',
     Component: ElegantVariant1Step,
     schema: styleVariantSchema,
+    showGlobalNext: false, // Auto-continue
+    showGlobalPrev: true,
     guards: {
       canEnter: (formData: Partial<FormData>) => formData.style === 'elegant',
     },
@@ -245,6 +262,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Elegante Variant 2',
     Component: ElegantVariant2Step,
     schema: styleVariantSchema,
+    showGlobalNext: false, // Auto-continue
+    showGlobalPrev: true,
     guards: {
       canEnter: (formData: Partial<FormData>) => formData.style === 'elegant',
     },
@@ -258,6 +277,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Moderne Stijlen',
     Component: ModernStyleStep,
     schema: modernStyleSchema,
+    showGlobalNext: false, // Auto-continue
+    showGlobalPrev: true,
     guards: {
       canEnter: (formData: Partial<FormData>) => formData.style === 'modern',
     },
@@ -277,6 +298,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Modern 1 Variant',
     Component: Modern1VariantStep,
     schema: styleVariantSchema,
+    showGlobalNext: false, // Auto-continue
+    showGlobalPrev: true,
     guards: {
       canEnter: (formData: Partial<FormData>) => formData.style === 'modern',
     },
@@ -289,6 +312,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Modern 2 Variant',
     Component: Modern2VariantStep,
     schema: styleVariantSchema,
+    showGlobalNext: false, // Auto-continue
+    showGlobalPrev: true,
     guards: {
       canEnter: (formData: Partial<FormData>) => formData.style === 'modern',
     },
@@ -301,6 +326,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Modern 3 Variant',
     Component: Modern3VariantStep,
     schema: styleVariantSchema,
+    showGlobalNext: false, // Auto-continue
+    showGlobalPrev: true,
     guards: {
       canEnter: (formData: Partial<FormData>) => formData.style === 'modern',
     },
@@ -313,6 +340,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Modern 6 Variant',
     Component: Modern6VariantStep,
     schema: styleVariantSchema,
+    showGlobalNext: false, // Auto-continue
+    showGlobalPrev: true,
     guards: {
       canEnter: (formData: Partial<FormData>) => formData.style === 'modern',
     },
@@ -326,6 +355,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Kleur Selectie',
     Component: ColorSchemeStep,
     schema: colorSchemeSchema,
+    showGlobalNext: false, // Auto-continue
+    showGlobalPrev: true,
     nextStep: (formData: Partial<FormData>): string => 'final-color',
   }],
   
@@ -335,6 +366,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Finale Kleur',
     Component: FinalColorStep,
     schema: finalColorSchema,
+    showGlobalNext: false, // Auto-continue
+    showGlobalPrev: true,
     nextStep: (formData: Partial<FormData>): string => 'color-palette',
   }],
   
@@ -344,6 +377,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Kleur Palet',
     Component: ColorPaletteStep,
     schema: colorPaletteSchema,
+    showGlobalNext: true,  // Manual continue - SPECIAL CASE: Slide8 requires manual continue
+    showGlobalPrev: true,
     nextStep: (formData: Partial<FormData>): string => 'icon-choice',
   }],
   
@@ -353,6 +388,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     key: 'iconChoice',
     title: 'Icoon Keuze',
     Component: IconChoiceStep,
+    showGlobalNext: false, // Auto-continue
+    showGlobalPrev: true,
     nextStep: (formData: Partial<FormData>): string => 'icon-selection',
   }],
   
@@ -362,6 +399,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Icoon Selectie',
     Component: IconSelectionStep,
     schema: iconSelectionSchema,
+    showGlobalNext: false, // Auto-continue
+    showGlobalPrev: true,
     nextStep: (formData: Partial<FormData>): string => 'ingredients',
   }],
   
@@ -372,6 +411,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Ingrediënten',
     Component: IngredientsStep,
     schema: ingredientsSchema,
+    showGlobalNext: true,  // Manual continue
+    showGlobalPrev: true,
     nextStep: (): string => 'dashboard-login',
   }],
   
@@ -381,6 +422,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Dashboard',
     Component: DashboardLoginStep,
     schema: agreementsSchema,
+    showGlobalNext: true,  // Manual continue
+    showGlobalPrev: true,
     nextStep: (formData: Partial<FormData>): null => null, // End of flow
   }],
 ])

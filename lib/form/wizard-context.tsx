@@ -231,25 +231,36 @@ export function WizardProgressBar() {
 
 // ===== Step Navigation Component =====
 export function StepNavigation() {
-  const { canGoPrevious, canGoNext, goToPrevious, goToNext } = useWizard()
+  const { canGoPrevious, canGoNext, goToPrevious, goToNext, currentStepId } = useWizard()
+  
+  // Get current step metadata to determine button visibility
+  const currentStep = getStep(currentStepId)
+  const showGlobalNext = currentStep?.showGlobalNext !== false // Default to true (manual continue)
+  const showGlobalPrev = currentStep?.showGlobalPrev !== false // Default to true
   
   return (
     <div className="flex justify-between items-center">
-      <button
-        onClick={goToPrevious}
-        disabled={!canGoPrevious()}
-        className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300 transition-colors"
-      >
-        Terug
-      </button>
+      {showGlobalPrev && (
+        <button
+          onClick={goToPrevious}
+          disabled={!canGoPrevious()}
+          className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300 transition-colors"
+        >
+          Terug
+        </button>
+      )}
       
-      <button
-        onClick={goToNext}
-        disabled={!canGoNext()}
-        className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
-      >
-        Doorgaan
-      </button>
+      {!showGlobalPrev && <div />} {/* Spacer for consistent layout when prev button is hidden */}
+      
+      {showGlobalNext && (
+        <button
+          onClick={goToNext}
+          disabled={!canGoNext()}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
+        >
+          Doorgaan
+        </button>
+      )}
     </div>
   )
 }
