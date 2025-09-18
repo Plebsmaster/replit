@@ -1,18 +1,22 @@
 "use client"
 
+import { useState, useMemo } from "react"
+import { SlideContainer } from "@/components/ui/slide-container"
+import { ChoiceCard } from "@/components/ui/choice-card"
 import { Leaf, Droplets, Shield, Grape, Wheat, Circle, Moon, Zap, Square } from "lucide-react"
 import { getTypographyClasses } from "@/lib/typography"
-import type { FormData } from "@/lib/form/schema"
+import type { StepProps } from "@/lib/form/steps"
 
-interface Slide12Props {
-  formData: FormData
-  updateFormData: (updates: Partial<FormData>) => void
-  onNext: () => void
-  onBack: () => void
+type Props = StepProps & {
+  selectedIngredient?: string | null
+  onSelectionChange?: (ingredient: string | null) => void
 }
 
-export default function Slide12({ formData, updateFormData, onNext, onBack }: Slide12Props) {
-  const ingredients = [
+export default function Slide12({ onBack, onNext, updateFormData, formData, selectedIngredient: globalSelectedIngredient, onSelectionChange }: Props) {
+  const [localSelectedIngredient, setLocalSelectedIngredient] = useState<string | null>(globalSelectedIngredient || null)
+  const selectedIngredient = globalSelectedIngredient !== undefined ? globalSelectedIngredient : localSelectedIngredient
+  const ingredients = useMemo(
+    () => [
     {
       id: "aloe-vera",
       name: "Aloë Vera",
@@ -74,74 +78,105 @@ export default function Slide12({ formData, updateFormData, onNext, onBack }: Sl
       description: "Bevordert de haargroei en geeft het haar een natuurlijke, gezonde glans.",
       icon: Square,
     },
-  ]
+    ],
+    [],
+  )
 
-  const toggleIngredient = (ingredientId: string) => {
-    const currentIngredients = formData.ingredients
-    const isSelected = currentIngredients.includes(ingredientId)
+  const handleChoose = (ingredientId: string, name: string) => {
+    setLocalSelectedIngredient(ingredientId)
+    onSelectionChange?.(ingredientId)
 
-    if (isSelected) {
-      updateFormData({
-        ingredients: currentIngredients.filter((id) => id !== ingredientId),
-      })
-    } else {
-      updateFormData({
-        ingredients: [...currentIngredients, ingredientId],
-      })
-    }
+    // Update form data with the selected ingredient (single selection)
+    updateFormData({ 
+      ingredients: [ingredientId]
+    })
+
+    try {
+      localStorage.setItem("salonid:ingredientChoice", ingredientId)
+      localStorage.setItem("salonid:dateISO", new Date().toISOString())
+    } catch {}
+
+    // Auto-progress using microtask to allow state updates to complete
+    queueMicrotask(() => {
+      onNext()
+    })
   }
 
 
   return (
-    <div className="space-y-8">
-      <div className="text-center">
-        <h2 className={getTypographyClasses("title", { alignment: "center" })}>No Yellow - Ingredient</h2>
-        <p className={getTypographyClasses("paragraph", { alignment: "center", color: "text-gray-700" })}>
-          Er zijn verschillende ingrediënten die worden gebruikt voor de diverse soorten shampoos en conditioners. Maak
-          een keuze uit de selectie hieronder
-        </p>
-      </div>
+    <SlideContainer width="extraWide">
+      <section>
+        <div className="mb-8">
+          <h2 className={getTypographyClasses("title", { alignment: "left" })}>Kies jouw ingredient</h2>
+          <div className="max-w-2xl space-y-4">
+            <p className={getTypographyClasses("paragraph", { alignment: "left" })}>
+              Er zijn verschillende ingrediënten die worden gebruikt voor de diverse soorten shampoos en conditioners.
+            </p>
+            <p className={getTypographyClasses("paragraph", { alignment: "left" })}>
+              Selecteer het ingredient dat het beste past bij jouw haarverzorgingsbehoeften.
+            </p>
+          </div>
+        </div>
 
-      <div className="bg-white rounded-lg p-6">
-        <h3 className={getTypographyClasses("cardTitle", { alignment: "left" })}>No Yellow Conditioner</h3>
-
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {ingredients.map((ingredient) => {
             const IconComponent = ingredient.icon
-            const isSelected = formData.ingredients.includes(ingredient.id)
-
             return (
-              <div
+              <IngredientCard
                 key={ingredient.id}
-                onClick={() => toggleIngredient(ingredient.id)}
-                className={`flex items-start gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                  isSelected ? "border-black bg-gray-50" : "border-gray-200 hover:border-gray-300"
-                }`}
-              >
-                <div className="flex-shrink-0 mt-1">
-                  <IconComponent className="w-5 h-5 text-gray-600" />
-                </div>
-                <div className="flex-1">
-                  <h4 className={getTypographyClasses("cardTitle", { alignment: "left" })}>{ingredient.name}</h4>
-                  <p className={getTypographyClasses("cardDescription", { alignment: "left" })}>
-                    {ingredient.description}
-                  </p>
-                </div>
-                <div className="flex-shrink-0">
-                  <div
-                    className={`w-5 h-5 rounded border-2 flex items-center justify-center ${
-                      isSelected ? "border-black bg-black" : "border-gray-300"
-                    }`}
-                  >
-                    {isSelected && <div className="w-2 h-2 bg-white rounded-full"></div>}
-                  </div>
-                </div>
-              </div>
+                id={ingredient.id}
+                name={ingredient.name}
+                description={ingredient.description}
+                icon={IconComponent}
+                isSelected={selectedIngredient === ingredient.id}
+                onClick={() => handleChoose(ingredient.id, ingredient.name)}
+              />
             )
           })}
         </div>
-      </div>
+      </section>
+    </SlideContainer>
+  )
+}
 
+interface IngredientCardProps {
+  id: string
+  name: string
+  description: string
+  icon: React.ComponentType<{ className?: string }>
+  isSelected: boolean
+  onClick: () => void
+}
+
+function IngredientCard({ name, description, icon: IconComponent, isSelected, onClick }: IngredientCardProps) {
+  return (
+    <div className="relative">
+      <div
+        onClick={onClick}
+        className={`relative rounded-xl overflow-hidden cursor-pointer transition-all transform hover:scale-105 bg-white border-2 p-6 h-full ${
+          isSelected ? "ring-4 ring-gray-900 ring-offset-2 border-gray-900" : "border-gray-200 hover:border-gray-300"
+        }`}
+      >
+        {isSelected && (
+          <div className="absolute top-4 right-4 z-10 flex items-center justify-center w-8 h-8 bg-white rounded-full shadow-lg">
+            <div className="w-4 h-4 bg-gray-900 rounded-full"></div>
+          </div>
+        )}
+
+        <div className="flex flex-col h-full">
+          <div className="flex items-start gap-4 mb-4">
+            <div className="flex-shrink-0 mt-1">
+              <IconComponent className="w-6 h-6 text-gray-600" />
+            </div>
+            <div className="flex-1">
+              <h4 className={getTypographyClasses("cardTitle", { alignment: "left" })}>{name}</h4>
+            </div>
+          </div>
+          <p className={getTypographyClasses("cardDescription", { alignment: "left" })}>
+            {description}
+          </p>
+        </div>
+      </div>
     </div>
   )
 }
