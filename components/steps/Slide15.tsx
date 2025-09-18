@@ -42,13 +42,13 @@ export default function Slide15({ onBack, onNext, selectedVariant: globalSelecte
     {
       id: "1",
       label: "Uitlijning links",
-      imageSrc: "/img/modern6/variant1.jpg",
+      imageSrc: "/img/variants/variant1.jpg",
       alt: "Modern 6 Variant 1 - Left alignment",
     },
     {
       id: "2",
       label: "Uitlijning midden",
-      imageSrc: "/img/modern6/variant2.jpg",
+      imageSrc: "/img/variants/variant2.jpg",
       alt: "Modern 6 Variant 2 - Center alignment",
     },
   ]

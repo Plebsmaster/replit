@@ -42,13 +42,13 @@ export default function Slide12({ onBack, onNext, selectedVariant: globalSelecte
     {
       id: "1",
       label: "Uitlijning links",
-      imageSrc: "/img/modern1/variant1.jpg",
+      imageSrc: "/img/elegant1/variant1.jpg",
       alt: "Modern 1 Variant 1 - Left alignment",
     },
     {
       id: "2",
       label: "Uitlijning midden",
-      imageSrc: "/img/modern1/variant2.jpg",
+      imageSrc: "/img/elegant1/variant2.jpg",
       alt: "Modern 1 Variant 2 - Center alignment",
     },
   ]

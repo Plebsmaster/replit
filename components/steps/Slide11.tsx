@@ -34,12 +34,12 @@ export default function Slide11({ onBack, onNext, selectedStyle: globalSelectedS
 
   const items = useMemo(
     () => [
-      { key: "Modern 1.", label: "Modern 1", src: "/img/modern/m1.jpg" },
-      { key: "Modern 2.", label: "Modern 2", src: "/img/modern/m2.jpg" },
-      { key: "Modern 3.", label: "Modern 3", src: "/img/modern/m3.jpg" },
-      { key: "Modern 4.", label: "Modern 4", src: "/img/modern/m4.jpg" },
-      { key: "Modern 5.", label: "Modern 5", src: "/img/modern/m5.jpg" },
-      { key: "Modern 6.", label: "Modern 6", src: "/img/modern/m6.jpg" },
+      { key: "Modern 1.", label: "Modern 1", src: "/img/elegant/e1.jpg" },
+      { key: "Modern 2.", label: "Modern 2", src: "/img/elegant/e2.jpg" },
+      { key: "Modern 3.", label: "Modern 3", src: "/img/elegant/e3.jpg" },
+      { key: "Modern 4.", label: "Modern 4", src: "/img/elegant/e4.jpg" },
+      { key: "Modern 5.", label: "Modern 5", src: "/img/elegant/e5.jpg" },
+      { key: "Modern 6.", label: "Modern 6", src: "/img/variants/variant1.jpg" },
     ],
     [],
   )
