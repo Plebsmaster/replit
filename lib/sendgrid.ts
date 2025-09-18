@@ -2,13 +2,14 @@ import { MailService } from '@sendgrid/mail';
 
 // Initialize SendGrid service
 function createMailService() {
-  if (!process.env.SENDGRID_API_KEY) {
+  const apiKey = process.env.SENDGRID_API_KEY;
+  if (!apiKey) {
     console.warn('SENDGRID_API_KEY environment variable not set - email sending will be simulated');
     return null;
   }
 
   const mailService = new MailService();
-  mailService.setApiKey(process.env.SENDGRID_API_KEY);
+  mailService.setApiKey(apiKey);
   return mailService;
 }
 
@@ -34,13 +35,21 @@ export async function sendEmail(params: EmailParams): Promise<boolean> {
   }
 
   try {
-    await mailService.send({
+    const emailData: any = {
       to: params.to,
       from: params.from,
       subject: params.subject,
-      text: params.text,
-      html: params.html,
-    });
+    };
+
+    // Only include text and html if they are provided
+    if (params.text) {
+      emailData.text = params.text;
+    }
+    if (params.html) {
+      emailData.html = params.html;
+    }
+
+    await mailService.send(emailData);
     console.log('[SendGrid] Email sent successfully to:', params.to);
     return true;
   } catch (error) {

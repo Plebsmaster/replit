@@ -5,7 +5,7 @@ export async function POST(request: NextRequest) {
   try {
     console.log("[v0] OTP verification API called")
     const { email, code } = await request.json()
-    console.log("[v0] Verifying OTP for email:", email, "with code:", code)
+    console.log("[v0] Verifying OTP for email:", email, "code provided")
 
     if (!email || !code) {
       return NextResponse.json({ error: "Email and code are required" }, { status: 400 })
@@ -42,67 +42,44 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "User not found or not eligible for verification" }, { status: 400 })
       }
 
-      // Verify the OTP code from our database (since we generated and sent it via SendGrid)
-      console.log("[v0] Looking up OTP in database...")
-      const { data: otpRecord, error: otpError } = await supabase
-        .from("email_otps")
-        .select("*")
-        .eq("email", email.toLowerCase().trim())
-        .eq("otp_code", code)
-        .eq("verified", false)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle()
+      // Use Twilio Verify API to verify the OTP code
+      console.log("[v0] Verifying OTP using Twilio Verify API...")
+      
+      const twilioApiUrl = `https://verify.twilio.com/v2/Services/${requiredEnvVars.TWILIO_VERIFY_SERVICE_SID}/VerificationCheck`
+      
+      // Create Basic Auth header
+      const authString = `${requiredEnvVars.TWILIO_ACCOUNT_SID}:${requiredEnvVars.TWILIO_AUTH_TOKEN}`
+      const encodedAuth = Buffer.from(authString).toString('base64')
 
-      if (otpError) {
-        console.error("[v0] Database error during OTP lookup:", otpError)
-        return NextResponse.json({ error: "Database query failed" }, { status: 500 })
-      }
+      // Prepare request body for Twilio Verify API
+      const formData = new URLSearchParams({
+        'To': email.toLowerCase().trim(),
+        'Code': code
+      })
 
-      if (!otpRecord) {
-        console.log("[v0] OTP not found or already verified")
-        
-        // Increment attempts counter for existing OTPs to prevent brute force
-        await supabase
-          .from("email_otps")
-          .update({ attempts: supabase.raw('attempts + 1') })
-          .eq("email", email.toLowerCase().trim())
-          .eq("verified", false)
-          .gt("expires_at", new Date().toISOString())
-        
+      const twilioResponse = await fetch(twilioApiUrl, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Basic ${encodedAuth}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData
+      })
+
+      const twilioResult = await twilioResponse.json()
+
+      if (!twilioResponse.ok || twilioResult.status !== 'approved') {
+        console.log("[v0] Twilio verification failed:", twilioResult)
+        if (twilioResult.status === 'pending') {
+          return NextResponse.json({ error: "Invalid or expired code" }, { status: 400 })
+        }
+        if (twilioResponse.status === 429) {
+          return NextResponse.json({ error: "Too many attempts" }, { status: 423 })
+        }
         return NextResponse.json({ error: "Invalid or expired code" }, { status: 400 })
       }
 
-      // Check if OTP has expired
-      const now = new Date()
-      const expiresAt = new Date(otpRecord.expires_at)
-      if (now > expiresAt) {
-        console.log("[v0] OTP has expired")
-        return NextResponse.json({ error: "Code has expired" }, { status: 400 })
-      }
-
-      // Check attempt limits (prevent brute force)
-      if (otpRecord.attempts >= 5) {
-        console.log("[v0] Too many attempts for this OTP")
-        return NextResponse.json({ error: "Too many attempts" }, { status: 423 })
-      }
-
-      // Mark OTP as verified
-      const { error: updateError } = await supabase
-        .from("email_otps")
-        .update({ 
-          verified: true, 
-          verified_at: new Date().toISOString(),
-          attempts: otpRecord.attempts + 1
-        })
-        .eq("id", otpRecord.id)
-
-      if (updateError) {
-        console.error("[v0] Failed to update OTP record:", updateError)
-        return NextResponse.json({ error: "Verification update failed" }, { status: 500 })
-      }
-
-      console.log("[v0] OTP verified successfully for existing client:", client.id)
+      console.log("[v0] OTP verified successfully via Twilio Verify API for client:", client.id)
 
       console.log("[v0] Setting session cookie for client:", client.id)
       const response = NextResponse.json({ ok: true })

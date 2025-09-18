@@ -1,7 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { createServerClient } from "@supabase/ssr"
 import { cookies } from "next/headers"
-import { sendOTPEmail } from "@/lib/sendgrid"
 
 export async function POST(request: NextRequest) {
   console.log("[v0] OTP API: Request received")
@@ -90,68 +89,65 @@ export async function POST(request: NextRequest) {
         })
       }
 
-      console.log("[v0] Existing client found - using Twilio Verify API + SendGrid email...")
+      console.log("[v0] Existing client found - using Twilio Verify API...")
 
       try {
-        // Check for required environment variables
-        const requiredVars = {
+        // Check for required Twilio environment variables
+        const requiredTwilioVars = {
           TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
           TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
           TWILIO_VERIFY_SERVICE_SID: process.env.TWILIO_VERIFY_SERVICE_SID,
-          SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
+          TWILIO_VERIFY_TEMPLATE_ID: process.env.TWILIO_VERIFY_TEMPLATE_ID,
         }
 
-        const missingVars = Object.entries(requiredVars)
+        const missingTwilioVars = Object.entries(requiredTwilioVars)
           .filter(([_, value]) => !value)
           .map(([key, _]) => key)
 
-        if (missingVars.length > 0) {
-          console.error("[v0] Missing environment variables:", missingVars)
-          if (missingVars.includes('SENDGRID_API_KEY')) {
-            console.error("[v0] SENDGRID_API_KEY is required. Please set it in your environment.")
-          }
+        if (missingTwilioVars.length > 0) {
+          console.error("[v0] Missing Twilio environment variables:", missingTwilioVars)
           return NextResponse.json({ error: "Server configuration error" }, { status: 500 })
         }
 
-        // Since Twilio Verify API doesn't expose generated codes, 
-        // we'll generate our own code and manage verification manually
-        const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString()
-        const otpCode = generateOTP()
-        console.log("[v0] Generated OTP code:", otpCode)
+        // Use Twilio Verify API to send OTP with custom template
+        const twilioApiUrl = `https://verify.twilio.com/v2/Services/${requiredTwilioVars.TWILIO_VERIFY_SERVICE_SID}/Verifications`
+        
+        // Create Basic Auth header
+        const authString = `${requiredTwilioVars.TWILIO_ACCOUNT_SID}:${requiredTwilioVars.TWILIO_AUTH_TOKEN}`
+        const encodedAuth = Buffer.from(authString).toString('base64')
 
-        // Store OTP in our database for verification
-        const expiresAt = new Date(Date.now() + 10 * 60 * 1000) // 10 minutes from now
-        const { error: otpInsertError } = await supabase
-          .from("email_otps")
-          .insert({
-            email: email.toLowerCase().trim(),
-            otp_code: otpCode,
-            expires_at: expiresAt.toISOString(),
-            verified: false,
-            attempts: 0
-          })
+        // Prepare request body for Twilio Verify API
+        const formData = new URLSearchParams({
+          'To': email.toLowerCase().trim(),
+          'Channel': 'email',
+          'ChannelConfiguration[TemplateSid]': requiredTwilioVars.TWILIO_VERIFY_TEMPLATE_ID!
+        })
 
-        if (otpInsertError) {
-          console.error("[v0] Failed to store OTP in database:", otpInsertError)
-          return NextResponse.json({ error: "Failed to generate OTP" }, { status: 500 })
-        }
+        console.log("[v0] Sending OTP request to Twilio Verify API...")
+        
+        const twilioResponse = await fetch(twilioApiUrl, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Basic ${encodedAuth}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: formData
+        })
 
-        // Send OTP via SendGrid
-        console.log("[v0] Sending OTP via SendGrid...")
-        const emailSent = await sendOTPEmail(email, otpCode)
-
-        if (!emailSent) {
-          console.error("[v0] Failed to send OTP email via SendGrid")
+        if (!twilioResponse.ok) {
+          const errorText = await twilioResponse.text()
+          console.error("[v0] Twilio Verify API error:", twilioResponse.status, errorText)
           return NextResponse.json({ error: "Failed to send verification email" }, { status: 502 })
         }
 
-        console.log("[v0] OTP sent successfully via SendGrid")
+        const twilioResult = await twilioResponse.json()
+        console.log("[v0] OTP sent successfully via Twilio Verify API")
 
         // Log email event
         try {
           await supabase.from("email_events").insert({
             email: email.toLowerCase().trim(),
-            event_type: "otp_sent_sendgrid_twilio_managed",
+            event_type: "otp_sent_twilio_verify_api",
             created_at: new Date().toISOString(),
           })
           console.log("[v0] Email event logged")
