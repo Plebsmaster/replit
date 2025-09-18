@@ -15,9 +15,9 @@ export default function Slide7({ onBack, onNext }: Props) {
 
   const handleChooseColor = (colorChoice: string) => {
     updateFormData({ finalColorChoice: colorChoice })
-    setTimeout(() => {
+    queueMicrotask(() => {
       onNext()
-    }, 500) // Small delay to show selection feedback
+    })
   }
 
   const colorOptions = [

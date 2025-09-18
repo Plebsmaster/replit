@@ -65,9 +65,9 @@ export default function Slide15({ onBack, onNext, selectedVariant: globalSelecte
       console.log("Could not save variant to localStorage")
     }
     
-    setTimeout(() => {
+    queueMicrotask(() => {
       onNext()
-    }, 500)
+    })
   }
 
   const handleContinue = () => {

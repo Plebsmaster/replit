@@ -5,15 +5,14 @@ import { SlideContainer } from "@/components/ui/slide-container"
 import { ChoiceCard } from "@/components/ui/choice-card"
 import { getTypographyClasses } from "@/lib/typography"
 import { Button } from "@/components/ui/button"
+import type { StepProps } from "@/lib/form/steps"
 
-type Props = {
-  onBack: () => void
-  onNext: (selectedStyle?: string) => void
+type Props = StepProps & {
   selectedStyle?: string | null
   onSelectionChange?: (style: string | null) => void
 }
 
-export default function Slide11({ onBack, onNext, selectedStyle: globalSelectedStyle, onSelectionChange }: Props) {
+export default function Slide11({ onBack, onNext, updateFormData, formData, selectedStyle: globalSelectedStyle, onSelectionChange }: Props) {
   const [localSelectedStyle, setLocalSelectedStyle] = useState<string | null>(globalSelectedStyle || null)
   const [hasExistingSelection, setHasExistingSelection] = useState(false)
   
@@ -34,12 +33,10 @@ export default function Slide11({ onBack, onNext, selectedStyle: globalSelectedS
 
   const items = useMemo(
     () => [
-      { key: "Modern 1.", label: "Modern 1", src: "/img/elegant/e1.jpg" },
-      { key: "Modern 2.", label: "Modern 2", src: "/img/elegant/e2.jpg" },
-      { key: "Modern 3.", label: "Modern 3", src: "/img/elegant/e3.jpg" },
-      { key: "Modern 4.", label: "Modern 4", src: "/img/elegant/e4.jpg" },
-      { key: "Modern 5.", label: "Modern 5", src: "/img/elegant/e5.jpg" },
-      { key: "Modern 6.", label: "Modern 6", src: "/img/variants/variant1.jpg" },
+      { key: "modern1", label: "Modern 1", src: "/img/elegant/e1.jpg" },
+      { key: "modern2", label: "Modern 2", src: "/img/elegant/e2.jpg" },
+      { key: "modern3", label: "Modern 3", src: "/img/elegant/e3.jpg" },
+      { key: "modern6", label: "Modern 6", src: "/img/variants/variant1.jpg" },
     ],
     [],
   )
@@ -48,19 +45,23 @@ export default function Slide11({ onBack, onNext, selectedStyle: globalSelectedS
     setLocalSelectedStyle(key)
     onSelectionChange?.(key)
 
+    // Update form data with the selected modern style
+    updateFormData({ modernStyle: key as 'modern1' | 'modern2' | 'modern3' | 'modern6' })
+
     try {
       localStorage.setItem("salonid:styleChoice", key)
       localStorage.setItem("salonid:dateISO", new Date().toISOString())
     } catch {}
 
-    setTimeout(() => {
-      onNext(key)
-    }, 500)
+    // Auto-progress using microtask to allow state updates to complete
+    queueMicrotask(() => {
+      onNext()
+    })
   }
 
   const handleContinue = () => {
     if (selectedStyle) {
-      onNext(selectedStyle)
+      onNext()
     }
   }
 

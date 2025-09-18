@@ -28,9 +28,9 @@ export default function Slide4({ onBack, onNext, selectedVariant: globalSelected
     setLocalSelectedVariant(key)
     onSelectionChange?.(key)
 
-    setTimeout(() => {
+    queueMicrotask(() => {
       onNext(key)
-    }, 500)
+    })
   }
 
   return (

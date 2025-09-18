@@ -92,7 +92,9 @@ export const iconSelectionSchema = z.object({
 
 // Step 14: Modern Style Selection
 export const modernStyleSchema = z.object({
-  modernStyle: z.string().optional(),
+  modernStyle: z.enum(['modern1', 'modern2', 'modern3', 'modern6'], {
+    required_error: 'Kies een moderne stijl',
+  }).optional(),
 })
 
 // Step 15: Ingredients Selection
@@ -127,7 +129,7 @@ export const FormDataSchema = z.object({
   // Style Selection
   style: z.enum(['elegant', 'modern']).nullable().default(null),
   elegantStyle: z.string().default(''),
-  modernStyle: z.string().optional().default(''),
+  modernStyle: z.enum(['modern1', 'modern2', 'modern3', 'modern6']).nullable().default(null),
   styleVariant: z.string().default(''),
   variantNumber: z.string().default(''),
   
@@ -148,6 +150,9 @@ export const FormDataSchema = z.object({
   // Agreements
   agreeTerms: z.boolean().default(false),
   subscribeNewsletter: z.boolean().default(false),
+  
+  // Debug-only properties (development mode)
+  __debugCurrentStep: z.string().optional(),
 })
 
 // ===== Type Exports =====
@@ -193,7 +198,7 @@ export const getDefaultFormData = (): FormData => {
     userId: '',
     style: null,
     elegantStyle: '',
-    modernStyle: '',
+    modernStyle: null,
     styleVariant: '',
     variantNumber: '',
     textColor: '',

@@ -427,7 +427,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     Component: IngredientsStep,
     schema: ingredientsSchema,
     componentFile: 'Slide30.tsx',
-    showGlobalNext: true,  // Manual continue
+    showGlobalNext: false, // Auto-continue
     showGlobalPrev: true,
     nextStep: (): string => 'dashboard-login',
   }],
