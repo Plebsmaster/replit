@@ -248,13 +248,21 @@ export const wizardGuards = {
       return false
     }
     
-    // Validate all required fields
-    const requiredSteps = [
-      'email',
-      'name-phone',
-      'style-selection',
-      'ingredients',
-    ]
+    // Define required steps based on user type
+    let requiredSteps: string[] = ['email']
+    
+    if (context.formData.isExistingUser) {
+      // Existing users: Email → OTP → Dashboard (minimal validation)
+      // No need to validate questionnaire steps for existing users
+    } else {
+      // New users: Email → Name/Phone → OTP → Questionnaire
+      requiredSteps = [
+        'email',
+        'name-phone',
+        'style-selection',
+        'ingredients',
+      ]
+    }
     
     for (const stepId of requiredSteps) {
       const validation = validateStepData(stepId, context.formData)
