@@ -20,10 +20,10 @@ export default function StyleSelectionStep({ formData, updateFormData, onNext, o
     // First update the form data with the selected style
     updateFormData({ style })
     
-    // Auto-progress using microtask to allow state updates to complete
-    queueMicrotask(() => {
+    // Auto-progress with increased delay to allow state machine to process the update
+    setTimeout(() => {
       onNext()
-    })
+    }, 100)
   }
 
   return (
