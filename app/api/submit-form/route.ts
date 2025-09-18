@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { createClient } from "@/lib/supabase/server"
+import { createClient, createServiceRoleClient } from "@/lib/supabase/server"
 import { createDesignData, createSubmissionData } from "@/lib/database/field-mappings"
 
 const CURRENT_SCHEMA_VERSION = 1
@@ -81,7 +81,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ success: false, message: "Email parameter is required" }, { status: 400 })
     }
 
-    const supabase = await createClient()
+    const supabase = createServiceRoleClient()
 
     const { data: clientData, error: clientError } = await supabase
       .from("clients")
@@ -94,11 +94,19 @@ export async function GET(request: NextRequest) {
       throw new Error(`Database error: ${clientError.message}`)
     }
 
+    console.log("[v0] Querying form_submissions for email:", email)
+    
     const { data: formSubmissions, error: submissionError } = await supabase
       .from("form_submissions")
       .select("*")
       .eq("email", email)
       .order("created_at", { ascending: false })
+
+    console.log("[v0] Form submissions query result:", {
+      data: formSubmissions,
+      error: submissionError,
+      count: formSubmissions?.length || 0
+    })
 
     if (submissionError) {
       console.error("[v0] Error fetching form submissions:", submissionError)
@@ -107,6 +115,32 @@ export async function GET(request: NextRequest) {
     const latestSubmission = formSubmissions?.[0]
     const isLocked = clientData?.is_locked || latestSubmission?.is_locked || false
 
+    // Check for design responses
+    const { data: designResponses, error: designError } = await supabase
+      .from("design_responses")
+      .select("*")
+      .eq("client_id", clientData?.id)
+      .order("created_at", { ascending: false })
+
+    if (designError && designError.code !== "PGRST116") {
+      console.error("[v0] Error fetching design responses:", designError)
+    }
+
+    const hasDesignResponse = !!(designResponses && designResponses.length > 0)
+
+    console.log("[v0] GET /api/submit-form debug for email:", email, {
+      hasClient: !!clientData,
+      hasSubmissions: !!(formSubmissions && formSubmissions.length > 0),
+      submissionCount: formSubmissions?.length || 0,
+      latestSubmissionData: latestSubmission ? {
+        id: latestSubmission.id,
+        style: latestSubmission.style,
+        created_at: latestSubmission.created_at
+      } : null,
+      isLocked,
+      hasDesignResponse
+    })
+
     return NextResponse.json({
       success: true,
       data: {
@@ -114,7 +148,8 @@ export async function GET(request: NextRequest) {
         currentDesign: latestSubmission || null,
         isLocked: isLocked,
         lastUpdated: latestSubmission?.created_at || null,
-        hasSubmission: !!latestSubmission,
+        hasFormSubmission: !!latestSubmission,  // Fixed: was hasSubmission, now matches dashboard expectation
+        hasDesignResponse: hasDesignResponse,    // Added: missing field expected by dashboard
         formSubmissions: formSubmissions || [],
       },
     })
