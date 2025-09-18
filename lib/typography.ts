@@ -64,9 +64,11 @@ export function getTypographyClasses(
   const { includeResponsive = true, alignment = "left", color, removeSpacing = false } = options
   const config = typography[variant]
 
-  let baseClasses = config.className
+  // Declare baseClasses as mutable string type to allow string manipulation
+  let baseClasses: string = config.className
 
   if (removeSpacing) {
+    // Fix removeSpacing parameter to properly handle string replacement
     baseClasses = baseClasses.replace(/mb-\d+/g, "").trim()
   }
 
@@ -80,7 +82,8 @@ export function getTypographyClasses(
     baseClasses = `${baseClasses} ${color}`.trim()
   }
 
-  if (!includeResponsive || !config.mobile) {
+  // Safely check for mobile property existence
+  if (!includeResponsive || !('mobile' in config)) {
     return baseClasses
   }
 
