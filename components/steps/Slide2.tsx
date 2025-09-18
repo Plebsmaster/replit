@@ -8,7 +8,7 @@ import type { FormData } from "@/lib/form/schema"
 type Props = {
   formData: FormData
   updateFormData: (updates: Partial<FormData>) => void
-  onNext: (style: string) => void
+  onNext: () => void
   onBack: () => void
 }
 
@@ -18,7 +18,10 @@ export default function StyleSelectionStep({ formData, updateFormData, onNext, o
   const handleStyleChoice = (style: "elegant" | "modern") => {
     console.log("[v0] Style selected:", style)
     setSelectedStyle(style)
-    onNext(style)
+    // First update the form data with the selected style
+    updateFormData({ style })
+    // Then advance to the next step
+    onNext()
   }
 
   return (
