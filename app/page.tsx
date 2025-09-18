@@ -1,6 +1,7 @@
 "use client"
 
 import { WizardProvider, StepRenderer, WizardProgressBar, StepNavigation, useWizard } from '@/lib/form/wizard-context'
+import { DebugNavigation } from '@/components/ui/debug-navigation'
 import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
@@ -24,9 +25,12 @@ function WizardNavigation() {
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Debug Navigation - Always at the very top in development */}
+      <DebugNavigation />
+      
       {/* Header with Branding and Progress Bar - Only show for slide steps */}
       {showStickyNav && (
-        <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm">
+        <div className="fixed left-0 right-0 z-50 bg-white shadow-sm" style={{ top: process.env.NODE_ENV === 'development' ? '52px' : '0px' }}>
           <div className="max-w-4xl mx-auto px-4">
             {/* SalonID Design Branding */}
             <div className="py-4 text-center border-b border-gray-100">
@@ -43,8 +47,12 @@ function WizardNavigation() {
         </div>
       )}
       
-      {/* Main Content - Adjust padding based on navigation visibility */}
-      <div className={showStickyNav ? "pt-28 pb-24" : "py-4"}>
+      {/* Main Content - Adjust padding based on navigation visibility and debug mode */}
+      <div className={
+        showStickyNav 
+          ? (process.env.NODE_ENV === 'development' ? "pt-36 pb-24" : "pt-28 pb-24")
+          : (process.env.NODE_ENV === 'development' ? "pt-14 py-4" : "py-4")
+      }>
         <div className="max-w-4xl mx-auto px-4">
           {/* Step Renderer - Dynamically renders the current step */}
           <StepRenderer />
