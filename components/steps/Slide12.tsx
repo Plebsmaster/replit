@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { SlideContainer } from "@/components/ui/slide-container"
+import { getTypographyClasses } from "@/lib/typography"
 
 type Props = {
   onBack: () => void
@@ -35,11 +36,11 @@ export default function Slide12({ onBack, onNext }: Props) {
     <SlideContainer width="extraWide">
       <section>
         {/* Title */}
-        <h2 className="text-[28px] font-black my-2 text-center">Selecteer jouw specifieke variant</h2>
+        <h2 className={getTypographyClasses("title", { alignment: "left" })}>Selecteer jouw specifieke variant</h2>
 
         {/* Intro copy */}
-        <div className="max-w-[760px] mx-auto mb-10 text-center opacity-90">
-          <p className="mb-2">
+        <div className="max-w-[760px] space-y-4 mb-10">
+          <p className={getTypographyClasses("paragraph", { alignment: "left" })}>
             Je hebt gekozen voor een ontwerp met meerdere varianten. Selecteer nu de optie die het beste aansluit bij
             jouw visie. Elke variant heeft zijn eigen unieke kenmerken, waardoor jij de stijl kunt kiezen die perfect
             past bij jouw merk.

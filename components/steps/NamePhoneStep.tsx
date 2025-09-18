@@ -1,10 +1,9 @@
 "use client"
-
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { ArrowRight, User, ChevronDown, AlertCircle, CheckCircle } from "lucide-react"
+import { User, ChevronDown, AlertCircle, CheckCircle } from "lucide-react"
 import { useState, useEffect } from "react"
 import type { FormData } from "./IngredientsStep"
+import { getTypographyClasses } from "@/lib/typography"
 
 interface NamePhoneStepProps {
   formData: FormData
@@ -23,6 +22,15 @@ interface ValidationState {
   lastName: "idle" | "valid" | "invalid"
   phone: "idle" | "valid" | "invalid"
 }
+
+const countries = [
+  { code: "+31", flag: "🇳🇱", name: "NL" },
+  { code: "+32", flag: "🇧🇪", name: "BE" },
+  { code: "+49", flag: "🇩🇪", name: "DE" },
+  { code: "+33", flag: "🇫🇷", name: "FR" },
+  { code: "+44", flag: "🇬🇧", name: "GB" },
+  { code: "+1", flag: "🇺🇸", name: "US" },
+]
 
 export function NamePhoneStep({ formData, updateFormData, onNext }: NamePhoneStepProps) {
   const [countryCode, setCountryCode] = useState("+31")
@@ -141,8 +149,8 @@ export function NamePhoneStep({ formData, updateFormData, onNext }: NamePhoneSte
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-black mb-4">Vertel ons over jezelf</h2>
-        <p className="text-gray-700 max-w-xl mx-auto">
+        <h2 className={getTypographyClasses("title", { alignment: "center" })}>Vertel ons over jezelf</h2>
+        <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} max-w-xl mx-auto`}>
           We hebben je naam en telefoonnummer nodig om je account aan te maken en contact met je op te nemen over je
           ontwerpen.
         </p>
@@ -193,12 +201,13 @@ export function NamePhoneStep({ formData, updateFormData, onNext }: NamePhoneSte
               <select
                 value={countryCode}
                 onChange={(e) => setCountryCode(e.target.value)}
-                className="appearance-none bg-white border border-gray-300 rounded-lg px-3 py-3 pr-8 focus:border-black focus:ring-1 focus:ring-black"
+                className="appearance-none bg-white border border-gray-300 rounded-lg px-3 py-3 pr-8 focus:border-black focus:ring-1 focus:ring-black min-w-[100px]"
               >
-                <option value="+31">🇳🇱 NL</option>
-                <option value="+32">🇧🇪 BE</option>
-                <option value="+49">🇩🇪 DE</option>
-                <option value="+33">🇫🇷 FR</option>
+                {countries.map((country) => (
+                  <option key={country.code} value={country.code}>
+                    {country.flag} {country.name}
+                  </option>
+                ))}
               </select>
               <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
             </div>
@@ -222,24 +231,13 @@ export function NamePhoneStep({ formData, updateFormData, onNext }: NamePhoneSte
         </div>
 
         <div className="bg-blue-50 p-4 rounded-lg">
-          <p className="text-sm text-blue-800">
+          <p className={getTypographyClasses("paragraph", { removeSpacing: true })}>
             <strong>E-mailadres:</strong> {formData.email}
           </p>
-          <p className="text-sm text-blue-700 mt-1">
+          <p className={`${getTypographyClasses("paragraph", { removeSpacing: true })} mt-1 text-blue-700`}>
             Met dit e-mailadres kun je later inloggen om al je ontwerpen te bekijken en beheren.
           </p>
         </div>
-      </div>
-
-      <div className="flex justify-center">
-        <Button
-          onClick={onNext}
-          disabled={!isFormValid()}
-          className="bg-black text-white hover:bg-gray-800 px-8 py-3 text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-        >
-          Doorgaan naar ingrediënten
-          <ArrowRight className="w-4 h-4 ml-2" />
-        </Button>
       </div>
     </div>
   )

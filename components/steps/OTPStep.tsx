@@ -6,6 +6,7 @@ import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ArrowRight, Mail, Clock, RefreshCw } from "lucide-react"
+import { getTypographyClasses } from "@/lib/typography"
 
 interface OTPStepProps {
   email: string
@@ -154,9 +155,11 @@ export function OTPStep({ email, onVerified, onBack }: OTPStepProps) {
 
       {/* Heading */}
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold text-black">Verify Your Email</h1>
-        <p className="text-gray-600">We've sent a 6-digit code to</p>
-        <p className="font-semibold text-blue-600">{email}</p>
+        <h1 className={getTypographyClasses("title", { alignment: "center" })}>Verify Your Email</h1>
+        <p className={getTypographyClasses("paragraph", { alignment: "center" })}>We've sent a 6-digit code to</p>
+        <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} font-semibold text-blue-600`}>
+          {email}
+        </p>
       </div>
 
       {/* OTP Input */}
@@ -172,7 +175,7 @@ export function OTPStep({ email, onVerified, onBack }: OTPStepProps) {
               value={digit}
               onChange={(e) => handleOtpChange(index, e.target.value.replace(/\D/g, ""))}
               onKeyDown={(e) => handleKeyDown(index, e)}
-              className="w-12 h-12 text-center text-xl font-bold border-2 focus:border-blue-500"
+              className="w-12 h-12 text-center text-xl font-bold border-2 bg-white text-gray-900 focus:border-blue-500 focus:bg-white"
               disabled={isVerifying}
             />
           ))}
@@ -185,10 +188,12 @@ export function OTPStep({ email, onVerified, onBack }: OTPStepProps) {
       <div className="space-y-4">
         <div className="flex items-center justify-center gap-2 text-gray-600">
           <Clock className="w-4 h-4" />
-          <span>Code expires in {formatTime(timeLeft)}</span>
+          <span className={getTypographyClasses("paragraph", { removeSpacing: true })}>
+            Code expires in {formatTime(timeLeft)}
+          </span>
         </div>
 
-        <div className="text-sm text-gray-600">
+        <div className={getTypographyClasses("paragraph", { removeSpacing: true })}>
           Didn't receive the code?{" "}
           <button
             onClick={handleResend}
@@ -215,7 +220,7 @@ export function OTPStep({ email, onVerified, onBack }: OTPStepProps) {
         <Button
           onClick={handleVerify}
           disabled={isVerifying || otp.join("").length !== 6}
-          className="flex-1 bg-black text-white hover:bg-gray-800"
+          className="flex-1 bg-gray-900 text-white hover:bg-gray-800"
         >
           {isVerifying ? (
             <span className="flex items-center gap-2">

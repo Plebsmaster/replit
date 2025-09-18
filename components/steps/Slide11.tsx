@@ -2,6 +2,7 @@
 
 import { useMemo } from "react"
 import { SlideContainer } from "@/components/ui/slide-container"
+import { getTypographyClasses } from "@/lib/typography"
 import Card from "./Card" // Import Card component
 
 type Props = {
@@ -36,33 +37,22 @@ export default function Slide11({ onBack, onNext }: Props) {
     <SlideContainer width="extraWide">
       <section>
         {/* Title */}
-        <h2 style={{ fontSize: 28, fontWeight: 900, margin: "8px 0 10px", textAlign: "center" }}>
-          Kies jouw moderne stijl
-        </h2>
+        <h2 className={getTypographyClasses("title", { alignment: "left" })}>Kies jouw moderne stijl</h2>
 
         {/* Intro copy */}
-        <div style={{ maxWidth: 760, margin: "0 auto 24px", textAlign: "center", opacity: 0.9 }}>
-          <p style={{ margin: 0 }}>
+        <div className="max-w-[760px] space-y-4 mb-6">
+          <p className={getTypographyClasses("paragraph", { alignment: "left" })}>
             Je hebt gekozen voor een frisse en eigentijdse uitstraling met strakke lijnen en een minimalistisch design.
             Dit ontwerp straalt moderniteit en innovatie uit.
           </p>
-          <p style={{ margin: "8px 0 0" }}>
+          <p className={getTypographyClasses("paragraph", { alignment: "left" })}>
             Maak nu een keuze uit de onderstaande selectie. Indien een stijl meerdere varianten heeft, kun je na deze
             keuze de specifieke variant selecteren die het beste aansluit bij jouw visie.
           </p>
         </div>
 
         {/* Grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-            gap: 22,
-            alignItems: "start",
-            margin: "0 auto",
-            maxWidth: 900,
-          }}
-        >
+        <div className="grid grid-cols-2 gap-6 max-w-[900px] mx-auto">
           {items.map((it) => (
             <Card
               key={it.key}

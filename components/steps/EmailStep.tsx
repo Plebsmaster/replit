@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { ArrowRight, Mail, AlertCircle, CheckCircle } from "lucide-react"
 import { useState, useEffect } from "react"
 import type { FormData } from "./IngredientsStep"
+import { getTypographyClasses } from "@/lib/typography"
 
 interface EmailStepProps {
   formData: FormData
@@ -91,8 +92,8 @@ export function EmailStep({ formData, updateFormData, onNext }: EmailStepProps) 
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h2 className="text-4xl font-bold text-black mb-4">Welkom bij SalonID</h2>
-        <p className="text-gray-700 text-lg max-w-2xl mx-auto">
+        <h2 className={getTypographyClasses("title", { alignment: "center" })}>Welkom bij SalonID</h2>
+        <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} max-w-2xl mx-auto`}>
           Voer je e-mailadres in om te beginnen. Als je al een account hebt, log je automatisch in op je dashboard.
         </p>
       </div>
@@ -124,7 +125,7 @@ export function EmailStep({ formData, updateFormData, onNext }: EmailStepProps) 
           <Button
             onClick={handleNext}
             disabled={validationState !== "valid"}
-            className="w-full bg-black text-white hover:bg-gray-800 py-4 text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+            className="w-full bg-gray-900 text-white hover:bg-gray-800 py-4 text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
           >
             Doorgaan
             <ArrowRight className="w-5 h-5 ml-2" />
@@ -132,7 +133,9 @@ export function EmailStep({ formData, updateFormData, onNext }: EmailStepProps) 
         </div>
 
         <div className="mt-4 text-center">
-          <p className="text-sm text-gray-600">Nieuw hier? We vragen je daarna om je naam en telefoonnummer.</p>
+          <p className={getTypographyClasses("paragraph", { alignment: "center", removeSpacing: true })}>
+            Nieuw hier? We vragen je daarna om je naam en telefoonnummer.
+          </p>
         </div>
       </div>
     </div>

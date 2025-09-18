@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react"
 import { SlideContainer } from "@/components/ui/slide-container"
+import { useFormData } from "@/contexts/FormDataContext"
 
 // Interfaces voor datastructuur
 interface Color {
@@ -47,6 +48,8 @@ export default function Slide8({ onBack, onNext }: Slide8Props) {
   const [expandedProduct, setExpandedProduct] = useState<string | null>(null)
   const [colorMode, setColorMode] = useState<ColorMode>("variation")
   const pickerRef = useRef<HTMLDivElement | null>(null)
+
+  const { formData, updateFormData } = useFormData()
 
   // === DATA DEFINITIONS ===
   const whiteTextPalettes = {
@@ -426,8 +429,10 @@ export default function Slide8({ onBack, onNext }: Slide8Props) {
 
   // === HANDLERS ===
   const handlePaletteSelect = (paletteId: string) => {
+    console.log("[v0] Palette selected:", paletteId)
     setSelectedPalette(paletteId)
     setExpandedProduct(null)
+
     const mappingKey = paletteMapping[paletteId as keyof typeof paletteMapping]
     if (!mappingKey) {
       console.error("Geen mapping gevonden voor palet:", paletteId)
@@ -446,10 +451,20 @@ export default function Slide8({ onBack, onNext }: Slide8Props) {
       // Set both states to the new palette's defaults
       setProductColors(finalDefaults)
       setVariationColors(defaults) // Store the clean, original variation
+
+      console.log("[v0] Updating form data with both colorPalette and productColors:", paletteId)
+      updateFormData({
+        colorPalette: paletteId,
+        productColors: finalDefaults,
+      })
     } else {
       console.error("Geen defaults gevonden voor mapping key:", mappingKey)
       setProductColors({})
       setVariationColors({})
+      updateFormData({
+        colorPalette: paletteId,
+        productColors: {},
+      })
     }
   }
 
@@ -488,6 +503,8 @@ export default function Slide8({ onBack, onNext }: Slide8Props) {
 
     // Set the displayed colors
     setProductColors(newProductColors)
+
+    updateFormData({ productColors: newProductColors })
 
     // If we are in variation mode, we MUST also update our snapshot.
     if (colorMode === "variation") {
@@ -534,12 +551,22 @@ export default function Slide8({ onBack, onNext }: Slide8Props) {
               <button
                 key={color.code}
                 onClick={() => handleColorChange(productId, color.code)}
-                className={`flex flex-col justify-center items-center p-3 rounded-lg border-2 transition-all duration-200 transform hover:scale-105 min-h-[80px] ${isSelected ? "border-gray-800 ring-2 ring-gray-800 ring-offset-1 shadow-lg" : "border-gray-200 hover:border-gray-400"}`}
+                className={`relative flex flex-col justify-center items-center p-3 rounded-lg border-2 transition-all duration-200 transform hover:scale-105 min-h-[80px] ${isSelected ? "border-gray-800 ring-2 ring-gray-800 ring-offset-1 shadow-lg" : "border-gray-200 hover:border-gray-400"}`}
                 style={{ backgroundColor: color.hex }}
                 title={color.name}
               >
                 <span className={`font-medium text-sm text-center ${textColor}`}>{color.name}</span>
-                {isSelected && <span className={`font-bold mt-1 ${textColor}`}>✓</span>}
+                {isSelected && (
+                  <div className="absolute top-2 right-2">
+                    <div
+                      className={`flex items-center justify-center w-5 h-5 rounded-full border-2 ${textColor === "text-gray-800" ? "border-gray-800" : "border-white"}`}
+                    >
+                      <div
+                        className={`w-2.5 h-2.5 rounded-full ${textColor === "text-gray-800" ? "bg-gray-800" : "bg-white"}`}
+                      ></div>
+                    </div>
+                  </div>
+                )}
               </button>
             )
           })}
@@ -557,7 +584,7 @@ export default function Slide8({ onBack, onNext }: Slide8Props) {
             <span className="bg-gray-900 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
               1
             </span>
-            <h2 className="text-xl font-semibold">Kies een Kleurenpalet</h2>
+            <h2 className="font-semibold text-base leading-tight mb-1">Kies een Kleurenpalet</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {Object.entries(allColorPalettes).map(([paletteId, palette]) => {
@@ -570,7 +597,7 @@ export default function Slide8({ onBack, onNext }: Slide8Props) {
                   className={`relative p-6 rounded-xl border cursor-pointer transition-all ${isSelected ? (isLightPalette ? "bg-white border-gray-900 ring-2 ring-gray-900" : "bg-gray-900 border-gray-900 text-white") : "bg-white border-gray-200 text-gray-800 hover:border-gray-400"}`}
                 >
                   <div className="flex justify-between items-center mb-6">
-                    <h3 className="font-semibold text-lg">{palette.name}</h3>
+                    <h3 className="font-semibold text-base leading-tight mb-1">{palette.name}</h3>
                     {isSelected && (
                       <div className="flex items-center justify-center w-6 h-6 rounded-full border-2 border-current">
                         <div className="w-3 h-3 rounded-full bg-current"></div>
@@ -591,7 +618,7 @@ export default function Slide8({ onBack, onNext }: Slide8Props) {
                       ))}
                     </div>
                     <div
-                      className={`py-1 px-3 rounded-full text-sm font-medium ${isLightPalette ? "bg-gray-100 text-gray-800" : "bg-white text-gray-800"}`}
+                      className={`py-1 px-3 rounded-full text-sm leading-tight ${isLightPalette ? "bg-gray-100 text-gray-800" : "bg-white text-gray-800"}`}
                     >
                       {isLightPalette ? "Zwarte tekst" : "Witte tekst"}
                     </div>
@@ -610,18 +637,18 @@ export default function Slide8({ onBack, onNext }: Slide8Props) {
                 <span className="bg-gray-900 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
                   2
                 </span>
-                <h2 className="text-xl font-semibold">Pas Producten aan (Optioneel)</h2>
+                <h2 className="font-semibold text-base leading-tight mb-1">Pas Producten aan (Optioneel)</h2>
               </div>
               <div className="flex items-center bg-gray-100 rounded-full p-1 shadow-inner">
                 <button
                   onClick={() => handleColorModeChange("variation")}
-                  className={`px-4 py-1.5 text-sm font-medium rounded-full ${colorMode === "variation" ? "bg-white text-black shadow" : "text-gray-500"}`}
+                  className={`px-4 py-1.5 text-sm leading-tight rounded-full ${colorMode === "variation" ? "bg-white text-black shadow" : "text-gray-500"}`}
                 >
                   Variatie
                 </button>
                 <button
                   onClick={() => handleColorModeChange("uniform")}
-                  className={`px-4 py-1.5 text-sm font-medium rounded-full ${colorMode === "uniform" ? "bg-white text-black shadow" : "text-gray-500"}`}
+                  className={`px-4 py-1.5 text-sm leading-tight rounded-full ${colorMode === "uniform" ? "bg-white text-black shadow" : "text-gray-500"}`}
                 >
                   Uniform
                 </button>
@@ -636,7 +663,7 @@ export default function Slide8({ onBack, onNext }: Slide8Props) {
                   clipRule="evenodd"
                 />
               </svg>
-              <p className="text-sm">
+              <p className="text-sm leading-tight">
                 {colorMode === "variation"
                   ? "Standaardkleuren zijn toegepast. Klik op een product als je de kleur wilt wijzigen."
                   : "Standaardkleuren zijn toegepast. In Uniform modus nemen conditioners de kleur van de shampoo over (vergrendeld)."}
@@ -646,8 +673,8 @@ export default function Slide8({ onBack, onNext }: Slide8Props) {
             {productCategories.map((category) => (
               <div key={category.name} className="mb-10">
                 <div className="flex items-center gap-3 mb-4">
-                  <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider">{category.name}</h3>
-                  <span className="bg-gray-200 text-gray-600 text-xs font-semibold px-2 py-0.5 rounded-full">
+                  <h3 className="uppercase tracking-wider text-sm leading-tight"> {category.name}</h3>
+                  <span className={`bg-gray-200 text-gray-600 text-sm leading-tight px-2 py-0.5 rounded-full`}>
                     {category.products.length} PRODUCTEN
                   </span>
                 </div>
@@ -655,57 +682,65 @@ export default function Slide8({ onBack, onNext }: Slide8Props) {
                   {category.products.map((product) => {
                     const color = getProductColor(product.id)
                     const isLocked = colorMode === "uniform" && pairings.hasOwnProperty(product.id)
-                    const textColorClass = ["classic-light", "vibrant-pop", "natural-soft", "luxe-glow"].includes(
-                      selectedPalette!,
-                    )
-                      ? "text-gray-800"
-                      : "text-white"
+                    const isWhiteTextPalette = [
+                      "signature-intense",
+                      "dynamic-deep",
+                      "earthen-rich",
+                      "prestige-dark",
+                    ].includes(selectedPalette!)
+
+                    const textColorClass = isWhiteTextPalette ? "text-white" : "text-black"
+                    const gearIconColorClass = isWhiteTextPalette ? "text-black" : "text-white"
+                    const gearCircleColorClass = isWhiteTextPalette ? "bg-white" : "bg-black"
+                    const lockIconColorClass = isWhiteTextPalette ? "text-black" : "text-white"
+                    const lockCircleColorClass = isWhiteTextPalette ? "bg-white" : "bg-black"
 
                     return (
                       <div key={product.id} className="relative">
                         <div
                           onClick={() => handleProductClick(product.id)}
-                          className={`min-h-[180px] w-full rounded-xl flex flex-col justify-between p-5 shadow-lg transition-all transform ${textColorClass} ${isLocked ? "cursor-not-allowed opacity-80" : "cursor-pointer hover:scale-105"}`}
+                          className={`min-h-[180px] w-full rounded-xl flex items-center justify-center p-5 shadow-lg transition-all transform relative ${
+                            isLocked ? "cursor-not-allowed opacity-80" : "cursor-pointer hover:scale-105"
+                          }`}
                           style={{ backgroundColor: color?.hex || "#e5e7eb" }}
                         >
-                          <div className="flex justify-start mb-3">
-                            <div
-                              className={`rounded-full p-2 ${textColorClass === "text-white" ? "bg-black bg-opacity-20" : "bg-white bg-opacity-40"}`}
-                            >
-                              {isLocked ? (
-                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <div className="absolute top-3 right-3">
+                            {isLocked ? (
+                              <div className={`p-1.5 rounded-full ${lockCircleColorClass}`}>
+                                <svg
+                                  className={`w-4 h-4 ${lockIconColorClass}`}
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
                                   <path
                                     fillRule="evenodd"
                                     d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
                                     clipRule="evenodd"
                                   />
                                 </svg>
-                              ) : (
+                              </div>
+                            ) : (
+                              <div className={`p-1.5 rounded-full ${gearCircleColorClass}`}>
                                 <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="h-4 w-4"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                  strokeWidth="2"
+                                  className={`w-4 h-4 ${gearIconColorClass}`}
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
                                 >
                                   <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543-.94-3.31.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                                  />
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                    fillRule="evenodd"
+                                    d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372-.836 2.942.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                                    clipRule="evenodd"
                                   />
                                 </svg>
-                              )}
-                            </div>
+                              </div>
+                            )}
                           </div>
-                          <div className="text-left mt-auto">
-                            <h4 className="font-bold text-base leading-tight mb-1">{product.name}</h4>
-                            <p className="text-sm opacity-80 leading-tight">{color?.name || "Geen kleur"}</p>
+
+                          <div className="text-center">
+                            <h4 className={`font-semibold text-base leading-tight mb-1 ${textColorClass}`}>
+                              {product.name}
+                            </h4>
+                            <p className={`text-sm leading-tight ${textColorClass}`}>{color?.name || "Geen kleur"}</p>
                           </div>
                         </div>
                       </div>
@@ -713,7 +748,6 @@ export default function Slide8({ onBack, onNext }: Slide8Props) {
                   })}
                 </div>
 
-                {/* ColorPicker wordt hier getoond voor de hele categorie */}
                 {expandedProduct && category.products.some((p) => p.id === expandedProduct) && (
                   <div className="mt-6 col-span-full" ref={pickerRef}>
                     <ColorPicker productId={expandedProduct} />
@@ -721,22 +755,6 @@ export default function Slide8({ onBack, onNext }: Slide8Props) {
                 )}
               </div>
             ))}
-            {/* Navigatieknoppen onderaan de slide */}
-            <div className="flex justify-between items-center mt-12 pt-6 border-t border-gray-200">
-              <button
-                onClick={onBack}
-                className="px-6 py-2 text-sm font-semibold text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
-              >
-                Terug
-              </button>
-              <button
-                onClick={onNext}
-                disabled={!selectedPalette}
-                className="px-8 py-3 font-semibold text-white bg-gray-900 rounded-lg hover:bg-gray-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
-              >
-                Volgende Stap
-              </button>
-            </div>
           </div>
         )}
       </section>

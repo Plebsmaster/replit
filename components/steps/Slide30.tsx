@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Leaf, Droplets, Shield, Grape, Wheat, Circle, Moon, Zap, Square } from "lucide-react"
+import { getTypographyClasses } from "@/lib/typography"
 
 export interface FormData {
   ingredients: string[]
@@ -116,15 +117,15 @@ export default function Slide12({ formData, updateFormData, onNext, onBack }: Sl
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-black mb-4">No Yellow - Ingredient</h2>
-        <p className="text-gray-700 max-w-xl mx-auto">
+        <h2 className={getTypographyClasses("title", { alignment: "center" })}>No Yellow - Ingredient</h2>
+        <p className={getTypographyClasses("paragraph", { alignment: "center", color: "text-gray-700" })}>
           Er zijn verschillende ingrediënten die worden gebruikt voor de diverse soorten shampoos en conditioners. Maak
           een keuze uit de selectie hieronder
         </p>
       </div>
 
       <div className="bg-white rounded-lg p-6">
-        <h3 className="text-lg font-semibold text-black mb-6">No Yellow Conditioner</h3>
+        <h3 className={getTypographyClasses("cardTitle", { alignment: "left" })}>No Yellow Conditioner</h3>
 
         <div className="space-y-4">
           {ingredients.map((ingredient) => {
@@ -143,8 +144,10 @@ export default function Slide12({ formData, updateFormData, onNext, onBack }: Sl
                   <IconComponent className="w-5 h-5 text-gray-600" />
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-medium text-black mb-1">{ingredient.name}</h4>
-                  <p className="text-sm text-gray-600">{ingredient.description}</p>
+                  <h4 className={getTypographyClasses("cardTitle", { alignment: "left" })}>{ingredient.name}</h4>
+                  <p className={getTypographyClasses("cardDescription", { alignment: "left" })}>
+                    {ingredient.description}
+                  </p>
                 </div>
                 <div className="flex-shrink-0">
                   <div
