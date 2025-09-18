@@ -147,8 +147,11 @@ export const wizardActions = {
     visitedSteps: ({ context, event }) => {
       if (event.type !== 'GO_TO_STEP') return context.visitedSteps
       
-      if (!context.visitedSteps.includes(event.stepId)) {
-        return [...context.visitedSteps, event.stepId]
+      // FIXED: Only add to visitedSteps if step can actually be entered (same guard as currentStepId)
+      if (getStep(event.stepId) && canEnterStep(event.stepId, context.formData)) {
+        if (!context.visitedSteps.includes(event.stepId)) {
+          return [...context.visitedSteps, event.stepId]
+        }
       }
       
       return context.visitedSteps
