@@ -1,10 +1,11 @@
-modules = ["nodejs-20", "web"]
+modules = ["nodejs-20", "web", "python-3.11"]
 
 [nix]
 channel = "stable-25_05"
 
 [agent]
 expertMode = true
+integrations = ["javascript_supabase:1.0.0", "twilio_send_message:1.0.0", "javascript_sendgrid:1.0.0"]
 
 [workflows]
 runButton = "Project"
@@ -35,8 +36,8 @@ localPort = 5000
 externalPort = 80
 
 [[ports]]
-localPort = 43751
-externalPort = 3001
+localPort = 37677
+externalPort = 3000
 
 [deployment]
 deploymentTarget = "autoscale"
