@@ -8,15 +8,25 @@ import { Button } from '@/components/ui/button'
 function WizardNavigation() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Progress Bar */}
+      {/* Header with Branding and Progress Bar */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm">
-        <div className="max-w-4xl mx-auto px-4 py-3">
-          <WizardProgressBar />
+        <div className="max-w-4xl mx-auto px-4">
+          {/* SalonID Design Branding */}
+          <div className="py-4 text-center border-b border-gray-100">
+            <h1 className="text-lg md:text-xl font-semibold text-gray-800 leading-tight">
+              SalonID Design - Your dream, Your brand - We make it happen.
+            </h1>
+          </div>
+          
+          {/* Progress Bar */}
+          <div className="py-3">
+            <WizardProgressBar />
+          </div>
         </div>
       </div>
       
       {/* Main Content */}
-      <div className="pt-16 pb-8">
+      <div className="pt-28 pb-8">
         <div className="max-w-4xl mx-auto px-4">
           {/* Step Renderer - Dynamically renders the current step */}
           <StepRenderer />
