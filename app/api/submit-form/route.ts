@@ -15,14 +15,15 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient()
     console.log("[v0] Supabase client created successfully")
 
-    // Use centralized mapping system for design data
+    // Use centralized mapping system for all form data
     const normalizedData = createDesignData(formData)
+    const fullSubmissionData = createSubmissionData(formData)
 
     const { data: transactionResult, error: transactionError } = await supabase.rpc("handle_form_submission", {
-      p_email: formData.email,
-      p_first_name: formData.firstName,
-      p_last_name: formData.lastName,
-      p_phone: formData.phone || null,
+      p_email: fullSubmissionData.email,
+      p_first_name: fullSubmissionData.first_name,
+      p_last_name: fullSubmissionData.last_name,
+      p_phone: fullSubmissionData.phone,
       p_design_data: normalizedData,
       p_schema_version: CURRENT_SCHEMA_VERSION,
     })
@@ -44,10 +45,8 @@ export async function POST(request: NextRequest) {
       throw new Error(`Database error: ${transactionError.message}`)
     }
 
-    // Use centralized mapping system for submission data
-    const submissionData = createSubmissionData(formData)
-
-    const { data: logData, error: logError } = await supabase.from("form_submissions").insert(submissionData).select()
+    // Use the already mapped submission data for database insert
+    const { data: logData, error: logError } = await supabase.from("form_submissions").insert(fullSubmissionData).select()
 
     if (logError) {
       console.warn("[v0] Warning: Failed to create immutable log:", logError.message)
