@@ -1,4 +1,4 @@
-import { createMachine, assign } from 'xstate'
+import { createMachine, assign, fromPromise } from 'xstate'
 import { FormData, getDefaultFormData } from './schema'
 import {
   getStep,
@@ -52,14 +52,14 @@ const initialContext: WizardContext = {
 // ===== Machine Actions =====
 export const wizardActions = {
   updateFormData: assign({
-    formData: (context, event) => {
+    formData: ({ context, event }) => {
       if (event.type !== 'UPDATE_FORM_DATA') return context.formData
       return { ...context.formData, ...event.data }
     },
   }),
   
   validateCurrentStep: assign({
-    errors: (context) => {
+    errors: ({ context }) => {
       const step = getStep(context.currentStepId)
       if (!step || !step.schema) {
         return {}
@@ -83,12 +83,12 @@ export const wizardActions = {
     },
   }),
   
-  showValidationErrors: (context: WizardContext) => {
+  showValidationErrors: ({ context }: { context: WizardContext }) => {
     console.log('[Wizard] Validation errors:', context.errors)
   },
   
   saveCurrentStep: assign({
-    visitedSteps: (context) => {
+    visitedSteps: ({ context }) => {
       if (!context.visitedSteps.includes(context.currentStepId)) {
         return [...context.visitedSteps, context.currentStepId]
       }
@@ -97,7 +97,7 @@ export const wizardActions = {
   }),
   
   moveToNextStep: assign({
-    currentStepId: (context) => {
+    currentStepId: ({ context }) => {
       let nextStepId = getNextStepId(context.currentStepId, context.formData)
       
       // Skip steps that should be skipped
@@ -107,11 +107,11 @@ export const wizardActions = {
       
       return nextStepId || context.currentStepId
     },
-    previousStepId: (context) => context.currentStepId,
+    previousStepId: ({ context }) => context.currentStepId,
   }),
   
   moveToPreviousStep: assign({
-    currentStepId: (context) => {
+    currentStepId: ({ context }) => {
       const currentIndex = context.visitedSteps.indexOf(context.currentStepId)
       if (currentIndex > 0) {
         let previousIndex = currentIndex - 1
@@ -127,14 +127,14 @@ export const wizardActions = {
       }
       return context.currentStepId
     },
-    previousStepId: (context) => {
+    previousStepId: ({ context }) => {
       const currentIndex = context.visitedSteps.indexOf(context.currentStepId)
       return currentIndex > 1 ? context.visitedSteps[currentIndex - 2] : null
     },
   }),
   
   jumpToStep: assign({
-    currentStepId: (context, event) => {
+    currentStepId: ({ context, event }) => {
       if (event.type !== 'GO_TO_STEP') return context.currentStepId
       
       // Check if step exists and can be entered
@@ -144,7 +144,7 @@ export const wizardActions = {
       
       return context.currentStepId
     },
-    visitedSteps: (context, event) => {
+    visitedSteps: ({ context, event }) => {
       if (event.type !== 'GO_TO_STEP') return context.visitedSteps
       
       if (!context.visitedSteps.includes(event.stepId)) {
@@ -156,7 +156,7 @@ export const wizardActions = {
   }),
   
   saveOtpEmail: assign({
-    otpEmail: (context, event) => {
+    otpEmail: ({ context, event }) => {
       if (event.type !== 'OTP_SENT') return context.otpEmail
       return event.email
     },
@@ -171,7 +171,7 @@ export const wizardActions = {
     otpEmail: null,
   }),
   
-  showOtpError: (context: WizardContext, event: WizardEvent) => {
+  showOtpError: ({ context, event }: { context: WizardContext; event: WizardEvent }) => {
     if (event.type === 'OTP_FAILED') {
       console.error('[Wizard] OTP verification failed:', event.error)
     }
@@ -183,20 +183,23 @@ export const wizardActions = {
   
   handleSubmissionSuccess: assign({
     isSubmitting: false,
-    submissionId: (context, event: any) => event.data?.submissionId || null,
+    submissionId: ({ event }: { event: { output?: { submissionId?: string } } }) => event.output?.submissionId || null,
   }),
   
   handleSubmissionError: assign({
     isSubmitting: false,
-    errors: (context, event: any) => {
-      console.error('[Wizard] Submission error:', event.data)
+    errors: ({ event }: { event: { error?: { message?: string } | string } }) => {
+      console.error('[Wizard] Submission error:', event.error)
+      const errorMessage = typeof event.error === 'string' 
+        ? event.error 
+        : event.error?.message || 'Submission failed'
       return {
-        submission: [event.data?.message || 'Submission failed'],
+        submission: [errorMessage],
       }
     },
   }),
   
-  onSubmissionComplete: (context: WizardContext) => {
+  onSubmissionComplete: ({ context }: { context: WizardContext }) => {
     console.log('[Wizard] Form submitted successfully:', context.submissionId)
   },
   
@@ -205,7 +208,7 @@ export const wizardActions = {
 
 // ===== Machine Guards =====
 export const wizardGuards = {
-  canMoveForward: (context: WizardContext) => {
+  canMoveForward: ({ context }: { context: WizardContext }) => {
     // Check OTP verification for OTP step
     if (context.currentStepId === 'otp-verification' && !context.otpVerified) {
       return false
@@ -229,16 +232,16 @@ export const wizardGuards = {
     return canEnterStep(nextStepId, context.formData)
   },
   
-  canMoveBackward: (context: WizardContext) => {
+  canMoveBackward: ({ context }: { context: WizardContext }) => {
     const currentIndex = context.visitedSteps.indexOf(context.currentStepId)
     return currentIndex > 0
   },
   
-  isOtpStep: (context: WizardContext) => {
+  isOtpStep: ({ context }: { context: WizardContext }) => {
     return context.currentStepId === 'otp-verification'
   },
   
-  canSubmit: (context: WizardContext) => {
+  canSubmit: ({ context }: { context: WizardContext }) => {
     // Check if we're on the last step
     const nextStepId = getNextStepId(context.currentStepId, context.formData)
     if (nextStepId) {
@@ -265,36 +268,36 @@ export const wizardGuards = {
   },
 }
 
-// ===== Machine Services =====
-export const wizardServices = {
-  submitFormData: async (context: WizardContext) => {
-    try {
-      const response = await fetch('/api/submit-form', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(context.formData),
-      })
-      
-      if (!response.ok) {
-        throw new Error('Submission failed')
-      }
-      
-      const data = await response.json()
-      return { submissionId: data.id }
-    } catch (error) {
-      throw error
+// ===== Machine Actors =====
+export const wizardActors = {
+  submitFormData: fromPromise(async ({ input }: { input: { formData: FormData } }) => {
+    const response = await fetch('/api/submit-form', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(input.formData),
+    })
+    
+    if (!response.ok) {
+      throw new Error('Submission failed')
     }
-  },
+    
+    const data = await response.json()
+    return { submissionId: data.id }
+  }),
 }
 
 // ===== Machine Definition =====
-// Now that actions, guards, and services are defined, we can create the machine
-export const wizardMachine = createMachine<WizardContext, WizardEvent>({
+// Now that actions, guards, and actors are defined, we can create the machine
+export const wizardMachine = createMachine({
   id: 'wizard',
   initial: 'navigating',
   context: initialContext,
+  types: {
+    context: {} as WizardContext,
+    events: {} as WizardEvent,
+  },
   
   states: {
     navigating: {
@@ -393,6 +396,7 @@ export const wizardMachine = createMachine<WizardContext, WizardEvent>({
       invoke: {
         id: 'submitForm',
         src: 'submitFormData',
+        input: ({ context }: { context: WizardContext }) => ({ formData: context.formData }),
         onDone: {
           target: 'submitted',
           actions: 'handleSubmissionSuccess',
@@ -417,9 +421,9 @@ export const wizardMachine = createMachine<WizardContext, WizardEvent>({
     },
   },
 }).provide({
-  actions: wizardActions,
+  actions: wizardActions as any, // XState typing compatibility
   guards: wizardGuards,
-  services: wizardServices,
+  actors: wizardActors,
 })
 
 // ===== Helper Functions =====
@@ -448,15 +452,28 @@ function getFlowPath(formData: Partial<FormData>): string[] {
   const path: string[] = []
   let currentStepId: string | null = 'welcome'
   
-  const maxSteps = 50 // Prevent infinite loops
+  const maxSteps = 1000 // Allow for 100+ steps as designed, with high safety margin
   let stepCount = 0
+  const visitedSteps = new Set<string>() // Cycle detection
   
   while (currentStepId && stepCount < maxSteps) {
+    // Cycle detection - if we've seen this step before, break to prevent infinite loops
+    if (visitedSteps.has(currentStepId)) {
+      console.warn(`[Wizard] Cycle detected at step: ${currentStepId}. Breaking flow path calculation.`)
+      break
+    }
+    
+    visitedSteps.add(currentStepId)
+    
     if (!shouldSkipStep(currentStepId, formData)) {
       path.push(currentStepId)
     }
     currentStepId = getNextStepId(currentStepId, formData)
     stepCount++
+  }
+  
+  if (stepCount >= maxSteps) {
+    console.warn(`[Wizard] Reached maximum step limit (${maxSteps}). Flow path calculation terminated.`)
   }
   
   return path
@@ -493,5 +510,4 @@ export function getCurrentStep(context: WizardContext) {
   return getStep(context.currentStepId)
 }
 
-// Export types
-export type { WizardContext, WizardEvent }
+// Types are already exported above with their definitions

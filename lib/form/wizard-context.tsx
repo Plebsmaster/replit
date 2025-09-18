@@ -4,7 +4,7 @@ import React, { createContext, useContext, ReactNode, Suspense } from 'react'
 import { useMachine } from '@xstate/react'
 import { wizardMachine, wizardGuards, WizardContext as MachineContext, WizardEvent } from './machine'
 import { FormData } from './schema'
-import { getStep, getNextStepId, shouldSkipStep } from './steps'
+import { getStep, getNextStepId, shouldSkipStep, StepProps, getFlowPath } from './steps'
 
 // ===== Context Types =====
 interface WizardContextValue {
@@ -34,7 +34,7 @@ interface WizardContextValue {
   canGoNext: () => boolean
   canGoPrevious: () => boolean
   isStepCompleted: (stepId: string) => boolean
-  getCurrentStepComponent: () => React.ComponentType<any> | null
+  getCurrentStepComponent: () => React.ComponentType<StepProps> | null
 }
 
 // ===== Create Context =====
@@ -106,11 +106,11 @@ export function WizardProvider({ children }: { children: ReactNode }) {
   
   // Guard checks
   const canGoNext = React.useCallback(() => {
-    return wizardGuards.canMoveForward(state.context)
+    return wizardGuards.canMoveForward({ context: state.context })
   }, [state.context])
   
   const canGoPrevious = React.useCallback(() => {
-    return wizardGuards.canMoveBackward(state.context)
+    return wizardGuards.canMoveBackward({ context: state.context })
   }, [state.context])
   
   const isStepCompleted = React.useCallback((stepId: string) => {
@@ -165,7 +165,7 @@ export function useWizard() {
 
 // ===== Step Renderer Component =====
 export function StepRenderer() {
-  const { getCurrentStepComponent, formData, updateFormData, goToNext, goToPrevious, currentStepId } = useWizard()
+  const { getCurrentStepComponent, formData, updateFormData, goToNext, goToPrevious, currentStepId, verifyOtp, sendOtp } = useWizard()
   
   const Component = getCurrentStepComponent()
   
@@ -179,6 +179,12 @@ export function StepRenderer() {
       </div>
     )
   }
+
+  // Handle OTP verification - set state machine flag before advancing
+  const handleOtpVerified = React.useCallback(() => {
+    verifyOtp()
+    goToNext()
+  }, [verifyOtp, goToNext])
   
   // Wrap in Suspense for lazy-loaded components
   return (
@@ -188,6 +194,10 @@ export function StepRenderer() {
         updateFormData={updateFormData}
         onNext={goToNext}
         onBack={goToPrevious}
+        email={formData.email}
+        onVerified={handleOtpVerified}
+        verifyOtp={verifyOtp}
+        sendOtp={sendOtp}
       />
     </Suspense>
   )
@@ -244,25 +254,6 @@ export function StepNavigation() {
   )
 }
 
-// ===== Helper Functions =====
-function getFlowPath(formData: Partial<FormData>): string[] {
-  
-  const path: string[] = []
-  let currentStepId: string | null = 'welcome'
-  
-  const maxSteps = 50 // Prevent infinite loops
-  let stepCount = 0
-  
-  while (currentStepId && stepCount < maxSteps) {
-    if (!shouldSkipStep(currentStepId, formData)) {
-      path.push(currentStepId)
-    }
-    currentStepId = getNextStepId(currentStepId, formData)
-    stepCount++
-  }
-  
-  return path
-}
 
 // ===== Exports =====
 export default WizardProvider

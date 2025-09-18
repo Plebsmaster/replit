@@ -8,7 +8,7 @@ import {
 } from './schema'
 
 // ===== Validation Result Types =====
-export interface ValidationResult<T = any> {
+export interface ValidationResult<T = unknown> {
   success: boolean
   data?: T
   errors?: ValidationError[]
@@ -28,7 +28,7 @@ export interface FieldValidationState {
 // ===== Field-level Validation =====
 export const validateField = (
   fieldName: keyof FormData,
-  value: any
+  value: unknown
 ): FieldValidationState => {
   try {
     // Get the field schema from the main schema
@@ -109,7 +109,7 @@ export const validatePartialForm = (
   const partialSchemaShape = requiredFields.reduce((acc, field) => {
     acc[field] = FormDataSchema.shape[field]
     return acc
-  }, {} as any)
+  }, {} as Record<string, z.ZodTypeAny>)
   
   const partialSchema = z.object(partialSchemaShape)
   const result = partialSchema.safeParse(formData)
@@ -144,7 +144,7 @@ export const createValidationState = (
 export const updateValidationState = (
   currentState: ValidationStateMap,
   field: keyof FormData,
-  value: any
+  value: unknown
 ): ValidationStateMap => {
   const fieldState = validateField(field, value)
   return {

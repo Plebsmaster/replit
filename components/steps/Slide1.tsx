@@ -4,12 +4,9 @@ import { Button } from "@/components/ui/button"
 import { SlideContainer } from "@/components/ui/slide-container"
 import { ArrowRight } from "lucide-react"
 import { getTypographyClasses } from "@/lib/typography"
+import type { StepProps } from "@/lib/form/steps"
 
-interface WelcomeStepProps {
-  onNext: () => void
-}
-
-export function WelcomeStep({ onNext }: WelcomeStepProps) {
+export function WelcomeStep({ onNext }: StepProps) {
   return (
     <SlideContainer width="standard">
       <div className="space-y-8 text-center">

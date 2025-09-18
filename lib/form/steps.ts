@@ -1,4 +1,4 @@
-import { lazy, ComponentType } from 'react'
+import { lazy, ComponentType, LazyExoticComponent } from 'react'
 import { z } from 'zod'
 import {
   welcomeSchema,
@@ -20,6 +20,28 @@ import {
 } from './schema'
 
 // ===== Types =====
+// Shared base interface that all step components must accept
+export interface StepProps {
+  onNext: () => void
+  onBack: () => void
+  formData: FormData
+  updateFormData: (updates: Partial<FormData>) => void
+  onSubmit?: () => Promise<void>
+  
+  // Optional props for specific steps
+  email?: string
+  onVerified?: () => void
+  verifyOtp?: () => void
+  sendOtp?: (email: string) => void
+  selectedStyle?: string | null
+  onSelectionChange?: (style: string | null) => void
+}
+
+// Legacy interface for backward compatibility
+export interface WizardStepProps extends StepProps {
+}
+
+// Legacy interface for backward compatibility
 export interface StepComponentProps {
   formData: FormData
   updateFormData: (updates: Partial<FormData>) => void
@@ -32,8 +54,8 @@ export interface StepDefinition {
   id: string
   key: string
   title: string
-  Component: ComponentType<StepComponentProps>
-  schema?: z.ZodSchema<any>
+  Component: ComponentType<StepProps>
+  schema?: z.ZodSchema<Partial<FormData>>
   guards?: {
     canEnter?: (formData: Partial<FormData>) => boolean
     canLeave?: (formData: Partial<FormData>) => boolean
@@ -116,7 +138,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Welkom',
     Component: WelcomeStep,
     schema: welcomeSchema,
-    nextStep: () => 'email',
+    nextStep: (formData: Partial<FormData>): string => 'email',
   }],
   
   // Authentication Flow
@@ -126,7 +148,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'E-mail',
     Component: EmailStep,
     schema: emailStepSchema,
-    nextStep: () => 'name-phone',
+    nextStep: (formData: Partial<FormData>): string => 'name-phone',
   }],
   
   ['name-phone', {
@@ -135,7 +157,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Gegevens',
     Component: NamePhoneStep,
     schema: namePhoneSchema,
-    nextStep: () => 'otp-verification',
+    nextStep: (formData: Partial<FormData>): string => 'otp-verification',
   }],
   
   ['otp-verification', {
@@ -144,7 +166,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Verificatie',
     Component: OTPStep,
     schema: otpSchema,
-    nextStep: () => 'style-selection',
+    nextStep: (formData: Partial<FormData>): string => 'style-selection',
   }],
   
   // Style Selection Flow
@@ -154,7 +176,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Stijl Selectie',
     Component: StyleSelectionStep,
     schema: styleSelectionSchema,
-    nextStep: (formData) => {
+    nextStep: (formData: Partial<FormData>): string | null => {
       if (formData.style === 'elegant') return 'elegant-styles'
       if (formData.style === 'modern') return 'modern-styles'
       return null
@@ -169,9 +191,9 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     Component: ElegantStyleStep,
     schema: elegantStyleSchema,
     guards: {
-      canEnter: (formData) => formData.style === 'elegant',
+      canEnter: (formData: Partial<FormData>) => formData.style === 'elegant',
     },
-    nextStep: (formData) => {
+    nextStep: (formData: Partial<FormData>): string => {
       // Based on selection, go to appropriate variant
       if (formData.elegantStyle === 'elegant1') return 'elegant-variant1'
       if (formData.elegantStyle === 'elegant2') return 'elegant-variant2'
@@ -186,9 +208,9 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     Component: ElegantVariant1Step,
     schema: styleVariantSchema,
     guards: {
-      canEnter: (formData) => formData.style === 'elegant',
+      canEnter: (formData: Partial<FormData>) => formData.style === 'elegant',
     },
-    nextStep: () => 'color-scheme',
+    nextStep: (formData: Partial<FormData>): string => 'color-scheme',
   }],
   
   ['elegant-variant2', {
@@ -198,9 +220,9 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     Component: ElegantVariant2Step,
     schema: styleVariantSchema,
     guards: {
-      canEnter: (formData) => formData.style === 'elegant',
+      canEnter: (formData: Partial<FormData>) => formData.style === 'elegant',
     },
-    nextStep: () => 'color-scheme',
+    nextStep: (formData: Partial<FormData>): string => 'color-scheme',
   }],
   
   // Modern Style Flow
@@ -211,9 +233,9 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     Component: ModernStyleStep,
     schema: modernStyleSchema,
     guards: {
-      canEnter: (formData) => formData.style === 'modern',
+      canEnter: (formData: Partial<FormData>) => formData.style === 'modern',
     },
-    nextStep: (formData) => {
+    nextStep: (formData: Partial<FormData>): string => {
       // Based on selection, go to appropriate modern variant
       if (formData.modernStyle === 'modern1') return 'modern1-variant'
       if (formData.modernStyle === 'modern2') return 'modern2-variant'
@@ -230,9 +252,9 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     Component: Modern1VariantStep,
     schema: styleVariantSchema,
     guards: {
-      canEnter: (formData) => formData.style === 'modern',
+      canEnter: (formData: Partial<FormData>) => formData.style === 'modern',
     },
-    nextStep: () => 'color-scheme',
+    nextStep: (formData: Partial<FormData>): string => 'color-scheme',
   }],
   
   ['modern2-variant', {
@@ -242,9 +264,9 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     Component: Modern2VariantStep,
     schema: styleVariantSchema,
     guards: {
-      canEnter: (formData) => formData.style === 'modern',
+      canEnter: (formData: Partial<FormData>) => formData.style === 'modern',
     },
-    nextStep: () => 'color-scheme',
+    nextStep: (formData: Partial<FormData>): string => 'color-scheme',
   }],
   
   ['modern3-variant', {
@@ -254,9 +276,9 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     Component: Modern3VariantStep,
     schema: styleVariantSchema,
     guards: {
-      canEnter: (formData) => formData.style === 'modern',
+      canEnter: (formData: Partial<FormData>) => formData.style === 'modern',
     },
-    nextStep: () => 'color-scheme',
+    nextStep: (formData: Partial<FormData>): string => 'color-scheme',
   }],
   
   ['modern6-variant', {
@@ -266,9 +288,9 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     Component: Modern6VariantStep,
     schema: styleVariantSchema,
     guards: {
-      canEnter: (formData) => formData.style === 'modern',
+      canEnter: (formData: Partial<FormData>) => formData.style === 'modern',
     },
-    nextStep: () => 'color-scheme',
+    nextStep: (formData: Partial<FormData>): string => 'color-scheme',
   }],
   
   // Color Configuration Flow
@@ -278,7 +300,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Kleur Selectie',
     Component: ColorSchemeStep,
     schema: colorSchemeSchema,
-    nextStep: () => 'final-color',
+    nextStep: (formData: Partial<FormData>): string => 'final-color',
   }],
   
   ['final-color', {
@@ -287,7 +309,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Finale Kleur',
     Component: FinalColorStep,
     schema: finalColorSchema,
-    nextStep: () => 'color-palette',
+    nextStep: (formData: Partial<FormData>): string => 'color-palette',
   }],
   
   ['color-palette', {
@@ -296,7 +318,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Kleur Palet',
     Component: ColorPaletteStep,
     schema: colorPaletteSchema,
-    nextStep: () => 'icon-choice',
+    nextStep: (formData: Partial<FormData>): string => 'icon-choice',
   }],
   
   // Icon Flow
@@ -305,7 +327,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     key: 'iconChoice',
     title: 'Icoon Keuze',
     Component: IconChoiceStep,
-    nextStep: () => 'icon-selection',
+    nextStep: (formData: Partial<FormData>): string => 'icon-selection',
   }],
   
   ['icon-selection', {
@@ -314,7 +336,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Icoon Selectie',
     Component: IconSelectionStep,
     schema: iconSelectionSchema,
-    nextStep: () => 'ingredients',
+    nextStep: (formData: Partial<FormData>): string => 'ingredients',
   }],
   
   // Final Steps
@@ -324,7 +346,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Ingrediënten',
     Component: IngredientsStep,
     schema: ingredientsSchema,
-    nextStep: () => 'dashboard-login',
+    nextStep: (): string => 'dashboard-login',
   }],
   
   ['dashboard-login', {
@@ -333,7 +355,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Dashboard',
     Component: DashboardLoginStep,
     schema: agreementsSchema,
-    nextStep: () => null, // End of flow
+    nextStep: (formData: Partial<FormData>): null => null, // End of flow
   }],
 ])
 
@@ -445,12 +467,24 @@ export function validateStepData(
 export function getFlowPath(formData: Partial<FormData>): string[] {
   const path: string[] = []
   let currentStepId: string | null = 'welcome'
+  const visited = new Set<string>()
+  const maxSteps = 1000 // Support up to 1000 steps
+  let stepCount = 0
   
-  while (currentStepId) {
+  while (currentStepId && stepCount < maxSteps) {
+    // Break on cycles - if we've seen this step before, stop
+    if (visited.has(currentStepId)) {
+      break
+    }
+    
+    visited.add(currentStepId)
+    
     if (!shouldSkipStep(currentStepId, formData)) {
       path.push(currentStepId)
     }
+    
     currentStepId = getNextStepId(currentStepId, formData)
+    stepCount++
   }
   
   return path
@@ -471,5 +505,4 @@ export function unregisterStep(stepId: string): void {
   stepRegistry.delete(stepId)
 }
 
-// Export types for external use
-export type { StepDefinition, StepComponentProps }
+// Types are already exported above with their definitions

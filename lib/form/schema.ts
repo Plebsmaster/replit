@@ -40,10 +40,8 @@ export const namePhoneSchema = z.object({
   phone: phoneSchema,
 })
 
-// Step 4: OTP Verification (handled separately, no form data)
-export const otpSchema = z.object({
-  otp: z.string().length(6, 'OTP moet 6 cijfers zijn'),
-})
+// Step 4: OTP Verification (handled separately through state machine, no form data required)
+export const otpSchema = z.object({})
 
 // Step 5: Style Selection
 export const styleSelectionSchema = z.object({

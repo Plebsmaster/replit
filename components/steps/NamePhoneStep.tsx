@@ -3,13 +3,8 @@ import { Input } from "@/components/ui/input"
 import { User, ChevronDown, AlertCircle, CheckCircle } from "lucide-react"
 import { useState, useEffect } from "react"
 import type { FormData } from "@/lib/form/schema"
+import type { StepProps } from "@/lib/form/steps"
 import { getTypographyClasses } from "@/lib/typography"
-
-interface NamePhoneStepProps {
-  formData: FormData
-  updateFormData: (updates: Partial<FormData>) => void
-  onNext: () => void
-}
 
 interface ValidationErrors {
   firstName?: string
@@ -32,7 +27,7 @@ const countries = [
   { code: "+1", flag: "🇺🇸", name: "US" },
 ]
 
-export function NamePhoneStep({ formData, updateFormData, onNext }: NamePhoneStepProps) {
+export function NamePhoneStep({ formData, updateFormData, onNext }: StepProps) {
   const [countryCode, setCountryCode] = useState("+31")
   const [errors, setErrors] = useState<ValidationErrors>({})
   const [validationState, setValidationState] = useState<ValidationState>({

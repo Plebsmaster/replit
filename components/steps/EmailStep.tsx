@@ -8,14 +8,9 @@ import { ArrowRight, Mail, AlertCircle, CheckCircle } from "lucide-react"
 import { useState, useEffect } from "react"
 import type { FormData } from "@/lib/form/schema"
 import { getTypographyClasses } from "@/lib/typography"
+import type { StepProps } from "@/lib/form/steps"
 
-interface EmailStepProps {
-  formData: FormData
-  updateFormData: (updates: Partial<FormData>) => void
-  onNext: (email: string) => void
-}
-
-export function EmailStep({ formData, updateFormData, onNext }: EmailStepProps) {
+export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
   const [email, setEmail] = useState(formData.email || "")
   const [error, setError] = useState("")
   const [validationState, setValidationState] = useState<"idle" | "valid" | "invalid">("idle")
@@ -53,8 +48,8 @@ export function EmailStep({ formData, updateFormData, onNext }: EmailStepProps) 
     console.log("[v0] EmailStep: Next button clicked with email:", email)
     console.log("[v0] EmailStep: Validation state:", validationState)
     if (validationState === "valid") {
-      console.log("[v0] EmailStep: Calling onNext with email:", email)
-      onNext(email)
+      console.log("[v0] EmailStep: Calling onNext")
+      onNext()
     } else {
       console.log("[v0] EmailStep: Email validation failed, not proceeding")
     }
@@ -62,7 +57,7 @@ export function EmailStep({ formData, updateFormData, onNext }: EmailStepProps) 
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && validationState === "valid") {
-      console.log("[v0] EmailStep: Enter key pressed, proceeding with email:", email)
+      console.log("[v0] EmailStep: Enter key pressed, proceeding")
       handleNext()
     }
   }

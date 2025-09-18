@@ -16,6 +16,21 @@ interface Product {
 }
 type ColorMode = "variation" | "uniform"
 
+// Specific product IDs that are used in the color mapping
+type ProductId = 
+  | "repair-shampoo" | "repair-conditioner"
+  | "color-shampoo" | "color-conditioner"
+  | "no-yellow-shampoo" | "no-yellow-conditioner"
+  | "curly-shampoo" | "curly-conditioner"
+  | "sulfaatvrij-shampoo" | "sulfaatvrij-conditioner"
+  | "men-shampoo" | "hairspray" | "volume-mousse"
+  | "dry-shampoo" | "volume-gel" | "fiber-paste"
+  | "texture-paste" | "control-cream"
+
+// Type for product color mappings (productId -> colorCode)
+// Using Record instead of Partial to allow string indexing while maintaining type safety
+type ProductColorMap = Record<string, string>
+
 // Interface voor de props
 interface Slide8Props {
   onBack: () => void
@@ -43,8 +58,8 @@ const paletteMapping = {
 export default function Slide8({ onBack, onNext }: Slide8Props) {
   // === STATE MANAGEMENT ===
   const [selectedPalette, setSelectedPalette] = useState<string | null>(null)
-  const [productColors, setProductColors] = useState<any>({})
-  const [variationColors, setVariationColors] = useState<any>({})
+  const [productColors, setProductColors] = useState<ProductColorMap>({})
+  const [variationColors, setVariationColors] = useState<ProductColorMap>({})
   const [expandedProduct, setExpandedProduct] = useState<string | null>(null)
   const [colorMode, setColorMode] = useState<ColorMode>("variation")
   const pickerRef = useRef<HTMLDivElement | null>(null)
@@ -417,11 +432,12 @@ export default function Slide8({ onBack, onNext }: Slide8Props) {
     return null
   }
 
-  const syncUniformColors = (currentColors: any) => {
+  const syncUniformColors = (currentColors: ProductColorMap): ProductColorMap => {
     const syncedColors = { ...currentColors }
     Object.entries(pairings).forEach(([conditionerId, shampooId]) => {
-      if (syncedColors[shampooId]) {
-        syncedColors[conditionerId] = syncedColors[shampooId]
+      const shampooColor = syncedColors[shampooId]
+      if (shampooColor) {
+        syncedColors[conditionerId] = shampooColor
       }
     })
     return syncedColors
@@ -444,13 +460,14 @@ export default function Slide8({ onBack, onNext }: Slide8Props) {
       : whiteTextDefaults[mappingKey as keyof typeof whiteTextDefaults]
 
     if (defaults) {
-      let finalDefaults = { ...defaults }
+      // Convert to ProductColorMap to ensure type compatibility
+      let finalDefaults: ProductColorMap = { ...defaults }
       if (colorMode === "uniform") {
         finalDefaults = syncUniformColors(finalDefaults)
       }
       // Set both states to the new palette's defaults
       setProductColors(finalDefaults)
-      setVariationColors(defaults) // Store the clean, original variation
+      setVariationColors({ ...defaults }) // Store the clean, original variation
 
       console.log("[v0] Updating form data with both colorPalette and productColors:", paletteId)
       updateFormData({
@@ -477,7 +494,7 @@ export default function Slide8({ onBack, onNext }: Slide8Props) {
       // 1. Save the current colors as the 'variation' snapshot
       setVariationColors(productColors)
       // 2. Apply the uniform logic to the displayed colors
-      setProductColors((currentColors) => syncUniformColors(currentColors))
+      setProductColors((currentColors: ProductColorMap) => syncUniformColors(currentColors))
     } else {
       // Switching back to 'variation'
       // 1. Restore the displayed colors from our snapshot

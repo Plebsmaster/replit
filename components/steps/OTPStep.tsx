@@ -7,20 +7,17 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ArrowRight, Mail, Clock, RefreshCw } from "lucide-react"
 import { getTypographyClasses } from "@/lib/typography"
+import type { StepProps } from "@/lib/form/steps"
 
-interface OTPStepProps {
-  email: string
-  onVerified: () => void
-  onBack: () => void
-}
-
-export function OTPStep({ email, onVerified, onBack }: OTPStepProps) {
+export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp }: StepProps) {
   const [otp, setOtp] = useState(["", "", "", "", "", ""])
   const [isVerifying, setIsVerifying] = useState(false)
   const [error, setError] = useState("")
   const [timeLeft, setTimeLeft] = useState(600) // 10 minutes in seconds
   const [canResend, setCanResend] = useState(false)
   const [isResending, setIsResending] = useState(false)
+  const [isGeneratingInitial, setIsGeneratingInitial] = useState(false)
+  const [initialOtpGenerated, setInitialOtpGenerated] = useState(false)
   const inputRefs = useRef<(HTMLInputElement | null)[]>([])
 
   // Countdown timer
@@ -36,6 +33,54 @@ export function OTPStep({ email, onVerified, onBack }: OTPStepProps) {
     const resendTimer = setTimeout(() => setCanResend(true), 60000)
     return () => clearTimeout(resendTimer)
   }, [])
+
+  // Automatically generate OTP when component mounts with valid email
+  useEffect(() => {
+    const generateInitialOtp = async () => {
+      if (!email || initialOtpGenerated || isGeneratingInitial) {
+        return
+      }
+
+      setIsGeneratingInitial(true)
+      setError("")
+
+      try {
+        console.log('[OTPStep] Generating initial OTP for:', email)
+        
+        // Call the API to actually generate and send the OTP
+        const response = await fetch("/api/otp/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        })
+
+        const data = await response.json()
+        console.log('[OTPStep] Initial OTP response:', data)
+
+        if (data.sent === true) {
+          // Notify state machine that OTP was sent
+          if (sendOtp) {
+            sendOtp(email)
+          }
+          setInitialOtpGenerated(true)
+          console.log('[OTPStep] Initial OTP sent successfully')
+        } else if (response.status === 429) {
+          setError("Too many requests. Please wait before trying again.")
+        } else {
+          setError(data.error || "Failed to send verification code")
+        }
+      } catch (error) {
+        console.error('[OTPStep] Failed to generate initial OTP:', error)
+        setError("Failed to send verification code. Please try again.")
+      } finally {
+        setIsGeneratingInitial(false)
+      }
+    }
+
+    if (email) {
+      generateInitialOtp()
+    }
+  }, [email, initialOtpGenerated, isGeneratingInitial, sendOtp])
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
@@ -126,6 +171,10 @@ export function OTPStep({ email, onVerified, onBack }: OTPStepProps) {
       const data = await response.json()
 
       if (data.sent === true) {
+        // Notify state machine that OTP was sent
+        if (sendOtp) {
+          sendOtp(email)
+        }
         setTimeLeft(600) // Reset timer
         setCanResend(false)
         setOtp(["", "", "", "", "", ""])
@@ -156,10 +205,18 @@ export function OTPStep({ email, onVerified, onBack }: OTPStepProps) {
       {/* Heading */}
       <div className="space-y-2">
         <h1 className={getTypographyClasses("title", { alignment: "center" })}>Verify Your Email</h1>
-        <p className={getTypographyClasses("paragraph", { alignment: "center" })}>We've sent a 6-digit code to</p>
-        <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} font-semibold text-blue-600`}>
-          {email}
-        </p>
+        {isGeneratingInitial ? (
+          <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} text-blue-600`}>
+            Sending verification code to {email}...
+          </p>
+        ) : (
+          <>
+            <p className={getTypographyClasses("paragraph", { alignment: "center" })}>We've sent a 6-digit code to</p>
+            <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} font-semibold text-blue-600`}>
+              {email}
+            </p>
+          </>
+        )}
       </div>
 
       {/* OTP Input */}
@@ -168,7 +225,7 @@ export function OTPStep({ email, onVerified, onBack }: OTPStepProps) {
           {otp.map((digit, index) => (
             <Input
               key={index}
-              ref={(el) => (inputRefs.current[index] = el)}
+              ref={(el) => { inputRefs.current[index] = el }}
               type="text"
               inputMode="numeric"
               maxLength={6}
@@ -176,7 +233,7 @@ export function OTPStep({ email, onVerified, onBack }: OTPStepProps) {
               onChange={(e) => handleOtpChange(index, e.target.value.replace(/\D/g, ""))}
               onKeyDown={(e) => handleKeyDown(index, e)}
               className="w-12 h-12 text-center text-xl font-bold border-2 bg-white text-gray-900 focus:border-blue-500 focus:bg-white"
-              disabled={isVerifying}
+              disabled={isVerifying || isGeneratingInitial}
             />
           ))}
         </div>
@@ -214,12 +271,12 @@ export function OTPStep({ email, onVerified, onBack }: OTPStepProps) {
 
       {/* Action Buttons */}
       <div className="flex gap-4 pt-4">
-        <Button onClick={onBack} variant="outline" className="flex-1 bg-transparent" disabled={isVerifying}>
+        <Button onClick={onBack} variant="outline" className="flex-1 bg-transparent" disabled={isVerifying || isGeneratingInitial}>
           Back
         </Button>
         <Button
           onClick={handleVerify}
-          disabled={isVerifying || otp.join("").length !== 6}
+          disabled={isVerifying || isGeneratingInitial || otp.join("").length !== 6}
           className="flex-1 bg-gray-900 text-white hover:bg-gray-800"
         >
           {isVerifying ? (
