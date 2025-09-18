@@ -1,7 +1,7 @@
 "use client"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { User, ChevronDown, AlertCircle, CheckCircle, ArrowRight } from "lucide-react"
+import { User, ChevronDown, ArrowRight, AlertCircle, CheckCircle } from "lucide-react"
 import { useState, useEffect } from "react"
 import type { FormData } from "@/lib/form/schema"
 import type { StepProps } from "@/lib/form/steps"

@@ -93,7 +93,6 @@ export default function Slide12({ formData, updateFormData, onNext, onBack }: Sl
   }
 
   const handleNext = () => {
-    console.log("[v0] Slide30: Ingredients selected, proceeding to next step")
     onNext()
   }
 
@@ -148,12 +147,12 @@ export default function Slide12({ formData, updateFormData, onNext, onBack }: Sl
       </div>
 
       <div className="flex justify-between items-center">
-        <Button onClick={onBack} variant="outline" className="bg-white text-black hover:bg-gray-100 border-gray-300">
+        <Button onClick={onBack} variant="outline" className="bg-white text-black hover:bg-gray-100 border-gray-300 px-8 py-3">
           Terug
         </Button>
-        <Button onClick={handleNext} className="bg-black text-white hover:bg-gray-800 px-8">
+        <Button onClick={handleNext} className="bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 text-base font-medium">
           Doorgaan
-          <ArrowRight className="w-4 h-4 ml-2" />
+          <ArrowRight className="w-5 h-5 ml-2" />
         </Button>
       </div>
     </div>

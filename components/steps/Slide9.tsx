@@ -19,7 +19,7 @@ export default function Slide9({ onBack, onNext }: Slide9Props) {
       localStorage.setItem("salonid:iconChoice", option)
       localStorage.setItem("salonid:dateISO", new Date().toISOString())
     } catch (error) {
-      console.log("localStorage not available")
+      // localStorage not available, continue silently
     }
     // Direct doorgaan naar volgende stap zoals in Slide2
     onNext()
@@ -49,7 +49,7 @@ export default function Slide9({ onBack, onNext }: Slide9Props) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mt-8">
           <ChoiceCard
             label="Met Icoon"
             imageSrc="/icon-with.png"

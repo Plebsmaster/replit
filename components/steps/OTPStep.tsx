@@ -40,7 +40,6 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, fo
     const generateInitialOtp = async () => {
       // GUARD: Only generate OTP for existing users
       if (!formData || !formData.isExistingUser) {
-        console.log('[OTPStep] Skipping OTP generation for new user')
         return
       }
       
@@ -52,8 +51,6 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, fo
       setError("")
 
       try {
-        console.log('[OTPStep] Generating initial OTP for existing user:', email)
-        
         // Call the API to actually generate and send the OTP
         const response = await fetch("/api/otp/generate", {
           method: "POST",
@@ -62,7 +59,6 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, fo
         })
 
         const data = await response.json()
-        console.log('[OTPStep] Initial OTP response:', data)
 
         if (data.sent === true) {
           // Notify state machine that OTP was sent
@@ -70,14 +66,12 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, fo
             sendOtp(email)
           }
           setInitialOtpGenerated(true)
-          console.log('[OTPStep] Initial OTP sent successfully')
         } else if (response.status === 429) {
           setError("Too many requests. Please wait before trying again.")
         } else {
           setError(data.error || "Failed to send verification code")
         }
       } catch (error) {
-        console.error('[OTPStep] Failed to generate initial OTP:', error)
         setError("Failed to send verification code. Please try again.")
       } finally {
         setIsGeneratingInitial(false)
@@ -278,13 +272,13 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, fo
 
       {/* Action Buttons */}
       <div className="flex gap-4 pt-4">
-        <Button onClick={onBack} variant="outline" className="flex-1 bg-transparent" disabled={isVerifying || isGeneratingInitial}>
+        <Button onClick={onBack} variant="outline" className="flex-1 bg-transparent px-8 py-3 text-base" disabled={isVerifying || isGeneratingInitial}>
           Back
         </Button>
         <Button
           onClick={handleVerify}
           disabled={isVerifying || isGeneratingInitial || otp.join("").length !== 6}
-          className="flex-1 bg-gray-900 text-white hover:bg-gray-800"
+          className="flex-1 bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 text-base"
         >
           {isVerifying ? (
             <span className="flex items-center gap-2">

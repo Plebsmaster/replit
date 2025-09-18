@@ -48,7 +48,7 @@ export default function Slide5({ onBack, onNext }: Props) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {variants.map((variant) => (
             <ChoiceCard
               key={variant.id}
@@ -61,8 +61,6 @@ export default function Slide5({ onBack, onNext }: Props) {
           ))}
         </div>
 
-        {/* Debug info */}
-        {formData.style && <div className="mt-10 text-center text-xs opacity-60">Gekozen style: {formData.style}</div>}
       </section>
     </SlideContainer>
   )

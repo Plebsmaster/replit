@@ -2,8 +2,10 @@
 
 import { useState } from "react"
 import { SlideContainer } from "@/components/ui/slide-container"
+import { Button } from "@/components/ui/button"
 import { getTypographyClasses } from "@/lib/typography"
-import IconButton from "./IconButton" // Assuming IconButton is in the same directory
+import { ArrowRight } from "lucide-react"
+import IconButton from "./IconButton"
 
 interface Slide10Props {
   onBack: () => void
@@ -58,7 +60,7 @@ export default function Slide10({ onBack, onNext }: Slide10Props) {
       localStorage.setItem("salonid:selectedIcon", iconId)
       localStorage.setItem("salonid:dateISO", new Date().toISOString())
     } catch (error) {
-      console.log("localStorage not available")
+      // localStorage not available, continue silently
     }
   }
 
@@ -98,7 +100,7 @@ export default function Slide10({ onBack, onNext }: Slide10Props) {
         </div>
 
         {/* Icons Grid */}
-        <div className="grid grid-cols-5 gap-6 max-w-[600px] mx-auto mb-10">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 max-w-4xl mx-auto mb-10">
           {icons.slice(0, 5).map((icon) => (
             <IconButton
               key={icon.id}
@@ -109,7 +111,7 @@ export default function Slide10({ onBack, onNext }: Slide10Props) {
           ))}
         </div>
 
-        <div className="grid grid-cols-3 gap-6 max-w-[360px] mx-auto mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto mb-10">
           {icons.slice(5, 8).map((icon) => (
             <IconButton
               key={icon.id}
@@ -122,18 +124,14 @@ export default function Slide10({ onBack, onNext }: Slide10Props) {
 
         {/* Navigation */}
         <div className="flex justify-center gap-4 mb-10">
-          <button
+          <Button
             onClick={handleNext}
             disabled={!selectedIcon}
-            className={`px-6 py-3 rounded-lg font-semibold text-sm inline-flex items-center gap-2 ${
-              selectedIcon ? "bg-black text-white cursor-pointer" : "bg-gray-200 text-gray-400 cursor-not-allowed"
-            }`}
+            className="bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 text-base font-medium disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
           >
             Doorgaan
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M8.59 16.59L13.17 12L8.59 7.41L10 6L16 12L10 18L8.59 16.59Z" />
-            </svg>
-          </button>
+            <ArrowRight className="w-5 h-5 ml-2" />
+          </Button>
         </div>
 
         {/* Footer */}

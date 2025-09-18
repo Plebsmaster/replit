@@ -34,7 +34,7 @@ export default function Slide13({ onBack, onNext, selectedVariant: globalSelecte
         }
       }
     } catch (error) {
-      console.log("Could not load from localStorage")
+      // Could not load from localStorage, continue silently
     }
   }, [selectedVariant])
 
@@ -62,7 +62,7 @@ export default function Slide13({ onBack, onNext, selectedVariant: globalSelecte
       localStorage.setItem("salonid:styleVariant", finalStyle)
       localStorage.setItem("salonid:dateISO", new Date().toISOString())
     } catch (error) {
-      console.log("Could not save variant to localStorage")
+      // Could not save variant to localStorage, continue silently
     }
     
     queueMicrotask(() => {
@@ -92,7 +92,7 @@ export default function Slide13({ onBack, onNext, selectedVariant: globalSelecte
         </div>
 
         {/* Grid met 2 varianten */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {variants.map((variant) => (
             <ChoiceCard
               key={variant.id}
@@ -110,15 +110,13 @@ export default function Slide13({ onBack, onNext, selectedVariant: globalSelecte
           <div className="mt-8 text-center">
             <Button
               onClick={handleContinue}
-              className="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
+              className="bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 text-base font-medium"
             >
               Doorgaan met {variants.find(variant => variant.id === selectedVariant)?.label}
             </Button>
           </div>
         )}
 
-        {/* Debug info */}
-        {selectedStyle && <div className="mt-10 text-center text-xs opacity-60">Gekozen style: {selectedStyle}</div>}
       </section>
     </SlideContainer>
   )

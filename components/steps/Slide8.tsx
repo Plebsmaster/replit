@@ -445,13 +445,11 @@ export default function Slide8({ onBack, onNext }: Slide8Props) {
 
   // === HANDLERS ===
   const handlePaletteSelect = (paletteId: string) => {
-    console.log("[v0] Palette selected:", paletteId)
     setSelectedPalette(paletteId)
     setExpandedProduct(null)
 
     const mappingKey = paletteMapping[paletteId as keyof typeof paletteMapping]
     if (!mappingKey) {
-      console.error("Geen mapping gevonden voor palet:", paletteId)
       return
     }
     const isLightPalette = ["classic-light", "vibrant-pop", "natural-soft", "luxe-glow"].includes(paletteId)
@@ -469,13 +467,11 @@ export default function Slide8({ onBack, onNext }: Slide8Props) {
       setProductColors(finalDefaults)
       setVariationColors({ ...defaults }) // Store the clean, original variation
 
-      console.log("[v0] Updating form data with both colorPalette and productColors:", paletteId)
       updateFormData({
         colorPalette: paletteId,
         productColors: finalDefaults,
       })
     } else {
-      console.error("Geen defaults gevonden voor mapping key:", mappingKey)
       setProductColors({})
       setVariationColors({})
       updateFormData({

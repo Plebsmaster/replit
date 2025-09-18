@@ -16,7 +16,6 @@ export default function StyleSelectionStep({ formData, updateFormData, onNext, o
   const [selectedStyle, setSelectedStyle] = useState<"elegant" | "modern" | null>(null)
 
   const handleStyleChoice = (style: "elegant" | "modern") => {
-    console.log("[v0] Style selected:", style)
     setSelectedStyle(style)
     // First update the form data with the selected style
     updateFormData({ style })
@@ -49,7 +48,7 @@ export default function StyleSelectionStep({ formData, updateFormData, onNext, o
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           <ChoiceCard
             label="Elegant"
             imageSrc="/elegant-cosmetic-product-mockup.jpg"

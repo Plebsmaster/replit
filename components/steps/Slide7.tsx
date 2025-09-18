@@ -67,42 +67,19 @@ export default function Slide7({ onBack, onNext }: Props) {
           </div>
         </div>
 
-        <div className="max-w-[900px] mx-auto">
-          <div className="grid grid-cols-2 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {colorOptions.map((option) => (
             <ChoiceCard
-              key={colorOptions[0].id}
-              label={colorOptions[0].label}
-              imageSrc={colorOptions[0].imageSrc}
-              alt={colorOptions[0].alt}
-              isSelected={formData.finalColorChoice === colorOptions[0].label}
-              onClick={() => handleChooseColor(colorOptions[0].label)}
+              key={option.id}
+              label={option.label}
+              imageSrc={option.imageSrc}
+              alt={option.alt}
+              isSelected={formData.finalColorChoice === option.label}
+              onClick={() => handleChooseColor(option.label)}
             />
-            <ChoiceCard
-              key={colorOptions[1].id}
-              label={colorOptions[1].label}
-              imageSrc={colorOptions[1].imageSrc}
-              alt={colorOptions[1].alt}
-              isSelected={formData.finalColorChoice === colorOptions[1].label}
-              onClick={() => handleChooseColor(colorOptions[1].label)}
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-8">
-            <ChoiceCard
-              key={colorOptions[2].id}
-              label={colorOptions[2].label}
-              imageSrc={colorOptions[2].imageSrc}
-              alt={colorOptions[2].alt}
-              isSelected={formData.finalColorChoice === colorOptions[2].label}
-              onClick={() => handleChooseColor(colorOptions[2].label)}
-            />
-            <div></div> {/* Empty space to maintain L-shape */}
-          </div>
+          ))}
         </div>
 
-        {/* Debug info */}
-        {formData.styleVariant && (
-          <div className="mt-10 text-center text-xs opacity-60">Gekozen style: {formData.styleVariant}</div>
-        )}
       </section>
     </SlideContainer>
   )

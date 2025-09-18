@@ -39,7 +39,6 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
   }, [email, touched])
 
   const handleEmailChange = (value: string) => {
-    console.log("[v0] EmailStep: Email changed to:", value)
     setEmail(value)
     updateFormData({ email: value })
     setTouched(true)
@@ -62,17 +61,12 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
       const data = await response.json()
       return data
     } catch (error) {
-      console.error('[v0] EmailStep: Error checking user existence:', error)
       throw error
     }
   }
 
   const handleNext = async () => {
-    console.log("[v0] EmailStep: Next button clicked with email:", email)
-    console.log("[v0] EmailStep: Validation state:", validationState)
-    
     if (validationState !== "valid") {
-      console.log("[v0] EmailStep: Email validation failed, not proceeding")
       return
     }
 
@@ -80,11 +74,9 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
     setError("")
 
     try {
-      console.log("[v0] EmailStep: Checking user existence...")
       const userCheckResult = await checkUserExistence(email)
       
       if (userCheckResult.exists) {
-        console.log("[v0] EmailStep: Existing user found")
         // Update form data with existing user information
         updateFormData({
           email: email,
@@ -95,7 +87,6 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
           phone: userCheckResult.user.phone,
         })
       } else {
-        console.log("[v0] EmailStep: New user - proceeding with questionnaire flow")
         // Update form data for new user
         updateFormData({
           email: email,
@@ -104,10 +95,8 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
         })
       }
 
-      console.log("[v0] EmailStep: Calling onNext")
       onNext()
     } catch (error) {
-      console.error("[v0] EmailStep: Error during user check:", error)
       setError("Er is een probleem opgetreden. Probeer het opnieuw.")
     } finally {
       setIsLoading(false)
@@ -116,7 +105,6 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && validationState === "valid" && !isLoading) {
-      console.log("[v0] EmailStep: Enter key pressed, proceeding")
       handleNext()
     }
   }
@@ -179,7 +167,7 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
           <Button
             onClick={handleNext}
             disabled={validationState !== "valid" || isLoading}
-            className="w-full bg-gray-900 text-white hover:bg-gray-800 py-4 text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+            className="w-full bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 text-base disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
           >
             {isLoading ? (
               <>
