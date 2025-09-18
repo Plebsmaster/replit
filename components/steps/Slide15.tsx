@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 import { SlideContainer } from "@/components/ui/slide-container"
 import { ChoiceCard } from "@/components/ui/choice-card"
 import { getTypographyClasses } from "@/lib/typography"
-import { Button } from "@/components/ui/button"
 
 type Props = {
   onBack: () => void
@@ -16,7 +15,6 @@ type Props = {
 export default function Slide15({ onBack, onNext, selectedVariant: globalSelectedVariant, onSelectionChange }: Props) {
   const [selectedStyle, setSelectedStyle] = useState<string>("")
   const [localSelectedVariant, setLocalSelectedVariant] = useState<string | null>(globalSelectedVariant || null)
-  const [hasExistingSelection, setHasExistingSelection] = useState(false)
   
   const selectedVariant = globalSelectedVariant !== undefined ? globalSelectedVariant : localSelectedVariant
 
@@ -25,14 +23,6 @@ export default function Slide15({ onBack, onNext, selectedVariant: globalSelecte
       const style = localStorage.getItem("salonid:styleChoice") || ""
       setSelectedStyle(style)
       
-      const existing = localStorage.getItem("salonid:styleVariant")
-      if (existing && existing.includes(style)) {
-        setHasExistingSelection(true)
-        if (!selectedVariant) {
-          const variantNumber = existing.replace(style, "")
-          setLocalSelectedVariant(variantNumber)
-        }
-      }
     } catch (error) {
       // Could not load from localStorage, continue silently
     }
@@ -70,11 +60,6 @@ export default function Slide15({ onBack, onNext, selectedVariant: globalSelecte
     })
   }
 
-  const handleContinue = () => {
-    if (selectedVariant) {
-      onNext()
-    }
-  }
 
   return (
     <SlideContainer width="extraWide">
@@ -105,17 +90,6 @@ export default function Slide15({ onBack, onNext, selectedVariant: globalSelecte
           ))}
         </div>
 
-        {/* Conditional Continue Button */}
-        {hasExistingSelection && selectedVariant && (
-          <div className="mt-8 text-center">
-            <Button
-              onClick={handleContinue}
-              className="bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 text-base font-medium"
-            >
-              Doorgaan met {variants.find(variant => variant.id === selectedVariant)?.label}
-            </Button>
-          </div>
-        )}
 
       </section>
     </SlideContainer>

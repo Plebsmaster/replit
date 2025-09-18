@@ -2,9 +2,7 @@
 
 import { useState } from "react"
 import { SlideContainer } from "@/components/ui/slide-container"
-import { Button } from "@/components/ui/button"
 import { getTypographyClasses } from "@/lib/typography"
-import { ArrowRight } from "lucide-react"
 import IconButton from "./IconButton"
 
 interface Slide10Props {
@@ -62,13 +60,13 @@ export default function Slide10({ onBack, onNext }: Slide10Props) {
     } catch (error) {
       // localStorage not available, continue silently
     }
+    
+    // Auto-progress to next slide
+    queueMicrotask(() => {
+      onNext()
+    })
   }
 
-  const handleNext = () => {
-    if (selectedIcon) {
-      onNext()
-    }
-  }
 
   return (
     <SlideContainer width="extraWide">
@@ -122,17 +120,6 @@ export default function Slide10({ onBack, onNext }: Slide10Props) {
           ))}
         </div>
 
-        {/* Navigation */}
-        <div className="flex justify-center gap-4 mb-10">
-          <Button
-            onClick={handleNext}
-            disabled={!selectedIcon}
-            className="bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 text-base font-medium disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
-          >
-            Doorgaan
-            <ArrowRight className="w-5 h-5 ml-2" />
-          </Button>
-        </div>
 
         {/* Footer */}
         <div className="border-t border-gray-200 pt-4">

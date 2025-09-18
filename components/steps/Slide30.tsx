@@ -1,7 +1,6 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { ArrowRight, Leaf, Droplets, Shield, Grape, Wheat, Circle, Moon, Zap, Square } from "lucide-react"
+import { Leaf, Droplets, Shield, Grape, Wheat, Circle, Moon, Zap, Square } from "lucide-react"
 import { getTypographyClasses } from "@/lib/typography"
 import type { FormData } from "@/lib/form/schema"
 
@@ -92,9 +91,6 @@ export default function Slide12({ formData, updateFormData, onNext, onBack }: Sl
     }
   }
 
-  const handleNext = () => {
-    onNext()
-  }
 
   return (
     <div className="space-y-8">
@@ -146,15 +142,6 @@ export default function Slide12({ formData, updateFormData, onNext, onBack }: Sl
         </div>
       </div>
 
-      <div className="flex justify-between items-center">
-        <Button onClick={onBack} variant="outline" className="bg-white text-black hover:bg-gray-100 border-gray-300 px-8 py-3">
-          Terug
-        </Button>
-        <Button onClick={handleNext} className="bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 text-base font-medium">
-          Doorgaan
-          <ArrowRight className="w-5 h-5 ml-2" />
-        </Button>
-      </div>
     </div>
   )
 }

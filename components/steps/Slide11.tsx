@@ -4,7 +4,6 @@ import { useState, useMemo, useEffect } from "react"
 import { SlideContainer } from "@/components/ui/slide-container"
 import { ChoiceCard } from "@/components/ui/choice-card"
 import { getTypographyClasses } from "@/lib/typography"
-import { Button } from "@/components/ui/button"
 import type { StepProps } from "@/lib/form/steps"
 
 type Props = StepProps & {
@@ -14,22 +13,9 @@ type Props = StepProps & {
 
 export default function Slide11({ onBack, onNext, updateFormData, formData, selectedStyle: globalSelectedStyle, onSelectionChange }: Props) {
   const [localSelectedStyle, setLocalSelectedStyle] = useState<string | null>(globalSelectedStyle || null)
-  const [hasExistingSelection, setHasExistingSelection] = useState(false)
   
   const selectedStyle = globalSelectedStyle !== undefined ? globalSelectedStyle : localSelectedStyle
 
-  // Check for existing selection on mount
-  useEffect(() => {
-    try {
-      const existing = localStorage.getItem("salonid:styleChoice")
-      if (existing) {
-        setHasExistingSelection(true)
-        if (!selectedStyle) {
-          setLocalSelectedStyle(existing)
-        }
-      }
-    } catch {}
-  }, [selectedStyle])
 
   const items = useMemo(
     () => [
@@ -59,11 +45,6 @@ export default function Slide11({ onBack, onNext, updateFormData, formData, sele
     })
   }
 
-  const handleContinue = () => {
-    if (selectedStyle) {
-      onNext()
-    }
-  }
 
   return (
     <SlideContainer width="extraWide">
@@ -97,17 +78,6 @@ export default function Slide11({ onBack, onNext, updateFormData, formData, sele
           ))}
         </div>
 
-        {/* Conditional Continue Button */}
-        {hasExistingSelection && selectedStyle && (
-          <div className="mt-8 text-center">
-            <Button
-              onClick={handleContinue}
-              className="bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 text-base font-medium"
-            >
-              Doorgaan met {items.find(item => item.key === selectedStyle)?.label}
-            </Button>
-          </div>
-        )}
       </section>
     </SlideContainer>
   )
