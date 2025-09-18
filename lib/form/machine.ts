@@ -39,9 +39,9 @@ export type WizardEvent =
 // ===== Initial Context =====
 const initialContext: WizardContext = {
   formData: getDefaultFormData(),
-  currentStepId: 'email',
+  currentStepId: 'welcome',
   previousStepId: null,
-  visitedSteps: ['email'],
+  visitedSteps: ['welcome'],
   errors: {},
   isSubmitting: false,
   otpEmail: null,
