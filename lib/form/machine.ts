@@ -113,7 +113,7 @@ export const wizardActions = {
     currentStepId: ({ context }) => {
       let nextStepId = getNextStepId(context.currentStepId, context.formData)
       
-      // Skip steps that should be skipped
+      // Skip steps that should be skipped (forward only)
       while (nextStepId && shouldSkipStep(nextStepId, context.formData)) {
         nextStepId = getNextStepId(nextStepId, context.formData)
       }
@@ -121,22 +121,38 @@ export const wizardActions = {
       return nextStepId || context.currentStepId
     },
     previousStepId: ({ context }) => context.currentStepId,
+    // ATOMIC NAVIGATION: Truncate visitedSteps and add only the new step
+    visitedSteps: ({ context }) => {
+      let nextStepId = getNextStepId(context.currentStepId, context.formData)
+      
+      // Skip steps that should be skipped (forward only)
+      while (nextStepId && shouldSkipStep(nextStepId, context.formData)) {
+        nextStepId = getNextStepId(nextStepId, context.formData)
+      }
+      
+      if (nextStepId) {
+        // Find current step in visited steps
+        const currentIndex = context.visitedSteps.indexOf(context.currentStepId)
+        
+        if (currentIndex >= 0) {
+          // Truncate at current position and add new step
+          return [...context.visitedSteps.slice(0, currentIndex + 1), nextStepId]
+        } else {
+          // Current step not in visited steps, just add new step
+          return [...context.visitedSteps, nextStepId]
+        }
+      }
+      
+      return context.visitedSteps
+    },
   }),
   
   moveToPreviousStep: assign({
     currentStepId: ({ context }) => {
       const currentIndex = context.visitedSteps.indexOf(context.currentStepId)
+      // FIXED: No shouldSkipStep logic on back - always go to previous step in history
       if (currentIndex > 0) {
-        let previousIndex = currentIndex - 1
-        let previousStepId = context.visitedSteps[previousIndex]
-        
-        // Skip steps that should be skipped when going back
-        while (previousIndex > 0 && shouldSkipStep(previousStepId, context.formData)) {
-          previousIndex--
-          previousStepId = context.visitedSteps[previousIndex]
-        }
-        
-        return previousStepId
+        return context.visitedSteps[currentIndex - 1]
       }
       return context.currentStepId
     },
@@ -157,12 +173,19 @@ export const wizardActions = {
       
       return context.currentStepId
     },
+    previousStepId: ({ context }) => context.currentStepId,
+    // ATOMIC JUMP: Truncate visitedSteps and add the target step
     visitedSteps: ({ context, event }) => {
       if (event.type !== 'GO_TO_STEP') return context.visitedSteps
       
-      // FIXED: Only add to visitedSteps if step can actually be entered (same guard as currentStepId)
       if (getStep(event.stepId) && canEnterStep(event.stepId, context.formData)) {
-        if (!context.visitedSteps.includes(event.stepId)) {
+        const currentIndex = context.visitedSteps.indexOf(context.currentStepId)
+        
+        if (currentIndex >= 0) {
+          // Truncate at current position and add target step
+          return [...context.visitedSteps.slice(0, currentIndex + 1), event.stepId]
+        } else {
+          // Current step not in visited steps, just add target step
           return [...context.visitedSteps, event.stepId]
         }
       }

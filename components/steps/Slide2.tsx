@@ -10,20 +10,21 @@ type Props = {
   updateFormData: (updates: Partial<FormData>) => void
   onNext: () => void
   onBack: () => void
+  goToStep: (stepId: string) => void
 }
 
-export default function StyleSelectionStep({ formData, updateFormData, onNext, onBack }: Props) {
+export default function StyleSelectionStep({ formData, updateFormData, onNext, onBack, goToStep }: Props) {
   const [selectedStyle, setSelectedStyle] = useState<"elegant" | "modern" | null>(null)
 
   const handleStyleChoice = (style: "elegant" | "modern") => {
     setSelectedStyle(style)
-    // First update the form data with the selected style
+    
+    // ATOMIC NAVIGATION: Update form data first, then navigate directly to correct step
     updateFormData({ style })
     
-    // Auto-progress with increased delay to allow state machine to process the update
-    setTimeout(() => {
-      onNext()
-    }, 100)
+    // Navigate directly to the appropriate step based on choice
+    const targetStep = style === "elegant" ? "elegant-styles" : "modern-styles"
+    goToStep(targetStep)
   }
 
   return (

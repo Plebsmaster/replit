@@ -223,7 +223,7 @@ export function useWizard() {
 
 // ===== Step Renderer Component =====
 export function StepRenderer() {
-  const { getCurrentStepComponent, formData, updateFormData, goToNext, goToPrevious, currentStepId, verifyOtp, sendOtp } = useWizard()
+  const { getCurrentStepComponent, formData, updateFormData, goToNext, goToPrevious, goToStep, currentStepId, verifyOtp, sendOtp } = useWizard()
   
   const Component = getCurrentStepComponent()
   
@@ -252,6 +252,7 @@ export function StepRenderer() {
         updateFormData={updateFormData}
         onNext={goToNext}
         onBack={goToPrevious}
+        goToStep={goToStep}
         email={formData.email}
         onVerified={handleOtpVerified}
         verifyOtp={verifyOtp}

@@ -24,6 +24,7 @@ import {
 export interface StepProps {
   onNext: () => void
   onBack: () => void
+  goToStep: (stepId: string) => void
   formData: FormData
   updateFormData: (updates: Partial<FormData>) => void
   onSubmit?: () => Promise<void>
