@@ -164,7 +164,15 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Gegevens',
     Component: NamePhoneStep,
     schema: namePhoneSchema,
-    nextStep: (formData: Partial<FormData>): string => 'otp-verification',
+    nextStep: (formData: Partial<FormData>): string => {
+      // For new users, skip OTP and go directly to questionnaire
+      if (!formData.isExistingUser) {
+        return 'style-selection'
+      }
+      // For existing users, they should have already gone through OTP from email step
+      // This shouldn't happen in normal flow, but fallback to style-selection
+      return 'style-selection'
+    },
   }],
   
   ['otp-verification', {
@@ -173,6 +181,10 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     title: 'Verificatie',
     Component: OTPStep,
     schema: otpSchema,
+    guards: {
+      canEnter: (formData: Partial<FormData>) => formData.isExistingUser === true,
+    },
+    skipIf: (formData: Partial<FormData>) => formData.isExistingUser !== true,
     nextStep: (formData: Partial<FormData>): string => {
       // If existing user, go to dashboard login after OTP verification
       if (formData.isExistingUser) {
