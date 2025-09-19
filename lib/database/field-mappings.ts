@@ -87,6 +87,7 @@ export interface DatabaseRecord {
   'Standaard Claim Haarlak'?: string | null
   'Standaard Claim Mousse'?: string | null
   'Standaard Claim Droog Shampoo'?: string | null
+  no_yellow_claims?: Record<string, any>
 }
 
 // ===== Transformation Functions =====
@@ -398,6 +399,14 @@ export const FIELD_MAPPINGS: FieldMappings = {
     dbField: 'Standaard Claim Droog Shampoo',
     defaultValue: null,
     transform: toNullableString,
+  },
+  
+  // Custom Claims Selection (Slide 39 - Self-determined claims)
+  // Note: When user selects custom claims, these will override the auto-filled standaard claim fields
+  noYellowClaims: {
+    dbField: 'no_yellow_claims',
+    defaultValue: { shampoo: null, conditioner: null },
+    transform: toObject,
   },
   // No Yellow Ingredient Selections
   noYellowIngredients: {

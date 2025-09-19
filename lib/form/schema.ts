@@ -250,6 +250,16 @@ export const claimChoiceSchema = z.object({
   standaardClaimDroogShampoo: z.string().optional(),
 })
 
+// Step 39: No Yellow Claims Selection (Custom claims for self-determined users)
+export const slide39NoYellowClaimsSchema = z.object({
+  noYellowClaims: z.object({
+    shampoo: z.string().min(1, 'Selecteer een claim voor No Yellow Shampoo'),
+    conditioner: z.string().min(1, 'Selecteer een claim voor No Yellow Conditioner'),
+  }),
+  standaardClaimNoYellowShampoo: z.string().optional(),
+  standaardClaimNoYellowConditioner: z.string().optional(),
+})
+
 // Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
@@ -412,6 +422,12 @@ export const FormDataSchema = z.object({
   standaardClaimMousse: z.string().default(''),
   standaardClaimDroogShampoo: z.string().default(''),
   
+  // No Yellow Claims Selection (custom claims when user chooses 'self')
+  noYellowClaims: z.object({
+    shampoo: z.string(),
+    conditioner: z.string(),
+  }).default({ shampoo: '', conditioner: '' }),
+  
   // Agreements
   agreeTerms: z.boolean().default(false),
   subscribeNewsletter: z.boolean().default(false),
@@ -451,6 +467,7 @@ export type Slide35HaarserumIngredientsData = z.infer<typeof slide35HaarserumIng
 export type Slide36StylingProductsIngredientsData = z.infer<typeof slide36StylingProductsIngredientsSchema>
 export type Slide37MetZonderClaimData = z.infer<typeof slide37MetZonderClaimSchema>
 export type ClaimChoiceData = z.infer<typeof claimChoiceSchema>
+export type Slide39NoYellowClaimsData = z.infer<typeof slide39NoYellowClaimsSchema>
 export type IngredientsData = z.infer<typeof ingredientsSchema>
 export type AgreementsData = z.infer<typeof agreementsSchema>
 
@@ -534,6 +551,7 @@ export const getDefaultFormData = (): FormData => {
     marketingIngredientenMannenShampoo: '',
     haarserumIngredient: '',
     marketingIngredientenHaarserum: '',
+    noYellowClaims: { shampoo: '', conditioner: '' },
     metZonderClaim: null,
     agreeTerms: false,
     subscribeNewsletter: false,
@@ -570,6 +588,8 @@ export const stepSchemas = {
   slide35HaarserumIngredients: slide35HaarserumIngredientsSchema,
   slide36StylingProductsIngredients: slide36StylingProductsIngredientsSchema,
   slide37MetZonderClaim: slide37MetZonderClaimSchema,
+  claimChoice: claimChoiceSchema,
+  slide39NoYellowClaims: slide39NoYellowClaimsSchema,
   ingredients: ingredientsSchema,
   agreements: agreementsSchema,
 } as const
