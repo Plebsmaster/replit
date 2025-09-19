@@ -17,7 +17,24 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
   const [validationState, setValidationState] = useState<"idle" | "valid" | "invalid">("idle")
   const [touched, setTouched] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  
+  // Button text rotation states
+  const BUTTON_LABELS = ["Start je eigen merk", "Inloggen op dashboard"]
+  const [currentLabelIndex, setCurrentLabelIndex] = useState(0)
+  const [glareKey, setGlareKey] = useState(0)
 
+  // Button text rotation effect
+  useEffect(() => {
+    if (isLoading) return // Pause rotation during loading
+    
+    const rotationInterval = setInterval(() => {
+      setCurrentLabelIndex((prev) => (prev + 1) % BUTTON_LABELS.length)
+      setGlareKey((prev) => prev + 1) // Trigger glare animation
+    }, 5000) // Switch every 5 seconds
+    
+    return () => clearInterval(rotationInterval)
+  }, [isLoading])
+  
   useEffect(() => {
     if (touched) {
       const validateEmail = () => {
@@ -176,18 +193,43 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
 
           <div className="mt-6">
             <Button
-            onClick={handleNext}
-            disabled={validationState !== "valid" || isLoading}
-            className="w-full bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 text-base disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                Controleren...
-              </>
-            ) : (
-              "Start je eigen merk"
-            )}
+              onClick={handleNext}
+              disabled={validationState !== "valid" || isLoading}
+              className="w-full bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 text-base disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+              aria-label="Starten of inloggen"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  Controleren...
+                </>
+              ) : (
+                <span className="relative inline-grid grid-cols-1 grid-rows-1 glare-container">
+                  {/* Visible text that rotates */}
+                  <span 
+                    key={currentLabelIndex} 
+                    className="col-start-1 row-start-1 animate-fade-swap" 
+                    aria-hidden="true"
+                  >
+                    {BUTTON_LABELS[currentLabelIndex]}
+                  </span>
+                  
+                  {/* Invisible spacer to maintain consistent width */}
+                  <span 
+                    className="col-start-1 row-start-1 invisible" 
+                    aria-hidden="true"
+                  >
+                    Inloggen op dashboard
+                  </span>
+                  
+                  {/* Glare animation overlay */}
+                  <span 
+                    key={glareKey} 
+                    className="glare-run" 
+                    aria-hidden="true" 
+                  />
+                </span>
+              )}
             </Button>
           </div>
 
