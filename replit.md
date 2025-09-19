@@ -57,7 +57,7 @@ The application uses several database tables (SQL scripts available in `/scripts
 ## Deployment Configuration
 - **Target**: Autoscale deployment
 - **Build**: `npm run build`
-- **Start**: `npm start`
+- **Start**: `npm start -p $PORT -H 0.0.0.0` (Cloud-compatible)
 
 ## Recent Changes (September 19, 2025)
 - **COMPLETED: Fixed selection state persistence across 8+ form slides**
