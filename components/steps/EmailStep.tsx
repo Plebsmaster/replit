@@ -209,7 +209,6 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
                 <>
                   {/* Button text that changes */}
                   <span 
-                    key={currentLabelIndex} 
                     className="relative z-10 animate-fade-swap"
                     aria-hidden="true"
                   >
@@ -217,11 +216,12 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
                   </span>
                   
                   {/* Glare animation on entire button */}
-                  <span 
-                    key={glareKey} 
-                    className="glare-run" 
-                    aria-hidden="true" 
-                  />
+                  {glareKey > 0 && (
+                    <span 
+                      className="glare-run" 
+                      aria-hidden="true" 
+                    />
+                  )}
                 </>
               )}
             </Button>
