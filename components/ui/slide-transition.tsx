@@ -9,50 +9,66 @@ interface SlideTransitionProps {
   className?: string
 }
 
+interface StepState {
+  stepId: string
+  children: React.ReactNode
+  isActive: boolean
+}
+
 export function SlideTransition({ children, stepId, className = '' }: SlideTransitionProps) {
-  const [currentStep, setCurrentStep] = useState(stepId)
-  const [transitioning, setTransitioning] = useState(false)
-  const [displayedChildren, setDisplayedChildren] = useState(children)
+  const [steps, setSteps] = useState<StepState[]>([{ stepId, children, isActive: true }])
   const timeoutRef = useRef<NodeJS.Timeout>()
-
+  
   useEffect(() => {
-    // Clear any existing timeout
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-    }
-
-    // If stepId changed, start transition
-    if (stepId !== currentStep) {
-      setTransitioning(true)
-      
-      // After fade out completes, update content and fade in
-      timeoutRef.current = setTimeout(() => {
-        setCurrentStep(stepId)
-        setDisplayedChildren(children)
-        setTransitioning(false)
-      }, TRANSITION_CONFIG.fade.duration / 2)
+    const currentStep = steps.find(step => step.stepId === stepId)
+    
+    if (currentStep) {
+      // Step exists, just update children
+      setSteps(prev => prev.map(step => 
+        step.stepId === stepId 
+          ? { ...step, children }
+          : step
+      ))
     } else {
-      // Same step, just update children
-      setDisplayedChildren(children)
+      // New step - add it and deactivate others
+      setSteps(prev => [
+        ...prev.map(step => ({ ...step, isActive: false })),
+        { stepId, children, isActive: true }
+      ])
+      
+      // Clean up old steps after transition
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+      timeoutRef.current = setTimeout(() => {
+        setSteps(prev => prev.filter(step => step.isActive))
+      }, TRANSITION_CONFIG.fade.duration + 100)
     }
-
+  }, [stepId, children])
+  
+  useEffect(() => {
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current)
       }
     }
-  }, [stepId, children, currentStep])
-
-  // Generate transition styles
-  const transitionStyle: React.CSSProperties = {
-    transition: `opacity ${TRANSITION_CONFIG.fade.duration}ms ${TRANSITION_CONFIG.fade.timingFunction}, transform ${TRANSITION_CONFIG.fade.duration}ms ${TRANSITION_CONFIG.fade.timingFunction}`,
-    opacity: transitioning ? 0 : 1,
-    transform: transitioning ? 'translateY(10px)' : 'translateY(0px)',
-  }
-
+  }, [])
+  
   return (
-    <div className={className} style={transitionStyle}>
-      {displayedChildren}
+    <div className={`${className} bg-background min-h-screen overflow-hidden relative`}>
+      {steps.map((step) => (
+        <div
+          key={step.stepId}
+          className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${
+            step.isActive ? 'opacity-100' : 'opacity-0'
+          }`}
+          style={{
+            pointerEvents: step.isActive ? 'auto' : 'none',
+          }}
+        >
+          {step.children}
+        </div>
+      ))}
     </div>
   )
 }
