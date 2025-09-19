@@ -89,6 +89,7 @@ export interface DatabaseRecord {
   'Standaard Claim Droog Shampoo'?: string | null
   no_yellow_claims?: Record<string, any>
   'Quote'?: string | null
+  'Logo of merknaam'?: string | null
 }
 
 // ===== Transformation Functions =====
@@ -226,6 +227,14 @@ export const FIELD_MAPPINGS: FieldMappings = {
     defaultValue: null,
     transform: toNullableString,
   },
+  
+  // Logo/Merknaam Choice (Slide 51)
+  logoOfMerknaam: {
+    dbField: 'Logo of merknaam',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  
   naamNoYellowShampoo: {
     dbField: 'Naam No Yellow Shampoo',
     defaultValue: null,

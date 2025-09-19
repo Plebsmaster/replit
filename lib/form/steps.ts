@@ -38,6 +38,7 @@ import {
   slide45StylingClaimsSchema,
   slide46CountrySelectionSchema,
   slide49QuoteSchema,
+  slide51LogoMerknaamSchema,
   ingredientsSchema,
   agreementsSchema,
   FormData,
@@ -792,8 +793,32 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
   ['slide51', {
     id: 'slide51',
     key: 'slide51',
-    title: 'Zonder QR-Code',
+    title: 'Merkidentiteit Keuze',
+    schema: slide51LogoMerknaamSchema,
     componentFile: 'Slide51.tsx',
+    showGlobalNext: false, // Auto-advance after selection
+    showGlobalPrev: true,
+    nextStep: (formData: Partial<FormData>): string => {
+      // Conditional navigation based on logoOfMerknaam choice
+      return formData.logoOfMerknaam === 'merknaam' ? 'slide52' : 'slide53'
+    },
+  }],
+  
+  ['slide52', {
+    id: 'slide52',
+    key: 'slide52',
+    title: 'Merknaam Gekozen',
+    componentFile: 'Slide52.tsx',
+    showGlobalNext: true, // Manual continue
+    showGlobalPrev: true,
+    nextStep: (): string => 'dashboard-login',
+  }],
+  
+  ['slide53', {
+    id: 'slide53',
+    key: 'slide53',
+    title: 'Logo Gekozen',
+    componentFile: 'Slide53.tsx',
     showGlobalNext: true, // Manual continue
     showGlobalPrev: true,
     nextStep: (): string => 'dashboard-login',

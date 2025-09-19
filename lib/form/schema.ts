@@ -336,6 +336,13 @@ export const slide49QuoteSchema = z.object({
   quote: z.string().max(100, 'Quote mag maximaal 100 karakters bevatten').optional(),
 })
 
+// Step 51: Logo vs Merknaam Selection
+export const slide51LogoMerknaamSchema = z.object({
+  logoOfMerknaam: z.enum(['logo', 'merknaam'], {
+    required_error: 'Kies tussen Logo of Merknaam',
+  }),
+})
+
 // Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
@@ -392,6 +399,11 @@ export const FormDataSchema = z.object({
   
   // Quote/Slogan Input (Slide 49)
   quote: z.string().max(100, 'Quote mag maximaal 100 karakters bevatten').default(''),
+  
+  // Logo/Merknaam Choice (Slide 51)
+  logoOfMerknaam: z.enum(['logo', 'merknaam'], {
+    required_error: 'Kies logo of merknaam',
+  }).nullable().default(null),
   
   // Product Names - Auto-fillable fields
   naamNoYellowShampoo: z.string().default(''),
@@ -726,6 +738,7 @@ export const stepSchemas = {
   slide45StylingClaims: slide45StylingClaimsSchema,
   slide46CountrySelection: slide46CountrySelectionSchema,
   slide49Quote: slide49QuoteSchema,
+  slide51LogoMerknaam: slide51LogoMerknaamSchema,
   ingredients: ingredientsSchema,
   agreements: agreementsSchema,
 } as const
