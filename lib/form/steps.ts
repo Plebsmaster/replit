@@ -353,6 +353,26 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     },
   }],
 
+  ['slide17', {
+    id: 'slide17',
+    key: 'slide17Color',
+    title: 'Kleurselectie',
+    schema: slide16ColorSchema, // Reuse same schema as it uses kleurZwartWit field
+    componentFile: 'Slide17.tsx',
+    showGlobalNext: false, // Auto-continue
+    showGlobalPrev: true,
+    nextStep: (formData: Partial<FormData>): string => {
+      if (formData.kleurZwartWit === 'Zwart') {
+        return 'slide19'
+      } else if (formData.kleurZwartWit === 'Kleur') {
+        return 'slide18'
+      } else if (formData.kleurZwartWit === 'Wit') {
+        return 'slide19'
+      }
+      return 'ingredients' // fallback
+    },
+  }],
+
   // Final Steps
   ['ingredients', {
     id: 'ingredients',
