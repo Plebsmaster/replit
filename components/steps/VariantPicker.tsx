@@ -8,15 +8,35 @@ import { variantContent } from "@/lib/slide-content-config"
 import type { StepProps } from "@/lib/form/steps"
 
 export default function VariantPicker({ formData, updateFormData, goToStep, stepKey }: StepProps & { stepKey?: string }) {
+  // Key aliasing to handle different step ID formats
+  const keyAliases: Record<string, string> = {
+    'elegant-styles': 'slide3',
+    'modern-styles': 'slide11',
+    'modern1-variant': 'slide12',
+    'modern2-variant': 'slide13',
+    'modern3-variant': 'slide15',
+    'modern6-variant': 'slide15',
+    'elegant-variant1': 'slide4',
+    'elegant-variant2': 'slide5'
+  }
+  
   // Determine if we're on elegant or modern path based on formData
   const isElegant = formData.style === "elegant" || formData.elegantStyle
-  const currentStepKey = stepKey || (isElegant ? "elegant-variant1" : "modern-variant1")
+  const rawStepKey = stepKey || (isElegant ? "elegant-variant1" : "modern-variant1")
+  const currentStepKey = keyAliases[rawStepKey] || rawStepKey
   
   // Get the variant options for this step from config
-  const config = variantContent[currentStepKey as keyof typeof variantContent]
+  let config = variantContent[currentStepKey as keyof typeof variantContent]
   if (!config) {
-    console.error(`No config found for variant step: ${currentStepKey}`)
-    return null
+    console.warn(`No config found for variant step: ${rawStepKey} (resolved to: ${currentStepKey}), trying fallback`)
+    // Try fallback based on style
+    const fallbackKey = isElegant ? 'slide3' : 'slide11'
+    config = variantContent[fallbackKey]
+    if (!config) {
+      console.error(`Fallback config also not found for ${fallbackKey}`)
+      return null
+    }
+    console.log(`Using fallback config for ${fallbackKey}`)
   }
 
   const currentValue = isElegant ? formData.elegantStyle : formData.modernStyle

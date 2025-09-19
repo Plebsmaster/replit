@@ -7,6 +7,27 @@
 // VARIANT CONFIGURATIONS
 // ============================================
 export const variantContent: Record<string, any> = {
+  // Alias entries for semantic IDs
+  'elegant-styles': {
+    title: 'Kies je template',
+    description: 'Selecteer een elegant variant die het beste bij jouw salon past.',
+    style: 'elegant',
+    columns: 2,
+    options: [
+      { key: 'elegant', label: 'Elegant Template', dbValue: 'elegant', imageSrc: '/img/slide3/elegant-template.jpg' }
+    ],
+    nextStep: 'slide4'
+  },
+  'modern-styles': {
+    title: 'Kies je template',
+    description: 'Selecteer een modern variant die het beste bij jouw salon past.',
+    style: 'modern',
+    columns: 2,
+    options: [
+      { key: 'modern', label: 'Modern Template', dbValue: 'modern', imageSrc: '/img/slide11/modern-template.jpg' }
+    ],
+    nextStep: 'slide12'
+  },
   'slide3': {
     title: 'Kies je template',
     description: 'Selecteer een elegant variant die het beste bij jouw salon past.',
