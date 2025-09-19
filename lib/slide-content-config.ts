@@ -16,7 +16,7 @@ export const variantContent: Record<string, any> = {
     options: [
       { key: 'elegant', label: 'Elegant Template', dbValue: 'elegant', imageSrc: '/img/slide3/elegant-template.jpg' }
     ],
-    nextStep: 'slide4'
+    nextStep: 'elegant-variant1'
   },
   'modern-styles': {
     title: 'Kies je template',
@@ -26,7 +26,7 @@ export const variantContent: Record<string, any> = {
     options: [
       { key: 'modern', label: 'Modern Template', dbValue: 'modern', imageSrc: '/img/slide11/modern-template.jpg' }
     ],
-    nextStep: 'slide12'
+    nextStep: 'modern1-variant'
   },
   'slide3': {
     title: 'Kies je template',
@@ -36,7 +36,7 @@ export const variantContent: Record<string, any> = {
     options: [
       { key: 'elegant', label: 'Elegant Template', dbValue: 'elegant', imageSrc: '/img/slide3/elegant-template.jpg' }
     ],
-    nextStep: 'slide4'
+    nextStep: 'elegant-variant1'
   },
   'slide11': {
     title: 'Kies je template',
@@ -46,12 +46,12 @@ export const variantContent: Record<string, any> = {
     options: [
       { key: 'modern', label: 'Modern Template', dbValue: 'modern', imageSrc: '/img/slide11/modern-template.jpg' }
     ],
-    nextStep: 'slide12'
+    nextStep: 'modern1-variant'
   },
   'slide4': {
     title: 'Kies je Elegant template variant 1',
     description: 'Selecteer een van de twee elegant varianten die het beste bij jouw salon past.',
-    nextStep: 'slide5',
+    nextStep: 'elegant-variant2',
     columns: 2,
     options: [
       { key: 'elegant-1-1', label: 'Elegant 1.1', dbValue: 'Elegant 1.1', imageSrc: '/img/slide4/elegant-1-1.jpg' },
@@ -61,7 +61,7 @@ export const variantContent: Record<string, any> = {
   'slide5': {
     title: 'Kies je Elegant template variant 2',
     description: 'Selecteer een van de twee elegant varianten die het beste bij jouw salon past.',
-    nextStep: 'slide6',
+    nextStep: 'color-scheme',
     columns: 2,
     options: [
       { key: 'elegant-2-1', label: 'Elegant 2.1', dbValue: 'Elegant 2.1', imageSrc: '/img/slide5/elegant-2-1.jpg' },
@@ -71,7 +71,7 @@ export const variantContent: Record<string, any> = {
   'slide12': {
     title: 'Kies je Modern template variant',
     description: 'Selecteer een modern variant die het beste bij jouw salon past.',
-    nextStep: 'slide13',
+    nextStep: 'modern2-variant',
     columns: 3,
     options: [
       { key: 'modern1', label: 'Modern 1.1', dbValue: 'modern1', imageSrc: '/img/slide12/modern1.jpg' },
@@ -82,7 +82,7 @@ export const variantContent: Record<string, any> = {
   'slide13': {
     title: 'Kies je Modern template variant 2',
     description: 'Selecteer een modern variant die het beste bij jouw salon past.',
-    nextStep: 'slide14',
+    nextStep: 'color-scheme',
     columns: 2,
     options: [
       { key: 'modern6', label: 'Modern 2.1', dbValue: 'modern6', imageSrc: '/img/slide13/modern6.jpg' }
@@ -91,7 +91,7 @@ export const variantContent: Record<string, any> = {
   'slide15': {
     title: 'Kies je Modern template variant 3',
     description: 'Selecteer een modern variant die het beste bij jouw salon past.',
-    nextStep: 'slide16',
+    nextStep: 'color-scheme',
     columns: 2,
     options: [
       { key: 'modern3-1', label: 'Modern 3.1', dbValue: 'Modern 3.1', imageSrc: '/img/slide15/modern-3-1.jpg' },
@@ -101,7 +101,7 @@ export const variantContent: Record<string, any> = {
   'elegant-variant1': {
     title: 'Kies je Elegant template variant 1',
     description: 'Selecteer een van de twee elegant varianten die het beste bij jouw salon past.',
-    nextStep: 'slide5',
+    nextStep: 'color-scheme',
     columns: 2,
     options: [
       { key: 'elegant-1-1', label: 'Elegant 1.1', dbValue: 'Elegant 1.1', imageSrc: '/img/slide4/elegant-1-1.jpg' },
@@ -121,7 +121,7 @@ export const variantContent: Record<string, any> = {
   'modern-variant1': {
     title: 'Kies je Modern template variant',
     description: 'Selecteer een modern variant die het beste bij jouw salon past.',
-    nextStep: 'modern-variant2',
+    nextStep: 'color-scheme',
     columns: 3,
     options: [
       { key: 'modern1', label: 'Modern 1.1', dbValue: 'modern1', imageSrc: '/img/slide12/modern1.jpg' },
@@ -132,7 +132,7 @@ export const variantContent: Record<string, any> = {
   'modern-variant2': {
     title: 'Kies je Modern template variant 2',
     description: 'Selecteer een modern variant die het beste bij jouw salon past.',
-    nextStep: 'modern-variant3',
+    nextStep: 'color-scheme',
     columns: 2,
     options: [
       { key: 'modern6', label: 'Modern 2.1', dbValue: 'modern6', imageSrc: '/img/slide13/modern6.jpg' }
@@ -141,7 +141,7 @@ export const variantContent: Record<string, any> = {
   'modern-variant3': {
     title: 'Kies je Modern template variant 3',
     description: 'Selecteer een modern variant die het beste bij jouw salon past.',
-    nextStep: 'slide16',
+    nextStep: 'color-scheme',
     columns: 2,
     options: [
       { key: 'modern3-1', label: 'Modern 3.1', dbValue: 'Modern 3.1', imageSrc: '/img/slide15/modern-3-1.jpg' },
@@ -159,8 +159,8 @@ export const colorChoiceContent: Record<string, any> = {
     description: 'Wil je een zwart-wit schema of liever met kleur?',
     columns: 2,
     options: [
-      { key: 'zwart-wit', label: 'Zwart-wit', dbValue: 'Zwart-wit', imageSrc: '/img/slide6/zwart-wit.jpg', nextStep: 'slide7' },
-      { key: 'kleur', label: 'Kleur', dbValue: 'Kleur', imageSrc: '/img/slide6/kleur.jpg', nextStep: 'slide7' }
+      { key: 'zwart-wit', label: 'Zwart-wit', dbValue: 'Zwart-wit', imageSrc: '/img/slide6/zwart-wit.jpg', nextStep: 'final-color' },
+      { key: 'kleur', label: 'Kleur', dbValue: 'Kleur', imageSrc: '/img/slide6/kleur.jpg', nextStep: 'final-color' }
     ]
   },
   'slide6': {
@@ -168,8 +168,8 @@ export const colorChoiceContent: Record<string, any> = {
     description: 'Wil je een zwart-wit schema of liever met kleur?',
     columns: 2,
     options: [
-      { key: 'zwart-wit', label: 'Zwart-wit', dbValue: 'Zwart-wit', imageSrc: '/img/slide6/zwart-wit.jpg', nextStep: 'slide7' },
-      { key: 'kleur', label: 'Kleur', dbValue: 'Kleur', imageSrc: '/img/slide6/kleur.jpg', nextStep: 'slide7' }
+      { key: 'zwart-wit', label: 'Zwart-wit', dbValue: 'Zwart-wit', imageSrc: '/img/slide6/zwart-wit.jpg', nextStep: 'final-color' },
+      { key: 'kleur', label: 'Kleur', dbValue: 'Kleur', imageSrc: '/img/slide6/kleur.jpg', nextStep: 'final-color' }
     ]
   },
   'slide16': {
@@ -177,8 +177,8 @@ export const colorChoiceContent: Record<string, any> = {
     description: 'Wil je een zwart-wit schema of liever met kleur?',
     columns: 2,
     options: [
-      { key: 'zwart-wit', label: 'Zwart-wit', dbValue: 'Zwart-wit', imageSrc: '/img/slide16/zwart-wit.jpg', nextStep: 'slide17' },
-      { key: 'kleur', label: 'Kleur', dbValue: 'Kleur', imageSrc: '/img/slide16/kleur.jpg', nextStep: 'slide17' }
+      { key: 'zwart-wit', label: 'Zwart-wit', dbValue: 'Zwart-wit', imageSrc: '/img/slide16/zwart-wit.jpg', nextStep: 'final-color' },
+      { key: 'kleur', label: 'Kleur', dbValue: 'Kleur', imageSrc: '/img/slide16/kleur.jpg', nextStep: 'final-color' }
     ]
   },
   'slide7': {
@@ -186,9 +186,9 @@ export const colorChoiceContent: Record<string, any> = {
     description: 'Kies het kleurenpalet dat past bij jouw salon.',
     columns: 3,
     options: [
-      { key: 'soft-tones', label: 'Soft Tones', dbValue: 'Soft Tones', imageSrc: '/img/slide7/soft-tones.jpg', nextStep: 'slide8' },
-      { key: 'warm-naturals', label: 'Warm Naturals', dbValue: 'Warm Naturals', imageSrc: '/img/slide7/warm-naturals.jpg', nextStep: 'slide8' },
-      { key: 'deep-elegance', label: 'Deep Elegance', dbValue: 'Deep Elegance', imageSrc: '/img/slide7/deep-elegance.jpg', nextStep: 'slide8' }
+      { key: 'soft-tones', label: 'Soft Tones', dbValue: 'Soft Tones', imageSrc: '/img/slide7/soft-tones.jpg', nextStep: 'color-palette' },
+      { key: 'warm-naturals', label: 'Warm Naturals', dbValue: 'Warm Naturals', imageSrc: '/img/slide7/warm-naturals.jpg', nextStep: 'color-palette' },
+      { key: 'deep-elegance', label: 'Deep Elegance', dbValue: 'Deep Elegance', imageSrc: '/img/slide7/deep-elegance.jpg', nextStep: 'color-palette' }
     ]
   },
   'slide17': {
@@ -196,9 +196,9 @@ export const colorChoiceContent: Record<string, any> = {
     description: 'Kies het kleurenpalet dat past bij jouw salon.',
     columns: 3,
     options: [
-      { key: 'soft-tones', label: 'Soft Tones', dbValue: 'Soft Tones', imageSrc: '/img/slide17/soft-tones.jpg', nextStep: 'slide18' },
-      { key: 'warm-naturals', label: 'Warm Naturals', dbValue: 'Warm Naturals', imageSrc: '/img/slide17/warm-naturals.jpg', nextStep: 'slide18' },
-      { key: 'deep-elegance', label: 'Deep Elegance', dbValue: 'Deep Elegance', imageSrc: '/img/slide17/deep-elegance.jpg', nextStep: 'slide18' }
+      { key: 'soft-tones', label: 'Soft Tones', dbValue: 'Soft Tones', imageSrc: '/img/slide17/soft-tones.jpg', nextStep: 'color-palette' },
+      { key: 'warm-naturals', label: 'Warm Naturals', dbValue: 'Warm Naturals', imageSrc: '/img/slide17/warm-naturals.jpg', nextStep: 'color-palette' },
+      { key: 'deep-elegance', label: 'Deep Elegance', dbValue: 'Deep Elegance', imageSrc: '/img/slide17/deep-elegance.jpg', nextStep: 'color-palette' }
     ]
   }
 }
@@ -544,7 +544,7 @@ export const binaryChoiceContent: Record<string, any> = {
         dbValue: 'met-claim',
         explanation: 'Producten met duidelijke beloftes en specifieke voordelen die worden gecommuniceerd naar je klanten.',
         imageSrc: '/icon-with.png',
-        nextStep: 'slide38'
+        nextStep: 'source-shampoo'
       },
       {
         key: 'zonder-claim',
