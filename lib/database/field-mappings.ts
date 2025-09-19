@@ -376,6 +376,16 @@ export const FIELD_MAPPINGS: FieldMappings = {
     defaultValue: null,
     transform: toNullableString,
   },
+  haarserumIngredient: {
+    dbField: 'Haarserum ingrediënt',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  marketingIngredientenHaarserum: {
+    dbField: 'Marketing ingredienten Haarserum',
+    defaultValue: null,
+    transform: toNullableString,
+  },
 }
 
 // ===== Utility Functions =====

@@ -195,6 +195,12 @@ export const slide34MannenShampooIngredientsSchema = z.object({
   marketingIngredientenMannenShampoo: z.string().optional(),
 })
 
+// Step 35: Haarserum Ingredients Selection
+export const slide35HaarserumIngredientsSchema = z.object({
+  haarserumIngredient: z.string().min(1, 'Selecteer een ingrediënt voor Haarserum'),
+  marketingIngredientenHaarserum: z.string().optional(),
+})
+
 // Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
@@ -313,6 +319,10 @@ export const FormDataSchema = z.object({
   mannenShampooIngredient: z.string().default(''),
   marketingIngredientenMannenShampoo: z.string().default(''),
   
+  // Haarserum Ingredient
+  haarserumIngredient: z.string().default(''),
+  marketingIngredientenHaarserum: z.string().default(''),
+  
   // Agreements
   agreeTerms: z.boolean().default(false),
   subscribeNewsletter: z.boolean().default(false),
@@ -348,6 +358,7 @@ export type Slide31RepairIngredientsData = z.infer<typeof slide31RepairIngredien
 export type Slide32ColorIngredientsData = z.infer<typeof slide32ColorIngredientsSchema>
 export type Slide33CurlyGirlIngredientsData = z.infer<typeof slide33CurlyGirlIngredientsSchema>
 export type Slide34MannenShampooIngredientsData = z.infer<typeof slide34MannenShampooIngredientsSchema>
+export type Slide35HaarserumIngredientsData = z.infer<typeof slide35HaarserumIngredientsSchema>
 export type IngredientsData = z.infer<typeof ingredientsSchema>
 export type AgreementsData = z.infer<typeof agreementsSchema>
 
@@ -429,6 +440,8 @@ export const getDefaultFormData = (): FormData => {
     marketingIngredientenColorMask: '',
     mannenShampooIngredient: '',
     marketingIngredientenMannenShampoo: '',
+    haarserumIngredient: '',
+    marketingIngredientenHaarserum: '',
     agreeTerms: false,
     subscribeNewsletter: false,
   }
@@ -461,6 +474,7 @@ export const stepSchemas = {
   slide32ColorIngredients: slide32ColorIngredientsSchema,
   slide33CurlyGirlIngredients: slide33CurlyGirlIngredientsSchema,
   slide34MannenShampooIngredients: slide34MannenShampooIngredientsSchema,
+  slide35HaarserumIngredients: slide35HaarserumIngredientsSchema,
   ingredients: ingredientsSchema,
   agreements: agreementsSchema,
 } as const
