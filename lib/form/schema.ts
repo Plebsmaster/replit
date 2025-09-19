@@ -272,6 +272,18 @@ export const slide40RepairClaimsSchema = z.object({
   standaardClaimRepairMask: z.string().optional(),
 })
 
+// Step 41: Color Claims Selection (Custom claims for self-determined users)
+export const slide41ColorClaimsSchema = z.object({
+  colorClaims: z.object({
+    shampoo: z.string().min(1, 'Selecteer een claim voor Color Shampoo'),
+    conditioner: z.string().min(1, 'Selecteer een claim voor Color Conditioner'),
+    mask: z.string().min(1, 'Selecteer een claim voor Color Mask'),
+  }),
+  standaardClaimColorShampoo: z.string().optional(),
+  standaardClaimColorConditioner: z.string().optional(),
+  standaardClaimColorMask: z.string().optional(),
+})
+
 // Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
@@ -446,6 +458,13 @@ export const FormDataSchema = z.object({
     conditioner: z.string(),
     mask: z.string(),
   }).default({ shampoo: '', conditioner: '', mask: '' }),
+
+  // Color Claims Selection (custom claims when user chooses 'self')
+  colorClaims: z.object({
+    shampoo: z.string(),
+    conditioner: z.string(),
+    mask: z.string(),
+  }).default({ shampoo: '', conditioner: '', mask: '' }),
   
   // Agreements
   agreeTerms: z.boolean().default(false),
@@ -488,6 +507,7 @@ export type Slide37MetZonderClaimData = z.infer<typeof slide37MetZonderClaimSche
 export type ClaimChoiceData = z.infer<typeof claimChoiceSchema>
 export type Slide39NoYellowClaimsData = z.infer<typeof slide39NoYellowClaimsSchema>
 export type Slide40RepairClaimsData = z.infer<typeof slide40RepairClaimsSchema>
+export type Slide41ColorClaimsData = z.infer<typeof slide41ColorClaimsSchema>
 export type IngredientsData = z.infer<typeof ingredientsSchema>
 export type AgreementsData = z.infer<typeof agreementsSchema>
 

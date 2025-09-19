@@ -31,6 +31,7 @@ import {
   claimChoiceSchema,
   slide39NoYellowClaimsSchema,
   slide40RepairClaimsSchema,
+  slide41ColorClaimsSchema,
   ingredientsSchema,
   agreementsSchema,
   FormData,
@@ -679,9 +680,20 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
   
   ['slide41', {
     id: 'slide41',
-    key: 'slide41',
-    title: 'Volgende Stap',
+    key: 'slide41ColorClaims',
+    title: 'Color - Kies de claims',
+    schema: slide41ColorClaimsSchema,
     componentFile: 'Slide41.tsx',
+    showGlobalNext: true, // Manual continue
+    showGlobalPrev: true,
+    nextStep: (): string => 'slide42',
+  }],
+
+  ['slide42', {
+    id: 'slide42',
+    key: 'slide42',
+    title: 'Volgende Stap',
+    componentFile: 'Slide42.tsx',
     showGlobalNext: true, // Manual continue
     showGlobalPrev: true,
     nextStep: (): string => 'dashboard-login',
