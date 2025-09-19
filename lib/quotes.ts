@@ -1,7 +1,7 @@
 // Quotes for the SalonID Design form
 // Add your 200 quotes to this array. Each quote will appear and disappear above the footer.
 
-export const quotes = [
+export const quotes: string[] = [
   // Add your quotes here in this format:
   // "Your first inspiring quote here",
   // "Second quote about beauty and style",
@@ -16,7 +16,7 @@ export const quotes = [
   
   // Add the remaining 195 quotes below...
   // Simply paste them as strings separated by commas
-] as const
+]
 
 // Function to get a random quote
 export function getRandomQuote(): string {
