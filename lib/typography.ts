@@ -2,31 +2,31 @@ export const typography = {
   // Main titles (slide headings)
   title: {
     className: "text-3xl font-bold leading-tight tracking-tight text-foreground mb-10",
-    mobile: "text-2xl mb-8",
+    mobile: "text-2xl mb-8 font-bold text-foreground",
   },
 
   // Subtitle text (descriptions under titles)
   subtitle: {
     className: "text-lg text-foreground/80 leading-relaxed mb-8",
-    mobile: "text-base mb-6",
+    mobile: "text-base mb-6 text-foreground/80",
   },
 
   // Choice card titles
   cardTitle: {
     className: "text-lg font-semibold leading-normal text-foreground mb-2",
-    mobile: "text-base mb-1",
+    mobile: "text-base mb-1 font-semibold text-foreground",
   },
 
   // Choice card descriptions
   cardDescription: {
     className: "text-sm text-foreground/70 leading-relaxed mb-3",
-    mobile: "text-xs mb-2",
+    mobile: "text-xs mb-2 text-foreground/70",
   },
 
   // Button text
   button: {
     className: "text-base font-medium leading-none text-foreground",
-    mobile: "text-sm",
+    mobile: "text-sm font-medium text-foreground",
   },
 
   // Form labels
