@@ -9,28 +9,14 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // Disable telemetry
-  telemetry: false,
   // Optimize webpack for deployment stability
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     // Reduce webpack parallel processing to avoid Jest worker conflicts
     if (!dev) {
-      config.optimization.minimize = true;
-      config.optimization.parallelism = 1;
-      config.stats = 'errors-only';
-      
-      // Limit chunk size to avoid memory issues
-      config.optimization.splitChunks = {
-        ...config.optimization.splitChunks,
-        maxSize: 244000,
-        cacheGroups: {
-          ...config.optimization.splitChunks.cacheGroups,
-          default: {
-            minChunks: 1,
-            priority: -20,
-            reuseExistingChunk: true,
-          },
-        },
+      config.parallelism = 1;
+      config.optimization = {
+        ...config.optimization,
+        minimize: true,
       };
     }
     return config;
