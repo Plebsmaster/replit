@@ -1,0 +1,46 @@
+// Curly Girl Shampoo section
+const curlyGirlShampooAnswers = [
+  { text: '1. "Curly Girl Shampoo"', dbValue: '"1. Curly Girl Shampoo"' },
+  { text: '2. "Curly Care Shampoo"', dbValue: '"2. Curly Care Shampoo"' },
+  { text: '3. "Curly Balance Shampoo"', dbValue: '"3. Curly Balance Shampoo"' },
+  { text: '4. "Curl Control Shampoo"', dbValue: '"4. Curl Control Shampoo"' },
+  { text: '5. "Curl Hydrate Shampoo"', dbValue: '"5. Curl Hydrate Shampoo"' }
+];
+
+// Curly Girl Conditioner section  
+const curlyGirlConditionerAnswers = [
+  { text: '1. "Curly Girl Conditioner"', dbValue: '"1. Curly Girl Conditioner"' },
+  { text: '2. "Curly Care Conditioner"', dbValue: '"2. Curly Care Conditioner"' },
+  { text: '3. "Curly Balance Conditioner"', dbValue: '"3. Curly Balance Conditioner"' },
+  { text: '4. "Curl Control Conditioner"', dbValue: '"4. Curl Control Conditioner"' },
+  { text: '5. "Curl Hydrate Conditioner"', dbValue: '"5. Curl Hydrate Conditioner"' }
+];
+
+// Curly Girl Mask section
+const curlyGirlMaskAnswers = [
+  { text: '1. "Curly Girl Mask"', dbValue: '"1. Curly Girl Mask"' },
+  { text: '2. "Curly Care Mask"', dbValue: '"2. Curly Care Mask"' },
+  { text: '3. "Curly Balance Mask"', dbValue: '"3. Curly Balance Mask"' },
+  { text: '4. "Curl Control Mask"', dbValue: '"4. Curl Control Mask"' },
+  { text: '5. "Curl Hydrate Mask"', dbValue: '"5. Curl Hydrate Mask"' }
+];
+
+// Database columns: 'Naam Curly Girl Shampoo', 'Naam Curly Girl Conditioner', 'Naam Curly Girl Mask'
+// Default selections: option 1 for all three (as shown with black dots)
+// Next slide: Slide26 after all selections made
+const handleCurlyGirlShampooSelection = (answer) => {
+  updateDatabase('Naam Curly Girl Shampoo', answer.dbValue);
+};
+
+const handleCurlyGirlConditionerSelection = (answer) => {
+  updateDatabase('Naam Curly Girl Conditioner', answer.dbValue);
+};
+
+const handleCurlyGirlMaskSelection = (answer) => {
+  updateDatabase('Naam Curly Girl Mask', answer.dbValue);
+};
+
+const handleContinue = () => {
+  // Continue to next slide after all three products selected
+  navigateToSlide('Slide26');
+};

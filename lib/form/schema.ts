@@ -115,6 +115,11 @@ export const slide19IconSchema = z.object({
   icoonJaNee: z.string().min(1, 'Kies een optie'),
 })
 
+// Step 20: Slide20 Icon Choice Selection
+export const iconChoiceSchema = z.object({
+  iconChoice: z.string().min(1, 'Kies een icoon'),
+})
+
 // Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
@@ -160,6 +165,9 @@ export const FormDataSchema = z.object({
   // Slide19 Icon Selection
   icoonJaNee: z.string().default(''),
   
+  // Slide20 Icon Choice Selection
+  iconChoice: z.string().default(''),
+  
   // Ingredients
   ingredients: z.array(z.string()).default([]),
   
@@ -189,6 +197,7 @@ export type IconSelectionData = z.infer<typeof iconSelectionSchema>
 export type ModernStyleData = z.infer<typeof modernStyleSchema>
 export type Slide16ColorData = z.infer<typeof slide16ColorSchema>
 export type Slide19IconData = z.infer<typeof slide19IconSchema>
+export type IconChoiceData = z.infer<typeof iconChoiceSchema>
 export type IngredientsData = z.infer<typeof ingredientsSchema>
 export type AgreementsData = z.infer<typeof agreementsSchema>
 
@@ -228,6 +237,7 @@ export const getDefaultFormData = (): FormData => {
     selectedIcon: false,
     kleurZwartWit: '',
     icoonJaNee: '',
+    iconChoice: '',
     ingredients: [],
     agreeTerms: false,
     subscribeNewsletter: false,
@@ -252,6 +262,7 @@ export const stepSchemas = {
   modernStyle: modernStyleSchema,
   slide16Color: slide16ColorSchema,
   slide19Icon: slide19IconSchema,
+  iconChoice: iconChoiceSchema,
   ingredients: ingredientsSchema,
   agreements: agreementsSchema,
 } as const

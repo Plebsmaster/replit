@@ -16,6 +16,7 @@ import {
   modernStyleSchema,
   slide16ColorSchema,
   slide19IconSchema,
+  iconChoiceSchema,
   ingredientsSchema,
   agreementsSchema,
   FormData,
@@ -396,14 +397,33 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     nextStep: (formData: Partial<FormData>): string => {
       // Conditional navigation based on icon choice
       if (formData.icoonJaNee === 'met-icoon') {
-        // TODO: Replace 'ingredients' with 'slide20' when Slide20 component is created
-        return 'ingredients' // Fallback to ingredients for now
+        return 'slide20'
       } else if (formData.icoonJaNee === 'zonder-icoon') {
-        // TODO: Replace 'ingredients' with 'slide21' when Slide21 component is created
-        return 'ingredients' // Fallback to ingredients for now
+        return 'slide21'
       }
       return 'ingredients' // Default fallback
     },
+  }],
+
+  ['slide20', {
+    id: 'slide20',
+    key: 'iconChoice',
+    title: 'Icoon Selectie (Slide 20)',
+    schema: iconChoiceSchema,
+    componentFile: 'Slide20.tsx',
+    showGlobalNext: false, // Auto-continue
+    showGlobalPrev: true,
+    nextStep: (formData: Partial<FormData>): string => 'slide21',
+  }],
+
+  ['slide21', {
+    id: 'slide21',
+    key: 'slide21',
+    title: 'Volgende Stap (Slide 21)',
+    componentFile: 'Slide21.tsx',
+    showGlobalNext: false, // Auto-continue
+    showGlobalPrev: true,
+    nextStep: (formData: Partial<FormData>): string => 'ingredients',
   }],
 
   // Final Steps
