@@ -28,19 +28,30 @@ function WizardNavigation() {
   const headerRef = useRef<HTMLDivElement>(null)
   const [headerHeight, setHeaderHeight] = useState(0)
 
-  // Dynamically calculate header height
+  // Dynamically calculate header height with proper timing
   useEffect(() => {
     const calculateHeaderHeight = () => {
       if (headerRef.current) {
         const height = headerRef.current.offsetHeight
-        setHeaderHeight(height)
-        // Set CSS custom property for global use
-        document.documentElement.style.setProperty('--dynamic-header-height', `${height}px`)
+        // Only update if we get a meaningful height
+        if (height > 0) {
+          setHeaderHeight(height)
+          // Set CSS custom property for global use
+          document.documentElement.style.setProperty('--dynamic-header-height', `${height}px`)
+          // Header height calculated successfully
+        }
       }
     }
 
-    // Initial calculation
-    calculateHeaderHeight()
+    if (showStickyNav) {
+      // Use requestAnimationFrame to ensure DOM is fully rendered
+      requestAnimationFrame(() => {
+        calculateHeaderHeight()
+        
+        // Fallback: try again after a short delay in case of timing issues
+        setTimeout(calculateHeaderHeight, 100)
+      })
+    }
 
     // Recalculate on window resize
     window.addEventListener('resize', calculateHeaderHeight)
@@ -83,7 +94,7 @@ function WizardNavigation() {
       <div 
         style={{
           paddingTop: showStickyNav 
-            ? `calc(var(--dynamic-header-height, ${headerHeight}px) + 2rem)` 
+            ? `calc(var(--dynamic-header-height, ${Math.max(headerHeight, 120)}px) + 2rem)` 
             : (process.env.NODE_ENV === 'development' ? '5rem' : '3rem'),
           paddingBottom: showStickyNav ? '5rem' : '2rem'
         }}
