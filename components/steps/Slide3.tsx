@@ -17,11 +17,11 @@ export default function Slide3({ onBack, onNext, updateFormData, formData, selec
 
   const answers = useMemo(
     () => [
-      { text: "Elegant 1", nextSlide: "slide4", dbValue: null, key: "elegant1", imageSrc: "/img/slide3/e1.jpg" },
-      { text: "Elegant 2", nextSlide: "slide5", dbValue: null, key: "elegant2", imageSrc: "/img/slide3/e2.jpg" },
-      { text: "Elegant 3", nextSlide: "slide7", dbValue: "Elegant 3.", key: "elegant3", imageSrc: "/img/slide3/e3.jpg" },
-      { text: "Elegant 4", nextSlide: "slide6", dbValue: "Elegant 4.", key: "elegant4", imageSrc: "/img/slide3/e4.jpg" },
-      { text: "Elegant 5", nextSlide: "slide6", dbValue: "Elegant 5.", key: "elegant5", imageSrc: "/img/slide3/e5.jpg" },
+      { text: "Elegant 1", nextSlide: "elegant-variant1", dbValue: null, key: "elegant1", imageSrc: "/img/slide3/e1.jpg" },
+      { text: "Elegant 2", nextSlide: "elegant-variant2", dbValue: null, key: "elegant2", imageSrc: "/img/slide3/e2.jpg" },
+      { text: "Elegant 3", nextSlide: "final-color", dbValue: "Elegant 3.", key: "elegant3", imageSrc: "/img/slide3/e3.jpg" },
+      { text: "Elegant 4", nextSlide: "color-scheme", dbValue: "Elegant 4.", key: "elegant4", imageSrc: "/img/slide3/e4.jpg" },
+      { text: "Elegant 5", nextSlide: "color-scheme", dbValue: "Elegant 5.", key: "elegant5", imageSrc: "/img/slide3/e5.jpg" },
     ],
     [],
   )

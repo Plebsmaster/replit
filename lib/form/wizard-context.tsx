@@ -309,6 +309,7 @@ export function StepRenderer() {
           onVerified={handleOtpVerified}
           verifyOtp={verifyOtp}
           sendOtp={sendOtp}
+          stepKey={displayedStepId}
         />
       </Suspense>
     </div>

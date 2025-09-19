@@ -22,14 +22,14 @@ export default function Slide4({ onBack, onNext, selectedVariant: globalSelected
     () => [
       { 
         text: "Uitlijning links", 
-        nextSlide: "slide6", 
+        nextSlide: "color-scheme", 
         dbValue: "Elegant 1.1",
         key: "Variant 1",
         imageSrc: "/img/slide4/variant1.jpg"
       },
       { 
         text: "Uitlijning midden", 
-        nextSlide: "slide6", 
+        nextSlide: "color-scheme", 
         dbValue: "Elegant 1.2",
         key: "Variant 2",
         imageSrc: "/img/slide4/variant2.jpg"

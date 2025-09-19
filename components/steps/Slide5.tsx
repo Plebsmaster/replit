@@ -18,7 +18,7 @@ export default function Slide5({ onBack, onNext, goToStep, updateFormData: propU
   const answers = [
     { 
       text: "Uitlijning links", 
-      nextSlide: "slide6", 
+      nextSlide: "color-scheme", 
       dbValue: "Elegant 2.1",
       key: "1",
       label: "Uitlijning links",
@@ -26,7 +26,7 @@ export default function Slide5({ onBack, onNext, goToStep, updateFormData: propU
     },
     { 
       text: "Uitlijning midden", 
-      nextSlide: "slide6", 
+      nextSlide: "color-scheme", 
       dbValue: "Elegant 2.2",
       key: "2", 
       label: "Uitlijning midden",

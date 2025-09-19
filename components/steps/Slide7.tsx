@@ -17,7 +17,7 @@ export default function Slide7({ onBack, onNext, goToStep }: Props) {
   const answers = [
     { 
       text: "Zwart", 
-      nextSlide: "slide9", 
+      nextSlide: "icon-choice", 
       dbValue: "Zwart",
       key: "Zwart",
       label: "Zwart",
@@ -26,7 +26,7 @@ export default function Slide7({ onBack, onNext, goToStep }: Props) {
     },
     { 
       text: "Kleur", 
-      nextSlide: "slide8", 
+      nextSlide: "color-palette", 
       dbValue: "Kleur",
       key: "Kleur",
       label: "Kleur",
@@ -35,7 +35,7 @@ export default function Slide7({ onBack, onNext, goToStep }: Props) {
     },
     { 
       text: "Wit", 
-      nextSlide: "slide9", 
+      nextSlide: "icon-choice", 
       dbValue: "Wit",
       key: "Wit", 
       label: "Wit",

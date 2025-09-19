@@ -25,17 +25,24 @@ export default function IconYesNoSlide({
   stepKey 
 }: IconYesNoSlideProps) {
   // Determine which slide this is from the wizard context or props
-  const actualStepKey = stepKey || 'slide9' // Default for backwards compatibility
   const userContext = getUserContext(formData)
   const isElegantPath = userContext.style === 'elegant'
   
+  // Map canonical IDs to legacy IDs for navigation config lookup
+  const stepKeyMap: Record<string, string> = {
+    'icon-choice': 'slide9',
+    'slide9': 'slide9',
+    'slide19': 'slide19'
+  }
+  const configKey = stepKeyMap[stepKey || ''] || (isElegantPath ? 'slide9' : 'slide19')
+  
   // Get the appropriate images and navigation based on path
   const images = isElegantPath ? slideImages.iconYesNo.elegant : slideImages.iconYesNo.modern
-  const navigation = navigationConfig.iconYesNo[actualStepKey as keyof typeof navigationConfig.iconYesNo]
+  const navigation = navigationConfig.iconYesNo[configKey as keyof typeof navigationConfig.iconYesNo]
   
   // Determine field name based on which slide this is
-  const fieldName = actualStepKey === 'slide9' ? 'iconChoice' : 'icoonJaNee'
-  const secondaryField = actualStepKey === 'slide9' ? 'selectedIcon' : null
+  const fieldName = configKey === 'slide9' ? 'iconChoice' : 'icoonJaNee'
+  const secondaryField = configKey === 'slide9' ? 'selectedIcon' : null
   
   const [selectedOption, setSelectedOption] = useState<string | null>(formData[fieldName] || null)
 

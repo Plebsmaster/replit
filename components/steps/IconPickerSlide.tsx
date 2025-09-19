@@ -5,7 +5,7 @@ import { useWizard } from "@/lib/form/wizard-context"
 import { SlideContainer } from "@/components/ui/slide-container"
 import { getTypographyClasses } from "@/lib/typography"
 import IconButton from "./IconButton"
-import { getIconSet, navigationConfig } from "@/lib/slide-content-config"
+import { getIconSet, navigationConfig, getUserContext } from "@/lib/slide-content-config"
 
 interface IconPickerSlideProps {
   formData: any
@@ -25,13 +25,22 @@ export default function IconPickerSlide({
   stepKey 
 }: IconPickerSlideProps) {
   // Determine which slide this is from the wizard context or props
-  const actualStepKey = stepKey || 'slide10' // Default for backwards compatibility
+  const userContext = getUserContext(formData)
+  const isElegantPath = userContext.style === 'elegant'
+  
+  // Map canonical IDs to legacy IDs
+  const stepKeyMap: Record<string, string> = {
+    'icon-selection': 'slide10',
+    'slide10': 'slide10',
+    'slide20': 'slide20'
+  }
+  const configKey = stepKeyMap[stepKey || ''] || (isElegantPath ? 'slide10' : 'slide20')
   
   // Get the appropriate icon set based on user's path
   const icons = getIconSet(formData)
   
   // Determine field name based on which slide this is  
-  const fieldName = actualStepKey === 'slide10' ? 'iconSelection' : 'icoonSelection'
+  const fieldName = configKey === 'slide10' ? 'iconSelection' : 'icoonSelection'
   
   const [selectedIcon, setSelectedIcon] = useState<string | null>(formData[fieldName] || null)
 
