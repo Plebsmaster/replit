@@ -37,6 +37,7 @@ import {
   slide44HaarseurumClaimsSchema,
   slide45StylingClaimsSchema,
   slide46CountrySelectionSchema,
+  slide49QuoteSchema,
   ingredientsSchema,
   agreementsSchema,
   FormData,
@@ -765,8 +766,9 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
   
   ['slide49', {
     id: 'slide49',
-    key: 'slide49',
+    key: 'slide49Quote',
     title: 'Met Slogan',
+    schema: slide49QuoteSchema,
     componentFile: 'Slide49.tsx',
     showGlobalNext: true, // Manual continue
     showGlobalPrev: true,

@@ -88,6 +88,7 @@ export interface DatabaseRecord {
   'Standaard Claim Mousse'?: string | null
   'Standaard Claim Droog Shampoo'?: string | null
   no_yellow_claims?: Record<string, any>
+  'Quote'?: string | null
 }
 
 // ===== Transformation Functions =====
@@ -216,6 +217,13 @@ export const FIELD_MAPPINGS: FieldMappings = {
   verkoopland: {
     dbField: 'Verkoopland',
     defaultValue: 'NL',
+    transform: toNullableString,
+  },
+  
+  // Quote/Slogan Input (Slide 49)
+  quote: {
+    dbField: 'Quote',
+    defaultValue: null,
     transform: toNullableString,
   },
   naamNoYellowShampoo: {

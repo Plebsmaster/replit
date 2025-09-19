@@ -331,6 +331,11 @@ export const slide46CountrySelectionSchema = z.object({
   }),
 })
 
+// Step 49: Quote/Slogan Input
+export const slide49QuoteSchema = z.object({
+  quote: z.string().max(100, 'Quote mag maximaal 100 karakters bevatten').optional(),
+})
+
 // Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
@@ -384,6 +389,9 @@ export const FormDataSchema = z.object({
   
   // Country Selection (Slide 46)
   verkoopland: z.enum(['NL', 'DE', 'BE']).default('NL'),
+  
+  // Quote/Slogan Input (Slide 49)
+  quote: z.string().max(100, 'Quote mag maximaal 100 karakters bevatten').default(''),
   
   // Product Names - Auto-fillable fields
   naamNoYellowShampoo: z.string().default(''),
@@ -717,6 +725,7 @@ export const stepSchemas = {
   slide44HaarseurumClaims: slide44HaarseurumClaimsSchema,
   slide45StylingClaims: slide45StylingClaimsSchema,
   slide46CountrySelection: slide46CountrySelectionSchema,
+  slide49Quote: slide49QuoteSchema,
   ingredients: ingredientsSchema,
   agreements: agreementsSchema,
 } as const
