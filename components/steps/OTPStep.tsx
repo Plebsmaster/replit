@@ -232,6 +232,7 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, fo
                 ref={singleInputRef}
                 type="text"
                 inputMode="numeric"
+                pattern="[0-9]*"
                 maxLength={6}
                 value={otpValue}
                 onChange={handleOtpChange}
@@ -241,6 +242,7 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, fo
                 disabled={isVerifying || isGeneratingInitial}
                 autoComplete="one-time-code"
                 placeholder=""
+                aria-label="Enter 6-digit verification code"
               />
               
               {/* Visual representation of OTP boxes */}

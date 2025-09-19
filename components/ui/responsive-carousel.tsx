@@ -27,28 +27,17 @@ export function ResponsiveCarousel({
   const [currentIndex, setCurrentIndex] = useState(0)
   const [touchStart, setTouchStart] = useState(0)
   const [touchEnd, setTouchEnd] = useState(0)
-  const [isMobile, setIsMobile] = useState(false)
   const carouselRef = useRef<HTMLDivElement>(null)
 
-  // Detect mobile device
+  // Auto-scroll to selected item
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
-
-  // Auto-scroll to selected item on mobile
-  useEffect(() => {
-    if (isMobile && selectedItem) {
+    if (selectedItem) {
       const selectedIndex = items.findIndex(item => item.key === selectedItem)
       if (selectedIndex !== -1) {
         setCurrentIndex(selectedIndex)
       }
     }
-  }, [selectedItem, items, isMobile])
+  }, [selectedItem, items])
 
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchStart(e.targetTouches[0].clientX)
@@ -85,17 +74,17 @@ export function ResponsiveCarousel({
     }
   }
 
-  // Desktop grid layout
-  if (!isMobile) {
-    const gridClass = columns === 2 
-      ? "grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto"
-      : columns === 3
-      ? "grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto"
-      : columns === 4
-      ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto"
-      : "grid grid-cols-1 gap-8 max-w-5xl mx-auto"
-    
-    return (
+  const gridClass = columns === 2 
+    ? "hidden md:grid md:grid-cols-2 gap-8 max-w-5xl mx-auto"
+    : columns === 3
+    ? "hidden md:grid md:grid-cols-3 gap-8 max-w-6xl mx-auto"
+    : columns === 4
+    ? "hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto"
+    : "hidden md:grid md:grid-cols-1 gap-8 max-w-5xl mx-auto"
+
+  return (
+    <>
+      {/* Desktop grid layout */}
       <div className={gridClass}>
         {items.map((item) => (
           <ChoiceCard
@@ -108,11 +97,9 @@ export function ResponsiveCarousel({
           />
         ))}
       </div>
-    )
-  }
 
-  // Mobile carousel layout
-  return (
+      {/* Mobile carousel layout */}
+      <div className="md:hidden">
     <div className="relative w-full">
       {/* Carousel Container */}
       <div 
@@ -197,5 +184,7 @@ export function ResponsiveCarousel({
         </span>
       </div>
     </div>
+      </div>
+    </>
   )
 }
