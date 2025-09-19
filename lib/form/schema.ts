@@ -226,6 +226,30 @@ export const slide37MetZonderClaimSchema = z.object({
   }),
 })
 
+// Step 38: Claim Choice Selection (SalonID vs Self)
+export const claimChoiceSchema = z.object({
+  claimChoice: z.enum(['SalonID', 'self'], {
+    required_error: 'Kies een optie voor claims',
+  }).nullable(),
+  // 16 Standard Claim fields (auto-filled when SalonID is chosen)
+  standaardClaimNoYellowShampoo: z.string().optional(),
+  standaardClaimNoYellowConditioner: z.string().optional(),
+  standaardClaimRepairShampoo: z.string().optional(),
+  standaardClaimRepairConditioner: z.string().optional(),
+  standaardClaimRepairMask: z.string().optional(),
+  standaardClaimColorShampoo: z.string().optional(),
+  standaardClaimColorConditioner: z.string().optional(),
+  standaardClaimColorMask: z.string().optional(),
+  standaardClaimCurlyGirlShampoo: z.string().optional(),
+  standaardClaimCurlyGirlConditioner: z.string().optional(),
+  standaardClaimCurlyGirlMask: z.string().optional(),
+  standaardClaimMannenShampoo: z.string().optional(),
+  standaardClaimHaarserum: z.string().optional(),
+  standaardClaimHaarlak: z.string().optional(),
+  standaardClaimMousse: z.string().optional(),
+  standaardClaimDroogShampoo: z.string().optional(),
+})
+
 // Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
@@ -367,6 +391,27 @@ export const FormDataSchema = z.object({
   // Met/Zonder Claim Selection
   metZonderClaim: z.enum(['met-claim', 'zonder-claim']).nullable().default(null),
   
+  // Claim Choice (Step 38)
+  claimChoice: z.enum(['SalonID', 'self']).nullable().default(null),
+  
+  // 16 Standard Claim fields (auto-filled when SalonID is chosen)
+  standaardClaimNoYellowShampoo: z.string().default(''),
+  standaardClaimNoYellowConditioner: z.string().default(''),
+  standaardClaimRepairShampoo: z.string().default(''),
+  standaardClaimRepairConditioner: z.string().default(''),
+  standaardClaimRepairMask: z.string().default(''),
+  standaardClaimColorShampoo: z.string().default(''),
+  standaardClaimColorConditioner: z.string().default(''),
+  standaardClaimColorMask: z.string().default(''),
+  standaardClaimCurlyGirlShampoo: z.string().default(''),
+  standaardClaimCurlyGirlConditioner: z.string().default(''),
+  standaardClaimCurlyGirlMask: z.string().default(''),
+  standaardClaimMannenShampoo: z.string().default(''),
+  standaardClaimHaarserum: z.string().default(''),
+  standaardClaimHaarlak: z.string().default(''),
+  standaardClaimMousse: z.string().default(''),
+  standaardClaimDroogShampoo: z.string().default(''),
+  
   // Agreements
   agreeTerms: z.boolean().default(false),
   subscribeNewsletter: z.boolean().default(false),
@@ -405,6 +450,7 @@ export type Slide34MannenShampooIngredientsData = z.infer<typeof slide34MannenSh
 export type Slide35HaarserumIngredientsData = z.infer<typeof slide35HaarserumIngredientsSchema>
 export type Slide36StylingProductsIngredientsData = z.infer<typeof slide36StylingProductsIngredientsSchema>
 export type Slide37MetZonderClaimData = z.infer<typeof slide37MetZonderClaimSchema>
+export type ClaimChoiceData = z.infer<typeof claimChoiceSchema>
 export type IngredientsData = z.infer<typeof ingredientsSchema>
 export type AgreementsData = z.infer<typeof agreementsSchema>
 

@@ -28,6 +28,7 @@ import {
   slide35HaarserumIngredientsSchema,
   slide36StylingProductsIngredientsSchema,
   slide37MetZonderClaimSchema,
+  claimChoiceSchema,
   ingredientsSchema,
   agreementsSchema,
   FormData,
@@ -635,9 +636,28 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
   
   ['slide38', {
     id: 'slide38',
-    key: 'slide38',
-    title: 'Met Claim Vervolg',
+    key: 'slide38ClaimChoice',
+    title: 'Claim Keuze',
+    schema: claimChoiceSchema,
     componentFile: 'Slide38.tsx',
+    showGlobalNext: false, // Auto-advance on selection
+    showGlobalPrev: true,
+    nextStep: (formData: Partial<FormData>): string => {
+      // Navigation based on claim choice
+      if (formData.claimChoice === 'SalonID') {
+        return 'slide46'
+      } else if (formData.claimChoice === 'self') {
+        return 'slide39'
+      }
+      return 'dashboard-login' // Default fallback
+    },
+  }],
+  
+  ['slide39', {
+    id: 'slide39',
+    key: 'slide39',
+    title: 'Zelf Claims Bepalen',
+    componentFile: 'Slide39.tsx',
     showGlobalNext: true, // Manual continue
     showGlobalPrev: true,
     nextStep: (): string => 'dashboard-login',

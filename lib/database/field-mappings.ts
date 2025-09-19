@@ -70,6 +70,23 @@ export interface DatabaseRecord {
   'Naam Cream Paste'?: string | null
   'Naam Mannen Shampoo'?: string | null
   'Naam Haarserum'?: string | null
+  claim_choice?: string | null
+  'Standaard Claim No Yellow Shampoo'?: string | null
+  'Standaard Claim No Yellow Conditioner'?: string | null
+  'Standaard Claim Repair Shampoo'?: string | null
+  'Standaard Claim Repair Conditioner'?: string | null
+  'Standaard Claim Repair Mask'?: string | null
+  'Standaard Claim Color Shampoo'?: string | null
+  'Standaard Claim Color Conditioner'?: string | null
+  'Standaard Claim Color Mask'?: string | null
+  'Standaard Claim Curly Girl Shampoo'?: string | null
+  'Standaard Claim Curly Girl Conditioner'?: string | null
+  'Standaard Claim Curly Girl Mask'?: string | null
+  'Standaard Claim Mannen Shampoo'?: string | null
+  'Standaard Claim Haarserum'?: string | null
+  'Standaard Claim Haarlak'?: string | null
+  'Standaard Claim Mousse'?: string | null
+  'Standaard Claim Droog Shampoo'?: string | null
 }
 
 // ===== Transformation Functions =====
@@ -290,6 +307,95 @@ export const FIELD_MAPPINGS: FieldMappings = {
   },
   naamHaarserum: {
     dbField: 'Naam Haarserum',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  
+  // Claim Choice (Step 38)
+  claimChoice: {
+    dbField: 'claim_choice',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  
+  // 16 Standard Claim fields (auto-filled when SalonID is chosen)
+  standaardClaimNoYellowShampoo: {
+    dbField: 'Standaard Claim No Yellow Shampoo',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  standaardClaimNoYellowConditioner: {
+    dbField: 'Standaard Claim No Yellow Conditioner',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  standaardClaimRepairShampoo: {
+    dbField: 'Standaard Claim Repair Shampoo',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  standaardClaimRepairConditioner: {
+    dbField: 'Standaard Claim Repair Conditioner',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  standaardClaimRepairMask: {
+    dbField: 'Standaard Claim Repair Mask',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  standaardClaimColorShampoo: {
+    dbField: 'Standaard Claim Color Shampoo',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  standaardClaimColorConditioner: {
+    dbField: 'Standaard Claim Color Conditioner',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  standaardClaimColorMask: {
+    dbField: 'Standaard Claim Color Mask',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  standaardClaimCurlyGirlShampoo: {
+    dbField: 'Standaard Claim Curly Girl Shampoo',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  standaardClaimCurlyGirlConditioner: {
+    dbField: 'Standaard Claim Curly Girl Conditioner',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  standaardClaimCurlyGirlMask: {
+    dbField: 'Standaard Claim Curly Girl Mask',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  standaardClaimMannenShampoo: {
+    dbField: 'Standaard Claim Mannen Shampoo',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  standaardClaimHaarserum: {
+    dbField: 'Standaard Claim Haarserum',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  standaardClaimHaarlak: {
+    dbField: 'Standaard Claim Haarlak',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  standaardClaimMousse: {
+    dbField: 'Standaard Claim Mousse',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  standaardClaimDroogShampoo: {
+    dbField: 'Standaard Claim Droog Shampoo',
     defaultValue: null,
     transform: toNullableString,
   },
