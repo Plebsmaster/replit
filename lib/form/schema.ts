@@ -435,6 +435,9 @@ export const FormDataSchema = z.object({
   processCompleted: z.boolean().optional().default(false),
   processCompletedAt: z.string().optional().default(''),
   
+  // Ingredient Choice (Slide 29)
+  ingredientChoice: z.enum(['salonid', 'self']).optional(),
+  
   // Product Names - Auto-fillable fields
   naamNoYellowShampoo: z.string().default(''),
   naamNoYellowConditioner: z.string().default(''),

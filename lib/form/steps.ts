@@ -539,15 +539,19 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     nextStep: (formData: Partial<FormData>): string => 'slide29',
   }],
 
-  // SalonID naming flow (when user chooses "Keuze door SalonID")
+  // Ingredient Choice (when user chooses how to select ingredients)
   ['slide29', {
     id: 'slide29',
     key: 'slide29',
-    title: 'SalonID Product Namen',
+    title: 'Ingrediënten Keuze',
     componentFile: 'Slide29.tsx',
-    showGlobalNext: false, // Auto-continue - names are pre-filled
+    showGlobalNext: false, // Auto-continue on selection
     showGlobalPrev: true,
-    nextStep: (formData: Partial<FormData>): string => 'ingredients',
+    nextStep: (formData: Partial<FormData>): string | null => {
+      if (formData.ingredientChoice === 'salonid') return 'slide37'
+      if (formData.ingredientChoice === 'self') return 'ingredients'
+      return null
+    },
   }],
 
   // Final Steps
