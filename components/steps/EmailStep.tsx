@@ -11,6 +11,9 @@ import { getTypographyClasses } from "@/lib/typography"
 import type { StepProps } from "@/lib/form/steps"
 import Image from "next/image"
 
+// Button label constants - outside component to prevent re-renders
+const BUTTON_LABELS = ["Start je eigen merk", "Inloggen op dashboard"]
+
 export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
   const [email, setEmail] = useState(formData.email || "")
   const [error, setError] = useState("")
@@ -19,7 +22,6 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
   const [isLoading, setIsLoading] = useState(false)
   
   // Button text rotation states
-  const BUTTON_LABELS = ["Start je eigen merk", "Inloggen op dashboard"]
   const [currentLabelIndex, setCurrentLabelIndex] = useState(0)
   const [glareKey, setGlareKey] = useState(0)
 
@@ -195,7 +197,7 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
             <Button
               onClick={handleNext}
               disabled={validationState !== "valid" || isLoading}
-              className="w-full bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 text-base disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+              className="relative w-full bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 text-base disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 overflow-hidden"
               aria-label="Starten of inloggen"
             >
               {isLoading ? (
@@ -204,31 +206,23 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
                   Controleren...
                 </>
               ) : (
-                <span className="relative inline-grid grid-cols-1 grid-rows-1 glare-container">
-                  {/* Visible text that rotates */}
+                <>
+                  {/* Button text that changes */}
                   <span 
                     key={currentLabelIndex} 
-                    className="col-start-1 row-start-1 animate-fade-swap" 
+                    className="relative z-10 animate-fade-swap"
                     aria-hidden="true"
                   >
                     {BUTTON_LABELS[currentLabelIndex]}
                   </span>
                   
-                  {/* Invisible spacer to maintain consistent width */}
-                  <span 
-                    className="col-start-1 row-start-1 invisible" 
-                    aria-hidden="true"
-                  >
-                    Inloggen op dashboard
-                  </span>
-                  
-                  {/* Glare animation overlay */}
+                  {/* Glare animation on entire button */}
                   <span 
                     key={glareKey} 
                     className="glare-run" 
                     aria-hidden="true" 
                   />
-                </span>
+                </>
               )}
             </Button>
           </div>
