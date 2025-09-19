@@ -27,8 +27,8 @@ export function QuoteDisplay() {
   if (quotes.length === 0) return null
 
   return (
-    <div className="fixed bottom-20 left-0 right-0 z-10 pointer-events-none">
-      <div className="max-w-4xl mx-auto px-4 text-center">
+    <div className="w-full pointer-events-none">
+      <div className="text-center">
         <p
           className={`
             text-sm md:text-base text-gray-600 italic

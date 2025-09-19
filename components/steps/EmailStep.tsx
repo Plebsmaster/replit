@@ -18,22 +18,12 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
   const [touched, setTouched] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [buttonText, setButtonText] = useState("Doorgaan")
-  const [showTagline, setShowTagline] = useState(true)
 
   // Button text animation effect
   useEffect(() => {
     const interval = setInterval(() => {
       setButtonText((prev) => prev === "Doorgaan" ? "Inloggen op dashboard" : "Doorgaan")
     }, 3000) // Switch every 3 seconds
-    return () => clearInterval(interval)
-  }, [])
-
-  // Tagline animation effect
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setShowTagline(false)
-      setTimeout(() => setShowTagline(true), 500)
-    }, 5000) // Fade out and in every 5 seconds
     return () => clearInterval(interval)
   }, [])
 
@@ -160,19 +150,13 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
             <Image 
               src="/salonid.svg" 
               alt="SalonID logo" 
-              width={200} 
-              height={80}
+              width={280} 
+              height={120}
               priority
             />
           </div>
-          {/* Animated tagline */}
-          <p className={`font-['Poppins',sans-serif] text-xl text-gray-700 transition-opacity duration-500 ${
-            showTagline ? 'opacity-100' : 'opacity-0'
-          }`}>
-            Your dream, your brand - We make it happen
-          </p>
-          <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} max-w-2xl mx-auto mt-4`}>
-            Voer je e-mailadres in om te beginnen. Als je al een account hebt, log je automatisch in op je dashboard.
+          <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} max-w-2xl mx-auto`}>
+            Start nu je eigen merk of ga direct naar je dashboard.
           </p>
         </div>
 
@@ -220,7 +204,7 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
 
           <div className="mt-4 text-center">
             <p className={getTypographyClasses("paragraph", { alignment: "center", removeSpacing: true })}>
-              Nieuw hier? We vragen je daarna om je naam en telefoonnummer.
+              Hulp nodig? <a href="https://salonid.com/pages/contact" target="_blank" rel="noopener noreferrer" className="text-black underline hover:text-gray-700">Klantenservice</a>
             </p>
           </div>
         </div>

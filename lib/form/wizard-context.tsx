@@ -301,11 +301,16 @@ export function WizardProgressBar() {
   const { progress } = useWizard()
   
   return (
-    <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden mb-10">
-      <div
-        className="h-full bg-gradient-to-r from-gray-800 to-black transition-all duration-300 ease-out"
-        style={{ width: `${progress}%` }}
-      />
+    <div className="flex items-center gap-4">
+      <div className="flex-1 bg-gray-200 rounded-full h-2 overflow-hidden">
+        <div
+          className="h-full bg-gradient-to-r from-gray-800 to-black transition-all duration-300 ease-out"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+      <span className="text-sm font-medium text-gray-700 min-w-[45px]">
+        {Math.round(progress)}%
+      </span>
     </div>
   )
 }
@@ -321,23 +326,23 @@ export function StepNavigation() {
   
   return (
     <div className="flex justify-between items-center">
-      {showGlobalPrev && (
+      {showGlobalPrev ? (
         <button
           onClick={goToPrevious}
           disabled={!canGoPrevious()}
-          className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300 transition-colors"
+          className="px-8 py-2 bg-black text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-800 transition-colors min-w-[100px]"
         >
           Terug
         </button>
+      ) : (
+        <div className="min-w-[100px]" /> // Consistent spacer width
       )}
-      
-      {!showGlobalPrev && <div />} {/* Spacer for consistent layout when prev button is hidden */}
       
       {showGlobalNext && (
         <button
           onClick={goToNext}
           disabled={!canGoNext()}
-          className="px-4 py-2 bg-black text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-800 transition-colors"
+          className="px-8 py-2 bg-black text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-800 transition-colors"
         >
           Doorgaan
         </button>
