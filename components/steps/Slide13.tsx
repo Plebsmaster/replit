@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { SlideContainer } from "@/components/ui/slide-container"
-import { ChoiceCard } from "@/components/ui/choice-card"
+import { ResponsiveCarousel } from "@/components/ui/responsive-carousel"
 import { getTypographyClasses } from "@/lib/typography"
 
 type Props = {
@@ -32,13 +32,13 @@ export default function Slide13({ formData, updateFormData, onBack, onNext, sele
 
   const variants = [
     {
-      id: "1",
+      key: "1",
       label: "Uitlijning links",
       imageSrc: "/img/elegant2/variant1.jpg",
       alt: "Modern 2 Variant 1 - Left alignment",
     },
     {
-      id: "2",
+      key: "2",
       label: "Uitlijning midden",
       imageSrc: "/img/elegant2/variant2.jpg",
       alt: "Modern 2 Variant 2 - Center alignment",
@@ -79,19 +79,13 @@ export default function Slide13({ formData, updateFormData, onBack, onNext, sele
           </p>
         </div>
 
-        {/* Grid met 2 varianten */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {variants.map((variant) => (
-            <ChoiceCard
-              key={variant.id}
-              label={variant.label}
-              imageSrc={variant.imageSrc}
-              alt={variant.alt}
-              isSelected={selectedVariant === variant.id}
-              onClick={() => handleChooseVariant(variant.id)}
-            />
-          ))}
-        </div>
+        {/* Responsive Carousel met 2 varianten */}
+        <ResponsiveCarousel
+          items={variants}
+          selectedItem={selectedVariant}
+          onItemClick={handleChooseVariant}
+          columns={2}
+        />
 
 
       </section>
