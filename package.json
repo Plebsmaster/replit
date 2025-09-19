@@ -7,7 +7,7 @@
     "build:safe": "NODE_OPTIONS='--max_old_space_size=4096' NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next build --no-lint",
     "dev": "NEXT_TELEMETRY_DISABLED=1 next dev",
     "lint": "next lint",
-    "start": "next start",
+    "start": "next start -p $PORT -H 0.0.0.0",
     "clean": "rm -rf .next node_modules/.cache",
     "prebuild": "npm run clean"
   },
