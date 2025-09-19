@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { SlideContainer } from "@/components/ui/slide-container"
-import { ChoiceCard } from "@/components/ui/choice-card"
+import { ResponsiveCarousel } from "@/components/ui/responsive-carousel"
 import { getTypographyClasses } from "@/lib/typography"
 
 interface Slide9Props {
@@ -17,7 +17,7 @@ export default function Slide9({ formData, updateFormData, onBack, onNext }: Sli
 
   const handleOptionSelect = (option: string) => {
     setSelectedOption(option)
-    updateFormData({ iconChoice: option, selectedIcon: option === 'with' })
+    updateFormData({ iconChoice: option, selectedIcon: option === 'with-icon' })
     try {
       localStorage.setItem("salonid:iconChoice", option)
       localStorage.setItem("salonid:dateISO", new Date().toISOString())
@@ -27,6 +27,21 @@ export default function Slide9({ formData, updateFormData, onBack, onNext }: Sli
     // Direct doorgaan naar volgende stap zoals in Slide2
     onNext()
   }
+
+  const iconOptions = [
+    {
+      key: "with-icon",
+      label: "Met Icoon",
+      imageSrc: "/icon-with.png",
+      alt: "Met icoon",
+    },
+    {
+      key: "without-icon", 
+      label: "Zonder Icoon",
+      imageSrc: "/icon-without.png",
+      alt: "Zonder icoon",
+    },
+  ]
 
   return (
     <SlideContainer width="wide">
@@ -52,22 +67,12 @@ export default function Slide9({ formData, updateFormData, onBack, onNext }: Sli
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mt-8">
-          <ChoiceCard
-            label="Met Icoon"
-            imageSrc="/icon-with.png"
-            alt="Met icoon"
-            isSelected={selectedOption === "with-icon"}
-            onClick={() => handleOptionSelect("with-icon")}
-          />
-          <ChoiceCard
-            label="Zonder Icoon"
-            imageSrc="/icon-without.png"
-            alt="Zonder icoon"
-            isSelected={selectedOption === "without-icon"}
-            onClick={() => handleOptionSelect("without-icon")}
-          />
-        </div>
+        <ResponsiveCarousel
+          items={iconOptions}
+          selectedItem={selectedOption}
+          onItemClick={handleOptionSelect}
+          columns={2}
+        />
       </section>
     </SlideContainer>
   )
