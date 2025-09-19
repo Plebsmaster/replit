@@ -26,6 +26,7 @@ export type WizardEvent =
   | { type: 'NEXT' }
   | { type: 'BACK' }
   | { type: 'GO_TO_STEP'; stepId: string }
+  | { type: 'DEBUG_GOTO_STEP'; stepId: string }  // Debug-only bypass for development
   | { type: 'OTP_SENT'; email: string }
   | { type: 'OTP_VERIFIED' }
   | { type: 'OTP_FAILED'; error: string }
@@ -188,6 +189,40 @@ export const wizardActions = {
           // Current step not in visited steps, just add target step
           return [...context.visitedSteps, event.stepId]
         }
+      }
+      
+      return context.visitedSteps
+    },
+  }),
+  
+  debugJumpToStep: assign({
+    currentStepId: ({ context, event }) => {
+      if (event.type !== 'DEBUG_GOTO_STEP') return context.currentStepId
+      
+      // In debug mode, bypass all guards and validation - just go to the step
+      if (process.env.NODE_ENV === 'development' && getStep(event.stepId)) {
+        console.log(`[Wizard Debug] Jumping directly to step: ${event.stepId}`)
+        return event.stepId
+      }
+      
+      return context.currentStepId
+    },
+    previousStepId: ({ context }) => context.currentStepId,
+    visitedSteps: ({ context, event }) => {
+      if (event.type !== 'DEBUG_GOTO_STEP') return context.visitedSteps
+      
+      // In debug mode, ensure the step is in visited steps
+      const stepId = event.stepId
+      if (process.env.NODE_ENV === 'development' && getStep(stepId)) {
+        const currentIndex = context.visitedSteps.indexOf(context.currentStepId)
+        
+        // Truncate at current and add the debug step
+        if (currentIndex >= 0) {
+          return [...context.visitedSteps.slice(0, currentIndex + 1), stepId]
+        }
+        
+        // Just add it if current isn't in visited
+        return [...context.visitedSteps, stepId]
       }
       
       return context.visitedSteps
@@ -381,6 +416,13 @@ export const wizardMachine = createMachine({
             GO_TO_STEP: {
               target: 'jumping',
             },
+            DEBUG_GOTO_STEP: {
+              target: 'debugJumping',
+              guard: ({ event }) => {
+                // Only allow in development mode
+                return process.env.NODE_ENV === 'development' && !!getStep(event.stepId)
+              },
+            },
             SUBMIT: {
               target: '#wizard.submitting',
               guard: 'canSubmit',
@@ -408,6 +450,11 @@ export const wizardMachine = createMachine({
         
         jumping: {
           entry: ['jumpToStep', 'ensureCurrentStepInVisited'],
+          always: 'idle',
+        },
+        
+        debugJumping: {
+          entry: ['debugJumpToStep', 'ensureCurrentStepInVisited'],
           always: 'idle',
         },
         

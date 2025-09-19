@@ -111,44 +111,9 @@ export function WizardProvider({ children }: { children: ReactNode }) {
     
     console.log(`[Wizard] Debug navigation: Bypassing all checks and jumping to "${stepId}"`)
     
-    // Simple approach: just try normal navigation first
-    send({ type: 'GO_TO_STEP', stepId })
-    
-    // If that didn't work (due to guards), force it by updating the context
-    setTimeout(() => {
-      const currentState = service.getSnapshot()
-      if (currentState.context.currentStepId !== stepId) {
-        console.log(`[Wizard] Normal navigation blocked, forcing debug navigation to ${stepId}`)
-        
-        // Force the step change by sending UPDATE_FORM_DATA events
-        send({ 
-          type: 'UPDATE_FORM_DATA', 
-          data: { 
-            ...currentState.context.formData,
-            __debugCurrentStep: stepId 
-          } 
-        })
-        
-        // Update the internal state by patching the machine context directly
-        const machine = service.getSnapshot()
-        if (machine.context.currentStepId !== stepId) {
-          // Last resort: direct property assignment (dev only)
-          try {
-            Object.assign(machine.context, {
-              currentStepId: stepId,
-              visitedSteps: machine.context.visitedSteps.includes(stepId) 
-                ? machine.context.visitedSteps 
-                : [...machine.context.visitedSteps, stepId]
-            })
-            // Trigger re-render
-            send({ type: 'UPDATE_FORM_DATA', data: {} })
-          } catch (error) {
-            console.error('[Wizard] Debug navigation failed:', error)
-          }
-        }
-      }
-    }, 50)
-  }, [send, service])
+    // Use the proper DEBUG_GOTO_STEP event that bypasses guards
+    send({ type: 'DEBUG_GOTO_STEP', stepId })
+  }, [send])
   
   const submitForm = React.useCallback(() => {
     send({ type: 'SUBMIT' })
