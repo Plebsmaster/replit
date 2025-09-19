@@ -369,6 +369,13 @@ export const FIELD_MAPPINGS: FieldMappings = {
     defaultValue: null,
     transform: toNullableString,
   },
+  
+  // Mannen Shampoo Ingredients
+  marketingIngredientenMannenShampoo: {
+    dbField: 'Marketing ingredienten Mannen Shampoo',
+    defaultValue: null,
+    transform: toNullableString,
+  },
 }
 
 // ===== Utility Functions =====
