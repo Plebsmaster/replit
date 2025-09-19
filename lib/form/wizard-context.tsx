@@ -301,14 +301,14 @@ export function WizardProgressBar() {
   const { progress } = useWizard()
   
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-4 flex-1">
       <div className="flex-1 bg-gray-200 rounded-full h-2 overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-gray-800 to-black transition-all duration-300 ease-out"
+          className="h-full bg-black transition-all duration-300 ease-out rounded-full"
           style={{ width: `${progress}%` }}
         />
       </div>
-      <span className="text-sm font-medium text-gray-700 min-w-[45px]">
+      <span className="text-sm font-medium text-gray-900 min-w-[45px]">
         {Math.round(progress)}%
       </span>
     </div>
@@ -317,12 +317,17 @@ export function WizardProgressBar() {
 
 // ===== Step Navigation Component =====
 export function StepNavigation() {
-  const { canGoPrevious, canGoNext, goToPrevious, goToNext, currentStepId } = useWizard()
+  const { canGoPrevious, canGoNext, goToPrevious, goToNext, currentStepId, formData } = useWizard()
   
   // Get current step metadata to determine button visibility
   const currentStep = getStep(currentStepId)
   const showGlobalNext = currentStep?.showGlobalNext !== false // Default to true (manual continue)
   const showGlobalPrev = currentStep?.showGlobalPrev !== false // Default to true
+  
+  // Check if a choice has been made for steps that require selection
+  const choiceSteps = ['style-selection', 'elegant-styles', 'modern-styles', 'color-selection', 'ingredient-selection']
+  const isChoiceStep = choiceSteps.includes(currentStepId)
+  const hasChoice = isChoiceStep && canGoNext()
   
   return (
     <div className="flex justify-between items-center">
@@ -330,7 +335,7 @@ export function StepNavigation() {
         <button
           onClick={goToPrevious}
           disabled={!canGoPrevious()}
-          className="px-8 py-2 bg-black text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-800 transition-colors min-w-[100px]"
+          className="px-6 py-2.5 bg-gray-900 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-800 transition-colors text-base font-medium min-w-[100px]"
         >
           Terug
         </button>
@@ -338,11 +343,11 @@ export function StepNavigation() {
         <div className="min-w-[100px]" /> // Consistent spacer width
       )}
       
-      {showGlobalNext && (
+      {(showGlobalNext || (isChoiceStep && hasChoice)) && (
         <button
           onClick={goToNext}
           disabled={!canGoNext()}
-          className="px-8 py-2 bg-black text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-800 transition-colors"
+          className="px-6 py-2.5 bg-gray-900 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-800 transition-colors text-base font-medium"
         >
           Doorgaan
         </button>

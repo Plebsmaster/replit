@@ -17,15 +17,6 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
   const [validationState, setValidationState] = useState<"idle" | "valid" | "invalid">("idle")
   const [touched, setTouched] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [buttonText, setButtonText] = useState("Doorgaan")
-
-  // Button text animation effect
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setButtonText((prev) => prev === "Doorgaan" ? "Inloggen op dashboard" : "Doorgaan")
-    }, 3000) // Switch every 3 seconds
-    return () => clearInterval(interval)
-  }, [])
 
   useEffect(() => {
     if (touched) {
@@ -160,7 +151,7 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
           </p>
         </div>
 
-        <div className="bg-white rounded-lg p-8 max-w-md mx-auto">
+        <div className="bg-white rounded-lg p-8 max-w-md mx-auto flex flex-col justify-center">
           <div className="relative">
             <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400 z-10" />
             <Input
@@ -195,9 +186,7 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
                 Controleren...
               </>
             ) : (
-              <span className="transition-all duration-300">
-                {buttonText}
-              </span>
+              "Start je eigen merk"
             )}
             </Button>
           </div>

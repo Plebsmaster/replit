@@ -33,14 +33,14 @@ function WizardNavigation() {
       {/* Header with Branding and Progress Bar - Only show for slide steps */}
       {showStickyNav && (
         <div className="fixed left-0 right-0 z-50 bg-white shadow-sm" style={{ top: process.env.NODE_ENV === 'development' ? '52px' : '0px' }}>
-          <div className="max-w-4xl mx-auto px-4 py-4">
+          <div className="max-w-4xl mx-auto px-4 py-3">
             {/* Logo and Progress Bar */}
             <div className="flex items-center gap-4">
               {/* Logo on the left */}
               <img 
                 src="/salonid.svg" 
                 alt="SalonID" 
-                className="h-8 w-auto"
+                className="h-10 w-auto flex-shrink-0"
               />
               
               {/* Progress Bar with percentage */}
@@ -53,28 +53,34 @@ function WizardNavigation() {
       {/* Main Content - Adjust padding based on navigation visibility and debug mode */}
       <div className={
         showStickyNav 
-          ? (process.env.NODE_ENV === 'development' ? "pt-32 pb-28" : "pt-24 pb-28")
+          ? (process.env.NODE_ENV === 'development' ? "pt-24 pb-20" : "pt-16 pb-20")
           : (process.env.NODE_ENV === 'development' ? "pt-20 pb-8" : "pt-12 pb-8")
       }>
         <div className="max-w-4xl mx-auto px-4">
           {/* Step Renderer - Dynamically renders the current step */}
           <StepRenderer />
+          
+          {/* Quotes at bottom of slide content for pages with sticky navigation */}
+          {showStickyNav && (
+            <div className="mt-16 mb-8">
+              <QuoteDisplay />
+            </div>
+          )}
         </div>
       </div>
       
-      {/* Sticky Footer with Navigation and Quotes - Only show for slide steps */}
+      {/* Quotes for pages without sticky navigation */}
+      {!showStickyNav && (
+        <div className="fixed bottom-8 left-0 right-0 z-10 pointer-events-none">
+          <QuoteDisplay />
+        </div>
+      )}
+      
+      {/* Sticky Footer with Navigation - Only show for slide steps */}
       {showStickyNav && (
-        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-lg border-t border-gray-200 shadow-lg">
-          <div className="max-w-4xl mx-auto px-4">
-            {/* Quote Display in upper area of footer */}
-            <div className="pt-3 pb-2">
-              <QuoteDisplay />
-            </div>
-            
-            {/* Navigation Buttons */}
-            <div className="pb-4">
-              <StepNavigation />
-            </div>
+        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-lg border-t border-gray-200">
+          <div className="max-w-4xl mx-auto px-4 py-3">
+            <StepNavigation />
           </div>
         </div>
       )}

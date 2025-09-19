@@ -14,7 +14,7 @@ type Props = {
 }
 
 export default function StyleSelectionStep({ formData, updateFormData, onNext, onBack, goToStep }: Props) {
-  const [selectedStyle, setSelectedStyle] = useState<"elegant" | "modern" | null>(null)
+  const [selectedStyle, setSelectedStyle] = useState<"elegant" | "modern" | null>(formData.style || null)
 
   const handleStyleChoice = (style: "elegant" | "modern") => {
     setSelectedStyle(style)

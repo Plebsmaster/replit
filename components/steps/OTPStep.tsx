@@ -5,7 +5,7 @@ import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { ArrowRight, Mail, Clock, RefreshCw } from "lucide-react"
+import { ArrowRight, Mail, Clock, RefreshCw, AlertCircle } from "lucide-react"
 import { getTypographyClasses } from "@/lib/typography"
 import type { StepProps } from "@/lib/form/steps"
 
@@ -195,103 +195,109 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, fo
   }
 
   return (
-    <div className="space-y-8 text-center max-w-md mx-auto">
-      {/* Icon */}
-      <div className="flex justify-center mb-8">
-        <div className="w-20 h-20 bg-gradient-to-br from-gray-700 to-black rounded-full flex items-center justify-center">
-          <Mail className="w-10 h-10 text-white" />
-        </div>
-      </div>
+    <div className="min-h-[calc(100vh-12rem)] flex items-center justify-center py-8">
+      <div className="space-y-8 w-full max-w-2xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-8">
+          {/* Icon */}
+          <div className="flex justify-center mb-8">
+            <div className="w-20 h-20 bg-gradient-to-br from-gray-700 to-black rounded-full flex items-center justify-center">
+              <Mail className="w-10 h-10 text-white" />
+            </div>
+          </div>
 
-      {/* Heading */}
-      <div className="space-y-2">
-        <h1 className={getTypographyClasses("title", { alignment: "center" })}>Verify Your Email</h1>
-        {isGeneratingInitial ? (
-          <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} text-black`}>
-            Sending verification code to {email}...
-          </p>
-        ) : (
-          <>
-            <p className={getTypographyClasses("paragraph", { alignment: "center" })}>We've sent a 6-digit code to</p>
-            <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} font-semibold text-black`}>
-              {email}
-            </p>
-          </>
-        )}
-      </div>
-
-      {/* OTP Input */}
-      <div className="space-y-4">
-        <div className="flex justify-center gap-3">
-          {otp.map((digit, index) => (
-            <Input
-              key={index}
-              ref={(el) => { inputRefs.current[index] = el }}
-              type="text"
-              inputMode="numeric"
-              maxLength={6}
-              value={digit}
-              onChange={(e) => handleOtpChange(index, e.target.value.replace(/\D/g, ""))}
-              onKeyDown={(e) => handleKeyDown(index, e)}
-              className="w-12 h-12 text-center text-xl font-bold border-2 bg-white text-gray-900 focus:border-black focus:bg-white"
-              disabled={isVerifying || isGeneratingInitial}
-            />
-          ))}
-        </div>
-
-        {error && <p className="text-red-500 text-sm">{error}</p>}
-      </div>
-
-      {/* Timer and Resend */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-center gap-2 text-gray-600">
-          <Clock className="w-4 h-4" />
-          <span className={getTypographyClasses("paragraph", { removeSpacing: true })}>
-            Code expires in {formatTime(timeLeft)}
-          </span>
-        </div>
-
-        <div className={getTypographyClasses("paragraph", { removeSpacing: true })}>
-          Didn't receive the code?{" "}
-          <button
-            onClick={handleResend}
-            disabled={!canResend || isResending}
-            className="text-black hover:text-gray-700 disabled:text-gray-400 disabled:cursor-not-allowed"
-          >
-            {isResending ? (
-              <span className="flex items-center gap-1">
-                <RefreshCw className="w-3 h-3 animate-spin" />
-                Sending...
-              </span>
+          {/* Heading */}
+          <div className="space-y-2">
+            <h1 className={getTypographyClasses("title", { alignment: "center" })}>Verifieer je e-mail</h1>
+            {isGeneratingInitial ? (
+              <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} text-black`}>
+                Verificatiecode wordt verstuurd naar {email}...
+              </p>
             ) : (
-              "Resend code"
+              <>
+                <p className={getTypographyClasses("paragraph", { alignment: "center" })}>We hebben een 6-cijferige code gestuurd naar</p>
+                <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} font-semibold text-black`}>
+                  {email}
+                </p>
+              </>
             )}
-          </button>
+          </div>
         </div>
-      </div>
 
-      {/* Action Buttons */}
-      <div className="flex gap-4 pt-4">
-        <Button onClick={onBack} variant="outline" className="flex-1 bg-transparent px-8 py-3 text-base" disabled={isVerifying || isGeneratingInitial}>
-          Back
-        </Button>
-        <Button
-          onClick={handleVerify}
-          disabled={isVerifying || isGeneratingInitial || otp.join("").length !== 6}
-          className="flex-1 bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 text-base"
-        >
-          {isVerifying ? (
-            <span className="flex items-center gap-2">
-              <RefreshCw className="w-4 h-4 animate-spin" />
-              Verifying...
-            </span>
-          ) : (
-            <span className="flex items-center gap-2">
-              Verify
-              <ArrowRight className="w-4 h-4" />
-            </span>
-          )}
-        </Button>
+        <div className="bg-white rounded-lg p-8 max-w-md mx-auto">
+          {/* OTP Input */}
+          <div className="space-y-4">
+            <div className="flex justify-center gap-3">
+              {otp.map((digit, index) => (
+                <Input
+                  key={index}
+                  ref={(el) => { inputRefs.current[index] = el }}
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={6}
+                  value={digit}
+                  onChange={(e) => handleOtpChange(index, e.target.value.replace(/\D/g, ""))}
+                  onKeyDown={(e) => handleKeyDown(index, e)}
+                  className="w-12 h-12 text-center text-xl font-bold border-2 bg-white text-gray-900 focus:border-black focus:bg-white"
+                  disabled={isVerifying || isGeneratingInitial}
+                />
+              ))}
+            </div>
+
+            {error && <p className="text-red-500 text-sm flex items-center justify-center gap-1"><AlertCircle className="w-4 h-4" />{error}</p>}
+          </div>
+
+          {/* Timer and Resend */}
+          <div className="space-y-4 mt-6">
+            <div className="flex items-center justify-center gap-2 text-gray-600">
+              <Clock className="w-4 h-4" />
+              <span className={getTypographyClasses("paragraph", { removeSpacing: true })}>
+                Code verloopt over {formatTime(timeLeft)}
+              </span>
+            </div>
+
+            <div className={getTypographyClasses("paragraph", { removeSpacing: true })}>
+              Geen code ontvangen?{" "}
+              <button
+                onClick={handleResend}
+                disabled={!canResend || isResending}
+                className="text-black hover:text-gray-700 disabled:text-gray-400 disabled:cursor-not-allowed underline"
+              >
+                {isResending ? (
+                  <span className="inline-flex items-center gap-1">
+                    <RefreshCw className="w-3 h-3 animate-spin" />
+                    Versturen...
+                  </span>
+                ) : (
+                  "Code opnieuw versturen"
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-4 mt-6">
+            <Button onClick={onBack} variant="outline" className="flex-1 bg-white border-gray-300 text-gray-900 hover:bg-gray-50 px-8 py-3 text-base" disabled={isVerifying || isGeneratingInitial}>
+              Terug
+            </Button>
+            <Button
+              onClick={handleVerify}
+              disabled={isVerifying || isGeneratingInitial || otp.join("").length !== 6}
+              className="flex-1 bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 text-base disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+            >
+              {isVerifying ? (
+                <span className="flex items-center gap-2">
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                  Verifiëren...
+                </span>
+              ) : (
+                <span className="flex items-center gap-2">
+                  Verifieer
+                  <ArrowRight className="w-4 h-4" />
+                </span>
+              )}
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   )
