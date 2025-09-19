@@ -73,6 +73,12 @@ The application uses several database tables (SQL scripts available in `/scripts
   - Navigation bars fade to 20% opacity during scroll on screens ≤768px width
   - Navigation automatically fades back in 150ms after scrolling stops
   - Desktop behavior remains unchanged with persistent navigation
+- **COMPLETED: Global mobile side-scrolling implementation**
+  - Slide7: Changed from 3-column to 2-column layout with ResponsiveCarousel
+  - Slide9: Added ResponsiveCarousel for icon choice selection
+  - Slide10: Redesigned with 4-column desktop grid and horizontal scrolling for mobile
+  - Slides 12-15: Replaced grids with ResponsiveCarousel for consistent mobile experience
+  - Slide30: Kept as vertical scrollable list per design preference
 
 ## Recent Changes (September 18, 2025)
 - Configured for Replit environment
