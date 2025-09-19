@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react"
 import { SlideContainer } from "@/components/ui/slide-container"
-import { ChoiceCard } from "@/components/ui/choice-card"
+import { ResponsiveCarousel } from "@/components/ui/responsive-carousel"
 import { getTypographyClasses } from "@/lib/typography"
 import type { StepProps } from "@/lib/form/steps"
 
@@ -19,15 +19,15 @@ export default function Slide11({ onBack, onNext, updateFormData, formData, sele
 
   const items = useMemo(
     () => [
-      { key: "modern1", label: "Modern 1", src: "/img/elegant/e1.jpg" },
-      { key: "modern2", label: "Modern 2", src: "/img/elegant/e2.jpg" },
-      { key: "modern3", label: "Modern 3", src: "/img/elegant/e3.jpg" },
-      { key: "modern6", label: "Modern 6", src: "/img/variants/variant1.jpg" },
+      { key: "modern1", label: "Modern 1", imageSrc: "/img/elegant/e1.jpg" },
+      { key: "modern2", label: "Modern 2", imageSrc: "/img/elegant/e2.jpg" },
+      { key: "modern3", label: "Modern 3", imageSrc: "/img/elegant/e3.jpg" },
+      { key: "modern6", label: "Modern 6", imageSrc: "/img/variants/variant1.jpg" },
     ],
     [],
   )
 
-  const handleChoose = (key: string, label: string) => {
+  const handleChoose = (key: string) => {
     setLocalSelectedStyle(key)
     onSelectionChange?.(key)
 
@@ -64,19 +64,13 @@ export default function Slide11({ onBack, onNext, updateFormData, formData, sele
           </p>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {items.map((item) => (
-            <ChoiceCard
-              key={item.key}
-              label={item.label}
-              imageSrc={item.src}
-              alt={`${item.label} mockup`}
-              isSelected={selectedStyle === item.key}
-              onClick={() => handleChoose(item.key, item.label)}
-            />
-          ))}
-        </div>
+        {/* Responsive Carousel */}
+        <ResponsiveCarousel
+          items={items}
+          selectedItem={selectedStyle}
+          onItemClick={handleChoose}
+          columns={2}
+        />
 
       </section>
     </SlideContainer>

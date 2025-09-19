@@ -2,6 +2,7 @@
 import { useState } from "react"
 import { SlideContainer } from "@/components/ui/slide-container"
 import { ChoiceCard } from "@/components/ui/choice-card"
+import { ResponsiveCarousel } from "@/components/ui/responsive-carousel"
 import { getTypographyClasses } from "@/lib/typography"
 import type { FormData } from "@/lib/form/schema"
 
@@ -49,22 +50,15 @@ export default function StyleSelectionStep({ formData, updateFormData, onNext, o
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          <ChoiceCard
-            label="Elegant"
-            imageSrc="/elegant-cosmetic-product-mockup.jpg"
-            alt="Elegant mockup"
-            isSelected={selectedStyle === "elegant"}
-            onClick={() => handleStyleChoice("elegant")}
-          />
-          <ChoiceCard
-            label="Modern"
-            imageSrc="/modern-cosmetic-product-mockup.jpg"
-            alt="Modern mockup"
-            isSelected={selectedStyle === "modern"}
-            onClick={() => handleStyleChoice("modern")}
-          />
-        </div>
+        <ResponsiveCarousel
+          items={[
+            { key: "elegant", label: "Elegant", imageSrc: "/elegant-cosmetic-product-mockup.jpg" },
+            { key: "modern", label: "Modern", imageSrc: "/modern-cosmetic-product-mockup.jpg" }
+          ]}
+          selectedItem={selectedStyle}
+          onItemClick={(style) => handleStyleChoice(style as "elegant" | "modern")}
+          columns={2}
+        />
       </section>
     </SlideContainer>
   )

@@ -2,7 +2,7 @@
 
 import { useWizard } from "@/lib/form/wizard-context"
 import { SlideContainer } from "@/components/ui/slide-container"
-import { ChoiceCard } from "@/components/ui/choice-card"
+import { ResponsiveCarousel } from "@/components/ui/responsive-carousel"
 import { getTypographyClasses } from "@/lib/typography"
 
 type Props = {
@@ -20,16 +20,14 @@ export default function Slide6({ onBack, onNext }: Props) {
 
   const colorOptions = [
     {
-      id: "black",
+      key: "Zwart",
       label: "Zwart",
       imageSrc: "/img/colors/black.jpg",
-      alt: "Black color scheme",
     },
     {
-      id: "color",
+      key: "Kleur",
       label: "Kleur",
       imageSrc: "/img/colors/color.jpg",
-      alt: "Color scheme",
     },
   ]
 
@@ -88,18 +86,12 @@ export default function Slide6({ onBack, onNext }: Props) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {colorOptions.map((option) => (
-            <ChoiceCard
-              key={option.id}
-              label={option.label}
-              imageSrc={option.imageSrc}
-              alt={option.alt}
-              isSelected={formData.colorScheme === option.label}
-              onClick={() => handleChooseColor(option.label)}
-            />
-          ))}
-        </div>
+        <ResponsiveCarousel
+          items={colorOptions}
+          selectedItem={formData.colorScheme}
+          onItemClick={handleChooseColor}
+          columns={2}
+        />
 
       </section>
     </SlideContainer>
