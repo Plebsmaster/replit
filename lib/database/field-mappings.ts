@@ -325,6 +325,28 @@ export const FIELD_MAPPINGS: FieldMappings = {
     defaultValue: null,
     transform: toNullableString,
   },
+  
+  // Color Ingredients
+  colorIngredients: {
+    dbField: 'color_ingredients',
+    defaultValue: { shampoo: null, conditioner: null, mask: null },
+    transform: toObject,
+  },
+  marketingIngredientenColorShampoo: {
+    dbField: 'Marketing ingredienten Color Shampoo',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  marketingIngredientenColorConditioner: {
+    dbField: 'Marketing ingredienten Color Conditioner',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  marketingIngredientenColorMask: {
+    dbField: 'Marketing ingredienten Color Mask',
+    defaultValue: null,
+    transform: toNullableString,
+  },
 }
 
 // ===== Utility Functions =====
