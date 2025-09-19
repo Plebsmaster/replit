@@ -60,15 +60,9 @@ export function WizardProvider({ children }: { children: ReactNode }) {
   
   // Get current step component (lazy loaded)
   const getCurrentStepComponent = React.useCallback(() => {
-    // First try lazy loading
+    // Load component via lazy loader exclusively
     const LazyComponent = getLazyComponent(state.context.currentStepId)
-    if (LazyComponent) {
-      return LazyComponent
-    }
-    
-    // Fallback to original step registry if not in lazy loader
-    const step = getStep(state.context.currentStepId)
-    return step?.Component || null
+    return LazyComponent || null
   }, [state.context.currentStepId])
   
   // Preload next steps when current step changes
