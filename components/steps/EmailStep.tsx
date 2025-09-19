@@ -31,9 +31,11 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
     
     const rotationInterval = setInterval(() => {
       setCurrentLabelIndex((prev) => (prev + 1) % BUTTON_LABELS.length)
-      // Trigger glare animation
-      setShowGlare(true)
-      setTimeout(() => setShowGlare(false), 800) // Match glare animation duration
+      // Stagger glare animation to start after text transition begins
+      setTimeout(() => {
+        setShowGlare(true)
+        setTimeout(() => setShowGlare(false), 600) // Shorter duration to prevent overlap
+      }, 250) // 250ms delay after text change starts
     }, 5000) // Switch every 5 seconds
     
     return () => clearInterval(rotationInterval)
@@ -210,13 +212,19 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
               ) : (
                 <>
                   {/* Button text container with crossfade */}
-                  <span className="relative inline-flex items-center justify-center w-full">
+                  <span className="relative inline-flex items-center justify-center w-full z-10">
                     {BUTTON_LABELS.map((label, index) => (
                       <span
                         key={label}
-                        className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${
-                          index === currentLabelIndex ? 'opacity-100' : 'opacity-0'
+                        className={`absolute inset-0 flex items-center justify-center transition-all duration-500 will-change-transform ${
+                          index === currentLabelIndex 
+                            ? 'opacity-100 transform translate-y-0' 
+                            : 'opacity-0 transform translate-y-1'
                         }`}
+                        style={{
+                          backfaceVisibility: 'hidden',
+                          WebkitBackfaceVisibility: 'hidden'
+                        }}
                         aria-hidden={index !== currentLabelIndex}
                       >
                         {label}

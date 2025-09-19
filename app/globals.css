@@ -132,11 +132,19 @@ html {
 
 /* Button text rotation animations */
 @keyframes glare {
-  from {
+  0% {
     transform: translateX(-150%) skewX(-20deg);
+    opacity: 0;
   }
-  to {
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
     transform: translateX(200%) skewX(-20deg);
+    opacity: 0;
   }
 }
 
@@ -151,12 +159,15 @@ html {
   }
 }
 
-/* Glare effect for entire button */
+/* Glare effect for entire button - positioned behind text */
 .glare-run {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 20;
+  z-index: 5; /* Behind text content (z-10) */
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .glare-run::before {
@@ -168,11 +179,14 @@ html {
   height: 200%;
   background: linear-gradient(
     105deg,
-    transparent 40%,
-    rgba(255, 255, 255, 0.25) 50%,
-    transparent 60%
+    transparent 35%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 65%
   );
-  animation: glare 800ms ease-out;
+  animation: glare 600ms ease-out;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* Text swap animation - deprecated, using transition-opacity instead */
