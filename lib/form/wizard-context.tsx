@@ -231,36 +231,11 @@ export function useWizard() {
   return context
 }
 
-// ===== Step Renderer Component with Smooth Transitions =====
+// ===== Step Renderer Component with Clean Lazy Loading =====
 export function StepRenderer() {
   const { getCurrentStepComponent, formData, updateFormData, goToNext, goToPrevious, goToStep, currentStepId, verifyOtp, sendOtp } = useWizard()
-  const [isTransitioning, setIsTransitioning] = React.useState(false)
-  const [fadeClass, setFadeClass] = React.useState('opacity-100')
-  const previousStepRef = React.useRef(currentStepId)
   
   const Component = getCurrentStepComponent()
-  
-  // Handle step transitions with smooth fade effect
-  React.useEffect(() => {
-    if (previousStepRef.current !== currentStepId) {
-      // Start fade out
-      setIsTransitioning(true)
-      setFadeClass('opacity-0')
-      
-      // After fade out, update step and fade in
-      const timer = setTimeout(() => {
-        previousStepRef.current = currentStepId
-        setFadeClass('opacity-100')
-        
-        // End transition after fade in
-        setTimeout(() => {
-          setIsTransitioning(false)
-        }, 300)
-      }, 200) // Fade out duration
-      
-      return () => clearTimeout(timer)
-    }
-  }, [currentStepId])
   
   if (!Component) {
     return (
@@ -279,9 +254,9 @@ export function StepRenderer() {
     goToNext()
   }, [verifyOtp, goToNext])
   
-  // Wrap in Suspense for lazy-loaded components with smooth transitions
+  // Clean Suspense wrapper - let lazy loading handle transitions naturally
   return (
-    <div className={`transition-all duration-300 ease-in-out ${fadeClass} ${isTransitioning ? 'pointer-events-none' : ''}`}>
+    <div className="transition-opacity duration-300 ease-in-out">
       <Suspense fallback={<StepTransitionFallback />}>
         <Component
           formData={formData}
