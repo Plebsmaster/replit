@@ -1,0 +1,84 @@
+"use client"
+
+import { useState, useMemo } from "react"
+import { SlideContainer } from "@/components/ui/slide-container"
+import { getTypographyClasses } from "@/lib/typography"
+import type { StepProps } from "@/lib/form/steps"
+
+type Language = "Nederlands" | "Engels" | "Duits" | "Frans"
+
+const LANGUAGES: Array<{ name: Language; icon: string; description?: string }> = [
+  { name: "Nederlands", icon: "NL" },
+  { name: "Engels", icon: "EN" },
+  { name: "Duits", icon: "DE" },
+  { name: "Frans", icon: "FR" },
+]
+
+type Props = StepProps & {}
+
+export default function Slide20({ updateFormData, formData, onNext }: Props) {
+  const initial = (formData?.frontLanguage as Language | undefined) ?? "Nederlands"
+  const [selectedLanguage, setSelectedLanguage] = useState<Language>(initial)
+  const languages = useMemo(() => LANGUAGES, [])
+
+  const handleLanguageSelect = (language: Language) => {
+    setSelectedLanguage(language)
+
+    // Persist to global form data
+    updateFormData({ frontLanguage: language })
+
+    // Keep your localStorage behavior
+    try {
+      localStorage.setItem("salonid:selectedLanguage", language)
+      localStorage.setItem("salonid:dateISO", new Date().toISOString())
+    } catch {}
+
+    // Auto-progress after selection (snappy + safe)
+    queueMicrotask(() => onNext())
+  }
+
+  return (
+    <SlideContainer width="wide">
+      <section>
+        <h2 className={getTypographyClasses("title", { alignment: "left" })}>
+          Taal - Voorzijde
+        </h2>
+
+        <div className="max-w-[760px] space-y-4 mb-8">
+          <p className={getTypographyClasses("paragraph", { alignment: "left" })}>
+            Buiten de door jou gekozen productnaam is de tekst aan de voorzijde standaard Nederlands. Wil je
+            liever een andere taal? Maak dan hieronder jouw keuze.
+          </p>
+        </div>
+
+        <div className="mb-6">
+          <h3 className="text-xl font-bold text-gray-900 text-left mb-4">Maak hier je keuze</h3>
+        </div>
+
+        <div className="space-y-3">
+          {languages.map((language) => (
+            <div
+              key={language.name}
+              className={`p-3 rounded-lg border cursor-pointer transition-all hover:shadow-sm hover:scale-105 ${
+                selectedLanguage === language.name ? "border-black bg-gray-50" : "border-gray-300 hover:border-gray-400"
+              }`}
+              onClick={() => handleLanguageSelect(language.name)}
+            >
+              <div className="flex justify-between items-center">
+                <div className="flex items-center space-x-3">
+                  <span className="text-2xl font-bold bg-gray-200 rounded px-2 py-1 text-xs">{language.icon}</span>
+                  <div>
+                    <span className="text-gray-800 font-medium">{language.name}</span>
+                  </div>
+                </div>
+                {selectedLanguage === language.name && (
+                  <div className="w-3 h-3 rounded-full bg-black flex-shrink-0" />
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </SlideContainer>
+  )
+}
