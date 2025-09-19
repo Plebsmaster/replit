@@ -5,6 +5,7 @@ import { DebugNavigation } from '@/components/ui/debug-navigation'
 import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { QuoteDisplay } from '@/components/ui/quote-display'
+import { useState, useEffect, useRef } from 'react'
 
 // Helper function to determine if current step should show sticky navigation
 function shouldShowStickyNavigation(currentStepId: string): boolean {
@@ -24,6 +25,29 @@ function shouldShowStickyNavigation(currentStepId: string): boolean {
 function WizardNavigation() {
   const { currentStepId } = useWizard()
   const showStickyNav = shouldShowStickyNavigation(currentStepId)
+  const headerRef = useRef<HTMLDivElement>(null)
+  const [headerHeight, setHeaderHeight] = useState(0)
+
+  // Dynamically calculate header height
+  useEffect(() => {
+    const calculateHeaderHeight = () => {
+      if (headerRef.current) {
+        const height = headerRef.current.offsetHeight
+        setHeaderHeight(height)
+        // Set CSS custom property for global use
+        document.documentElement.style.setProperty('--dynamic-header-height', `${height}px`)
+      }
+    }
+
+    // Initial calculation
+    calculateHeaderHeight()
+
+    // Recalculate on window resize
+    window.addEventListener('resize', calculateHeaderHeight)
+    
+    // Clean up
+    return () => window.removeEventListener('resize', calculateHeaderHeight)
+  }, [showStickyNav]) // Recalculate when sticky nav visibility changes
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -32,7 +56,12 @@ function WizardNavigation() {
       
       {/* Header with Branding and Progress Bar - Only show for slide steps */}
       {showStickyNav && (
-        <div className="fixed left-0 right-0 z-50 bg-white shadow-sm" style={{ top: process.env.NODE_ENV === 'development' ? '52px' : '0px' }}>
+        <div 
+          ref={headerRef}
+          className="fixed left-0 right-0 z-50 bg-white shadow-sm" 
+          style={{ top: process.env.NODE_ENV === 'development' ? '52px' : '0px' }}
+          data-header
+        >
           <div className="max-w-4xl mx-auto px-4 py-3">
             {/* Logo and Progress Bar */}
             <div className="flex items-center gap-4">
@@ -50,12 +79,15 @@ function WizardNavigation() {
         </div>
       )}
       
-      {/* Main Content - Adjust padding based on navigation visibility and debug mode */}
-      <div className={
-        showStickyNav 
-          ? (process.env.NODE_ENV === 'development' ? "pt-24 pb-20" : "pt-16 pb-20")
-          : (process.env.NODE_ENV === 'development' ? "pt-20 pb-8" : "pt-12 pb-8")
-      }>
+      {/* Main Content - Dynamically adjust padding based on actual header height */}
+      <div 
+        style={{
+          paddingTop: showStickyNav 
+            ? `calc(var(--dynamic-header-height, ${headerHeight}px) + 2rem)` 
+            : (process.env.NODE_ENV === 'development' ? '5rem' : '3rem'),
+          paddingBottom: showStickyNav ? '5rem' : '2rem'
+        }}
+      >
         <div className="max-w-4xl mx-auto px-4">
           {/* Step Renderer - Dynamically renders the current step */}
           <StepRenderer />
