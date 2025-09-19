@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Laag_1" data-name="Laag 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 870.27 341.45">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 238.69px;
+        letter-spacing: -.02em;
+      }
+
+      .cls-1, .cls-2 {
+        fill: #1d1d1b;
+        font-family: Poppins-Medium, Poppins;
+        font-weight: 500;
+      }
+
+      .cls-2 {
+        font-size: 38.57px;
+        letter-spacing: -.04em;
+      }
+    </style>
+  </defs>
+  <text class="cls-1" transform="translate(0 202.53)"><tspan x="0" y="0">salonID</tspan></text>
+  <text class="cls-2" transform="translate(9.91 254.64)"><tspan x="0" y="0">Your dream, your brand — We make it happen. </tspan></text>
+</svg>
