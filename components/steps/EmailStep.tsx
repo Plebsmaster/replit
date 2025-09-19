@@ -23,7 +23,7 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
   
   // Button text rotation states
   const [currentLabelIndex, setCurrentLabelIndex] = useState(0)
-  const [glareKey, setGlareKey] = useState(0)
+  const [showGlare, setShowGlare] = useState(false)
 
   // Button text rotation effect
   useEffect(() => {
@@ -31,7 +31,9 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
     
     const rotationInterval = setInterval(() => {
       setCurrentLabelIndex((prev) => (prev + 1) % BUTTON_LABELS.length)
-      setGlareKey((prev) => prev + 1) // Trigger glare animation
+      // Trigger glare animation
+      setShowGlare(true)
+      setTimeout(() => setShowGlare(false), 800) // Match glare animation duration
     }, 5000) // Switch every 5 seconds
     
     return () => clearInterval(rotationInterval)
@@ -207,16 +209,23 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
                 </>
               ) : (
                 <>
-                  {/* Button text that changes */}
-                  <span 
-                    className="relative z-10 animate-fade-swap"
-                    aria-hidden="true"
-                  >
-                    {BUTTON_LABELS[currentLabelIndex]}
+                  {/* Button text container with crossfade */}
+                  <span className="relative inline-flex items-center justify-center w-full">
+                    {BUTTON_LABELS.map((label, index) => (
+                      <span
+                        key={label}
+                        className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${
+                          index === currentLabelIndex ? 'opacity-100' : 'opacity-0'
+                        }`}
+                        aria-hidden={index !== currentLabelIndex}
+                      >
+                        {label}
+                      </span>
+                    ))}
                   </span>
                   
                   {/* Glare animation on entire button */}
-                  {glareKey > 0 && (
+                  {showGlare && (
                     <span 
                       className="glare-run" 
                       aria-hidden="true" 

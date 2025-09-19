@@ -169,7 +169,7 @@
   animation: glare 800ms ease-out;
 }
 
-/* Text swap animation */
+/* Text swap animation - deprecated, using transition-opacity instead */
 .animate-fade-swap {
   display: inline-block;
   animation: fadeSwap 300ms ease-out;
