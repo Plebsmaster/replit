@@ -30,8 +30,8 @@ export default function ColorChoice({ formData, updateFormData, goToStep, stepKe
     // Update the appropriate field based on path
     updateFormData({ [fieldName]: color.dbValue })
     
-    // Navigate to next step
-    goToStep(color.nextStep)
+    // Don't auto-advance - let the user click continue
+    // The StepNavigation component will handle the continue button
   }
 
   return (
