@@ -1,7 +1,7 @@
 // Quotes for the SalonID Design form
 // Add your 200 quotes to this array. Each quote will appear and disappear above the footer.
 
-export const quotes = [
+export const quotes: readonly string[] = [
   `Beauty begins the moment you decide to be yourself." - Coco Chanel`,
   `The best color in the whole world is the one that looks good on you." - Coco Chanel`,
   `Creativity is intelligence having fun." - Albert Einstein`,
@@ -192,7 +192,7 @@ export const quotes = [
   `A successful man is one who can lay a firm foundation with the bricks others have thrown at him." - David Brinkley`,
   `The essence of interior design will always be about people and how they live." - Albert Hadley`,
   `Let's invent tomorrow instead of worrying about what happened yesterday." - Steve Jobs`
-] as const;
+];
 
 // Function to get a random quote
 export function getRandomQuote(): string {

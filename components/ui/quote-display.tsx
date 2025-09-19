@@ -6,6 +6,9 @@ import { quotes } from "@/lib/quotes"
 export function QuoteDisplay() {
   const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
+  
+  // Explicitly typed quotes array to ensure type safety
+  const quotesArray: readonly string[] = quotes
 
   useEffect(() => {
     // Change quote every 6 seconds
@@ -15,16 +18,16 @@ export function QuoteDisplay() {
       
       // After fade out, change quote and fade in
       setTimeout(() => {
-        setCurrentQuoteIndex((prev) => (prev + 1) % quotes.length)
+        setCurrentQuoteIndex((prev) => (prev + 1) % quotesArray.length)
         setIsVisible(true)
       }, 500) // Wait for fade out to complete
     }, 6000)
 
     return () => clearInterval(interval)
-  }, [])
+  }, [quotesArray])
 
   // Don't render if no quotes
-  if (quotes.length === 0) return null
+  if (quotesArray.length === 0) return null
 
   return (
     <div className="w-full pointer-events-none">
@@ -36,7 +39,7 @@ export function QuoteDisplay() {
             ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}
           `}
         >
-          "{quotes[currentQuoteIndex]}"
+          "{quotesArray[currentQuoteIndex]}"
         </p>
       </div>
     </div>
