@@ -185,7 +185,6 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     id: 'elegant-variant1',
     key: 'styleVariant',
     title: 'Elegante Variant 1',
-    Component: ElegantVariant1Step,
     schema: styleVariantSchema,
     componentFile: 'Slide4.tsx',
     showGlobalNext: false, // Auto-continue
@@ -200,7 +199,6 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     id: 'elegant-variant2',
     key: 'styleVariant',
     title: 'Elegante Variant 2',
-    Component: ElegantVariant2Step,
     schema: styleVariantSchema,
     componentFile: 'Slide5.tsx',
     showGlobalNext: false, // Auto-continue
@@ -237,7 +235,6 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     id: 'modern1-variant',
     key: 'styleVariant',
     title: 'Modern 1 Variant',
-    Component: Modern1VariantStep,
     schema: styleVariantSchema,
     componentFile: 'Slide12.tsx',
     showGlobalNext: false, // Auto-continue
@@ -252,7 +249,6 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     id: 'modern2-variant',
     key: 'styleVariant',
     title: 'Modern 2 Variant',
-    Component: Modern2VariantStep,
     schema: styleVariantSchema,
     componentFile: 'Slide13.tsx',
     showGlobalNext: false, // Auto-continue
@@ -267,7 +263,6 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     id: 'modern3-variant',
     key: 'styleVariant',
     title: 'Modern 3 Variant',
-    Component: Modern3VariantStep,
     schema: styleVariantSchema,
     componentFile: 'Slide14.tsx',
     showGlobalNext: false, // Auto-continue
@@ -277,12 +272,10 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     },
     nextStep: (formData: Partial<FormData>): string => 'color-scheme',
   }],
-  
   ['modern6-variant', {
     id: 'modern6-variant',
     key: 'styleVariant',
     title: 'Modern 6 Variant',
-    Component: Modern6VariantStep,
     schema: styleVariantSchema,
     componentFile: 'Slide15.tsx',
     showGlobalNext: false, // Auto-continue
