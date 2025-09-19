@@ -10,38 +10,57 @@ interface Slide9Props {
   updateFormData: (updates: any) => void
   onBack: () => void
   onNext: () => void
+  goToStep?: (stepId: string) => void
 }
 
-export default function Slide9({ formData, updateFormData, onBack, onNext }: Slide9Props) {
+export default function Slide9({ formData, updateFormData, onBack, onNext, goToStep }: Slide9Props) {
   const [selectedOption, setSelectedOption] = useState<string | null>(formData.iconChoice || null)
 
-  const handleOptionSelect = (option: string) => {
-    setSelectedOption(option)
-    updateFormData({ iconChoice: option, selectedIcon: option === 'with-icon' })
-    try {
-      localStorage.setItem("salonid:iconChoice", option)
-      localStorage.setItem("salonid:dateISO", new Date().toISOString())
-    } catch (error) {
-      // localStorage not available, continue silently
-    }
-    // Direct doorgaan naar volgende stap zoals in Slide2
-    onNext()
-  }
-
-  const iconOptions = [
-    {
+  const answers = [
+    { 
+      text: 'Met icoon', 
+      nextSlide: 'slide10', 
+      dbValue: 'Met icoon',
       key: "with-icon",
       label: "Met Icoon",
       imageSrc: "/img/slide9/icon-with.png",
       alt: "Met icoon",
     },
-    {
+    { 
+      text: 'Zonder icoon', 
+      nextSlide: 'slide21', 
+      dbValue: 'Zonder icoon',
       key: "without-icon", 
       label: "Zonder Icoon",
       imageSrc: "/img/slide9/icon-without.png",
       alt: "Zonder icoon",
-    },
+    }
   ]
+
+  const handleAnswer = (answer: any) => {
+    setSelectedOption(answer.key)
+    // Store database value in 'Icoon ja/nee' column
+    updateFormData({ iconChoice: answer.dbValue, selectedIcon: answer.key === 'with-icon' })
+    
+    try {
+      localStorage.setItem("salonid:iconChoice", answer.key)
+      localStorage.setItem("salonid:dateISO", new Date().toISOString())
+    } catch (error) {
+      // localStorage not available, continue silently
+    }
+    
+    // Navigate to specified slide
+    if (goToStep) {
+      goToStep(answer.nextSlide)
+    }
+  }
+
+  const iconOptions = answers.map(answer => ({
+    key: answer.key,
+    label: answer.label,
+    imageSrc: answer.imageSrc,
+    alt: answer.alt
+  }))
 
   return (
     <SlideContainer width="wide">
@@ -70,7 +89,10 @@ export default function Slide9({ formData, updateFormData, onBack, onNext }: Sli
         <ResponsiveCarousel
           items={iconOptions}
           selectedItem={selectedOption}
-          onItemClick={handleOptionSelect}
+          onItemClick={(key) => {
+            const answer = answers.find(a => a.key === key)
+            if (answer) handleAnswer(answer)
+          }}
           columns={2}
         />
       </section>

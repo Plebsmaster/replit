@@ -8,33 +8,34 @@ import { getTypographyClasses } from "@/lib/typography"
 type Props = {
   onBack: () => void
   onNext: () => void
+  goToStep?: (stepId: string) => void
 }
 
-export default function Slide16({ onBack, onNext }: Props) {
+export default function Slide16({ onBack, onNext, goToStep }: Props) {
   const { formData, updateFormData } = useWizard()
 
-  const handleChooseColor = (colorChoice: string) => {
-    // Database column: 'Kleur/Zwart/Wit'
-    updateFormData({ kleurZwartWit: colorChoice })
+  const answers = [
+    { text: 'Zwart', nextSlide: 'slide19', dbValue: 'Zwart', key: "Zwart", label: "Zwart", imageSrc: "/img/slide16/black.jpg" },
+    { text: 'Kleur', nextSlide: 'slide18', dbValue: 'Kleur', key: "Kleur", label: "Kleur", imageSrc: "/img/slide16/color.jpg" }
+  ]
+
+  const handleAnswer = (answer: any) => {
+    // Store database value in 'Kleur/Zwart/Wit' column
+    updateFormData({ kleurZwartWit: answer.dbValue })
     
-    // Auto-continue with delay - let step registry handle conditional navigation
-    queueMicrotask(() => {
-      onNext()
-    })
+    // Navigate to specified slide
+    if (goToStep) {
+      queueMicrotask(() => {
+        goToStep(answer.nextSlide)
+      })
+    }
   }
 
-  const colorOptions = [
-    {
-      key: "Zwart",
-      label: "Zwart",
-      imageSrc: "/img/slide16/black.jpg",
-    },
-    {
-      key: "Kleur",
-      label: "Kleur",
-      imageSrc: "/img/slide16/color.jpg",
-    },
-  ]
+  const colorOptions = answers.map(answer => ({
+    key: answer.key,
+    label: answer.label,
+    imageSrc: answer.imageSrc
+  }))
 
   return (
     <SlideContainer width="extraWide">
@@ -94,7 +95,10 @@ export default function Slide16({ onBack, onNext }: Props) {
         <ResponsiveCarousel
           items={colorOptions}
           selectedItem={formData.kleurZwartWit}
-          onItemClick={handleChooseColor}
+          onItemClick={(key) => {
+            const answer = answers.find(a => a.key === key)
+            if (answer) handleAnswer(answer)
+          }}
           columns={2}
         />
 

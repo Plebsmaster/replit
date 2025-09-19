@@ -9,41 +9,54 @@ import type { StepProps } from "@/lib/form/steps"
 type Props = StepProps & {
   selectedStyle?: string | null
   onSelectionChange?: (style: string | null) => void
+  goToStep?: (stepId: string) => void
 }
 
-export default function Slide11({ onBack, onNext, updateFormData, formData, selectedStyle: globalSelectedStyle, onSelectionChange }: Props) {
+export default function Slide11({ onBack, onNext, updateFormData, formData, selectedStyle: globalSelectedStyle, onSelectionChange, goToStep }: Props) {
   const [localSelectedStyle, setLocalSelectedStyle] = useState<string | null>(formData.modernStyle || globalSelectedStyle || null)
   
   const selectedStyle = globalSelectedStyle !== undefined ? globalSelectedStyle : localSelectedStyle
 
-
-  const items = useMemo(
+  const answers = useMemo(
     () => [
-      { key: "modern1", label: "Modern 1", imageSrc: "/img/slide11/e1.jpg" },
-      { key: "modern2", label: "Modern 2", imageSrc: "/img/slide11/e2.jpg" },
-      { key: "modern3", label: "Modern 3", imageSrc: "/img/slide11/e3.jpg" },
-      { key: "modern6", label: "Modern 6", imageSrc: "/img/slide11/variant1.jpg" },
+      { text: 'Modern 1', nextSlide: 'slide12', dbValue: null, key: "modern1", label: "Modern 1", imageSrc: "/img/slide11/e1.jpg" },
+      { text: 'Modern 2', nextSlide: 'slide13', dbValue: null, key: "modern2", label: "Modern 2", imageSrc: "/img/slide11/e2.jpg" },
+      { text: 'Modern 3', nextSlide: 'slide14', dbValue: null, key: "modern3", label: "Modern 3", imageSrc: "/img/slide11/e3.jpg" },
+      { text: 'Modern 4', nextSlide: 'slide16', dbValue: 'Modern 4.', key: "modern4", label: "Modern 4", imageSrc: "/img/slide11/e4.jpg" },
+      { text: 'Modern 5', nextSlide: 'slide16', dbValue: 'Modern 5.', key: "modern5", label: "Modern 5", imageSrc: "/img/slide11/e5.jpg" },
+      { text: 'Modern 6', nextSlide: 'slide15', dbValue: null, key: "modern6", label: "Modern 6", imageSrc: "/img/slide11/variant1.jpg" },
     ],
     [],
   )
 
-  const handleChoose = (key: string) => {
-    setLocalSelectedStyle(key)
-    onSelectionChange?.(key)
+  const handleAnswer = (answer: any) => {
+    setLocalSelectedStyle(answer.key)
+    onSelectionChange?.(answer.key)
 
     // Update form data with the selected modern style
-    updateFormData({ modernStyle: key as 'modern1' | 'modern2' | 'modern3' | 'modern6' })
+    updateFormData({ modernStyle: answer.key })
+
+    // Store database value if not null (Template column)
+    if (answer.dbValue) {
+      updateFormData({ elegantStyle: answer.dbValue })
+    }
 
     try {
-      localStorage.setItem("salonid:styleChoice", key)
+      localStorage.setItem("salonid:styleChoice", answer.key)
       localStorage.setItem("salonid:dateISO", new Date().toISOString())
     } catch {}
 
-    // Auto-progress with delay to allow state machine to process the update
-    setTimeout(() => {
-      onNext()
-    }, 100)
+    // Navigate to the specified slide
+    if (goToStep) {
+      goToStep(answer.nextSlide)
+    }
   }
+
+  const items = answers.map(answer => ({
+    key: answer.key,
+    label: answer.label,
+    imageSrc: answer.imageSrc
+  }))
 
 
   return (
@@ -68,7 +81,10 @@ export default function Slide11({ onBack, onNext, updateFormData, formData, sele
         <ResponsiveCarousel
           items={items}
           selectedItem={selectedStyle}
-          onItemClick={handleChoose}
+          onItemClick={(key) => {
+            const answer = answers.find(a => a.key === key)
+            if (answer) handleAnswer(answer)
+          }}
           columns={2}
         />
 

@@ -12,9 +12,10 @@ type Props = {
   onNext: () => void
   selectedVariant?: string | null
   onSelectionChange?: (variant: string | null) => void
+  goToStep?: (stepId: string) => void
 }
 
-export default function Slide15({ formData, updateFormData, onBack, onNext, selectedVariant: globalSelectedVariant, onSelectionChange }: Props) {
+export default function Slide15({ formData, updateFormData, onBack, onNext, selectedVariant: globalSelectedVariant, onSelectionChange, goToStep }: Props) {
   const [selectedStyle, setSelectedStyle] = useState<string>("")
   const [localSelectedVariant, setLocalSelectedVariant] = useState<string | null>(formData.styleVariant || globalSelectedVariant || null)
   
@@ -30,37 +31,37 @@ export default function Slide15({ formData, updateFormData, onBack, onNext, sele
     }
   }, [selectedVariant])
 
-  const variants = [
-    {
-      key: "1",
-      label: "Uitlijning links",
-      imageSrc: "/img/slide15/variant1.jpg",
-      alt: "Modern 6 Variant 1 - Left alignment",
-    },
-    {
-      key: "2",
-      label: "Uitlijning midden",
-      imageSrc: "/img/slide15/variant2.jpg",
-      alt: "Modern 6 Variant 2 - Center alignment",
-    },
+  const answers = [
+    { text: 'Uitlijning links', nextSlide: 'slide16', dbValue: 'Modern 6.1', key: "1", label: "Uitlijning links", imageSrc: "/img/slide15/variant1.jpg", alt: "Modern 6 Variant 1 - Left alignment" },
+    { text: 'Uitlijning midden', nextSlide: 'slide16', dbValue: 'Modern 6.2', key: "2", label: "Uitlijning midden", imageSrc: "/img/slide15/variant2.jpg", alt: "Modern 6 Variant 2 - Center alignment" }
   ]
 
-  const handleChooseVariant = (variantNumber: string) => {
-    setLocalSelectedVariant(variantNumber)
-    onSelectionChange?.(variantNumber)
-    updateFormData({ styleVariant: `${selectedStyle}${variantNumber}` })
+  const variants = answers.map(answer => ({
+    key: answer.key,
+    label: answer.label,
+    imageSrc: answer.imageSrc,
+    alt: answer.alt
+  }))
+
+  const handleAnswer = (answer: any) => {
+    setLocalSelectedVariant(answer.key)
+    onSelectionChange?.(answer.key)
+    // Store database value in Template column
+    updateFormData({ elegantStyle: answer.dbValue, styleVariant: answer.dbValue })
 
     try {
-      const finalStyle = `${selectedStyle}${variantNumber}`
-      localStorage.setItem("salonid:styleVariant", finalStyle)
+      localStorage.setItem("salonid:styleVariant", answer.dbValue)
       localStorage.setItem("salonid:dateISO", new Date().toISOString())
     } catch (error) {
       // Could not save variant to localStorage, continue silently
     }
     
-    queueMicrotask(() => {
-      onNext()
-    })
+    // Navigate to specified slide
+    if (goToStep) {
+      queueMicrotask(() => {
+        goToStep(answer.nextSlide)
+      })
+    }
   }
 
 
@@ -83,7 +84,10 @@ export default function Slide15({ formData, updateFormData, onBack, onNext, sele
         <ResponsiveCarousel
           items={variants}
           selectedItem={selectedVariant}
-          onItemClick={handleChooseVariant}
+          onItemClick={(key) => {
+            const answer = answers.find(a => a.key === key)
+            if (answer) handleAnswer(answer)
+          }}
           columns={2}
         />
 
