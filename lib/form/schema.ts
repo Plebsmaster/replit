@@ -431,6 +431,10 @@ export const FormDataSchema = z.object({
   // QR-Code Website Input (Slide 55)
   qrCode: z.string().default(''),
   
+  // Process Completion (Slide 56)
+  processCompleted: z.boolean().optional().default(false),
+  processCompletedAt: z.string().optional().default(''),
+  
   // Product Names - Auto-fillable fields
   naamNoYellowShampoo: z.string().default(''),
   naamNoYellowConditioner: z.string().default(''),
