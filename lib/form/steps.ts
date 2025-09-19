@@ -373,6 +373,17 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     },
   }],
 
+  ['slide18', {
+    id: 'slide18',
+    key: 'colorPalette',
+    title: 'Kleur Palet (Slide 18)',
+    schema: colorPaletteSchema,
+    componentFile: 'Slide18.tsx',
+    showGlobalNext: true,  // Manual continue - SPECIAL CASE: Slide18 requires manual continue like Slide8
+    showGlobalPrev: true,
+    nextStep: (formData: Partial<FormData>): string => 'slide19',
+  }],
+
   // Final Steps
   ['ingredients', {
     id: 'ingredients',
