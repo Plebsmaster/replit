@@ -101,11 +101,13 @@ const stepComponents: Record<string, LazyStepComponent> = {
   // Explicit mappings for critical slides (will be supplemented by fallback)
   'slide22': () => import('@/components/steps/Slide22'),
   
-  // New Slides (46-50) - Country Selection and Slogan Flow
+  // New Slides (46-55) - Country Selection, Slogan and QR-Code Flow
   'slide46': () => import('@/components/steps/Slide46'),
   'slide48': () => import('@/components/steps/Slide48'),
   'slide49': () => import('@/components/steps/Slide49'),
   'slide50': () => import('@/components/steps/Slide50'),
+  'slide51': () => import('@/components/steps/Slide51'),
+  'slide55': () => import('@/components/steps/Slide55'),
   
   // Dashboard Steps
   'dashboard-login': () => import('@/components/steps/DashboardLoginStep'),

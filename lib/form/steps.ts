@@ -778,8 +778,32 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
   ['slide50', {
     id: 'slide50',
     key: 'slide50',
-    title: 'Zonder Slogan',
+    title: 'QR-Code Keuze',
     componentFile: 'Slide50.tsx',
+    showGlobalNext: false, // Auto-continue after selection
+    showGlobalPrev: true,
+    nextStep: (formData: Partial<FormData>): string => {
+      // Direct navigation - no database storage needed
+      // Navigation logic handled in component via goToStep()
+      return 'dashboard-login' // Fallback (should not be reached)
+    },
+  }],
+  
+  ['slide51', {
+    id: 'slide51',
+    key: 'slide51',
+    title: 'Zonder QR-Code',
+    componentFile: 'Slide51.tsx',
+    showGlobalNext: true, // Manual continue
+    showGlobalPrev: true,
+    nextStep: (): string => 'dashboard-login',
+  }],
+  
+  ['slide55', {
+    id: 'slide55',
+    key: 'slide55',
+    title: 'Met QR-Code',
+    componentFile: 'Slide55.tsx',
     showGlobalNext: true, // Manual continue
     showGlobalPrev: true,
     nextStep: (): string => 'dashboard-login',
