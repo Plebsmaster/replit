@@ -41,8 +41,8 @@ const nextConfig = {
     // Reduce memory usage during builds
     webpackBuildWorker: false,
   },
-  // Output configuration for better caching
-  output: 'standalone',
+  // Output configuration for deployment
+  // Remove standalone mode to prevent hardcoded IP binding issues
 }
 
 export default nextConfig
