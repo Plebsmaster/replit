@@ -2,7 +2,7 @@
 
 import { useWizard } from "@/lib/form/wizard-context"
 import { SlideContainer } from "@/components/ui/slide-container"
-import { ChoiceCard } from "@/components/ui/choice-card"
+import { ResponsiveCarousel } from "@/components/ui/responsive-carousel"
 import { getTypographyClasses } from "@/lib/typography"
 
 type Props = {
@@ -20,24 +20,19 @@ export default function Slide7({ onBack, onNext }: Props) {
     })
   }
 
+  // Convert to ResponsiveCarousel format - only showing 2 main options
   const colorOptions = [
     {
-      id: "black",
+      key: "Zwart",
       label: "Zwart",
       imageSrc: "/img/elegant3/black.jpg",
       alt: "Black color scheme",
     },
     {
-      id: "white",
+      key: "Wit", 
       label: "Wit",
       imageSrc: "/img/elegant3/white.jpg",
       alt: "White color scheme",
-    },
-    {
-      id: "color",
-      label: "Kleur",
-      imageSrc: "/img/elegant3/color.jpg",
-      alt: "Color scheme",
     },
   ]
 
@@ -48,7 +43,7 @@ export default function Slide7({ onBack, onNext }: Props) {
 
         <div className="max-w-[760px] space-y-6">
           <p className={getTypographyClasses("paragraph", { alignment: "left" })}>
-            Maak je ontwerp persoonlijk door te kiezen tussen een zwart schema, wit schema of levendige kleuren.
+            Maak je ontwerp persoonlijk door te kiezen tussen een zwart schema of wit schema.
           </p>
 
           <div className="space-y-2">
@@ -60,25 +55,15 @@ export default function Slide7({ onBack, onNext }: Props) {
               <strong>Wit:</strong> Kies voor een frisse en verfijnde uitstraling met zuivere witte tinten. Deze optie
               straalt eenvoud en rust uit.
             </div>
-            <div className={getTypographyClasses("paragraph", { alignment: "left" })}>
-              <strong>Kleur:</strong> Voeg dynamiek toe met een volledig kleurenpallet dat je ontwerp levendiger en
-              opvallender maakt.
-            </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {colorOptions.map((option) => (
-            <ChoiceCard
-              key={option.id}
-              label={option.label}
-              imageSrc={option.imageSrc}
-              alt={option.alt}
-              isSelected={formData.finalColorChoice === option.label}
-              onClick={() => handleChooseColor(option.label)}
-            />
-          ))}
-        </div>
+        <ResponsiveCarousel
+          items={colorOptions}
+          selectedItem={formData.finalColorChoice}
+          onItemClick={handleChooseColor}
+          columns={2}
+        />
 
       </section>
     </SlideContainer>
