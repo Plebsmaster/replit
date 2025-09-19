@@ -201,6 +201,24 @@ export const slide35HaarserumIngredientsSchema = z.object({
   marketingIngredientenHaarserum: z.string().optional(),
 })
 
+// Step 36: Styling Products Ingredients Selection
+export const slide36StylingProductsIngredientsSchema = z.object({
+  stylingProductsIngredients: z.object({
+    haarlak: z.string().min(1, 'Selecteer een ingrediënt voor Haarlak'),
+    mousse: z.string().min(1, 'Selecteer een ingrediënt voor Mousse'),
+    droogshampoo: z.string().min(1, 'Selecteer een ingrediënt voor Droogshampoo'),
+    gel: z.string().min(1, 'Selecteer een ingrediënt voor Gel'),
+    clayPaste: z.string().min(1, 'Selecteer een ingrediënt voor Clay Paste'),
+    fiberPaste: z.string().min(1, 'Selecteer een ingrediënt voor Fiber Paste'),
+  }),
+  marketingIngredientenHaarlak: z.string().optional(),
+  marketingIngredientenMousse: z.string().optional(),
+  marketingIngredientenDroogshampoo: z.string().optional(),
+  marketingIngredientenGel: z.string().optional(),
+  marketingIngredientenClayPaste: z.string().optional(),
+  marketingIngredientenFiberPaste: z.string().optional(),
+})
+
 // Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
@@ -323,6 +341,22 @@ export const FormDataSchema = z.object({
   haarserumIngredient: z.string().default(''),
   marketingIngredientenHaarserum: z.string().default(''),
   
+  // Styling Products Ingredients
+  stylingProductsIngredients: z.object({
+    haarlak: z.string().default('UV Filter'),
+    mousse: z.string().default('Vitamine B5'),
+    droogshampoo: z.string().default('Arganolie'),
+    gel: z.string().default('Vitamine B5'),
+    clayPaste: z.string().default('Vitamine E'),
+    fiberPaste: z.string().default('Vitamine E'),
+  }).default({ haarlak: 'UV Filter', mousse: 'Vitamine B5', droogshampoo: 'Arganolie', gel: 'Vitamine B5', clayPaste: 'Vitamine E', fiberPaste: 'Vitamine E' }),
+  marketingIngredientenHaarlak: z.string().default('UV Filter'),
+  marketingIngredientenMousse: z.string().default('Vitamine B5'),
+  marketingIngredientenDroogshampoo: z.string().default('Arganolie'),
+  marketingIngredientenGel: z.string().default('Vitamine B5'),
+  marketingIngredientenClayPaste: z.string().default('Vitamine E'),
+  marketingIngredientenFiberPaste: z.string().default('Vitamine E'),
+  
   // Agreements
   agreeTerms: z.boolean().default(false),
   subscribeNewsletter: z.boolean().default(false),
@@ -359,6 +393,7 @@ export type Slide32ColorIngredientsData = z.infer<typeof slide32ColorIngredients
 export type Slide33CurlyGirlIngredientsData = z.infer<typeof slide33CurlyGirlIngredientsSchema>
 export type Slide34MannenShampooIngredientsData = z.infer<typeof slide34MannenShampooIngredientsSchema>
 export type Slide35HaarserumIngredientsData = z.infer<typeof slide35HaarserumIngredientsSchema>
+export type Slide36StylingProductsIngredientsData = z.infer<typeof slide36StylingProductsIngredientsSchema>
 export type IngredientsData = z.infer<typeof ingredientsSchema>
 export type AgreementsData = z.infer<typeof agreementsSchema>
 

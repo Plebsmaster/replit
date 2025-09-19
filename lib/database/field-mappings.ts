@@ -386,6 +386,43 @@ export const FIELD_MAPPINGS: FieldMappings = {
     defaultValue: null,
     transform: toNullableString,
   },
+  
+  // Styling Products Ingredients
+  stylingProductsIngredients: {
+    dbField: 'styling_products_ingredients',
+    defaultValue: { haarlak: null, mousse: null, droogshampoo: null, gel: null, clayPaste: null, fiberPaste: null },
+    transform: toObject,
+  },
+  marketingIngredientenHaarlak: {
+    dbField: 'Marketing ingredienten Haarlak',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  marketingIngredientenMousse: {
+    dbField: 'Marketing ingredienten Mousse',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  marketingIngredientenDroogshampoo: {
+    dbField: 'Marketing ingredienten Droogshampoo',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  marketingIngredientenGel: {
+    dbField: 'Marketing ingredienten Gel',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  marketingIngredientenClayPaste: {
+    dbField: 'Marketing ingredienten Clay Paste',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  marketingIngredientenFiberPaste: {
+    dbField: 'Marketing ingredienten Fiber Paste',
+    defaultValue: null,
+    transform: toNullableString,
+  },
 }
 
 // ===== Utility Functions =====
