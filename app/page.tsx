@@ -64,14 +64,17 @@ function WizardNavigation() {
         </div>
       )}
       
-      {/* Main Content - With sticky header, no dynamic padding needed */}
+      {/* Main Content - Vertically centered for slides with sticky nav, top-aligned for others */}
       <div 
-        className="pt-6"
+        className={showStickyNav 
+          ? "min-h-[calc(100vh-8rem)] flex items-center justify-center pt-12" 
+          : "pt-6"
+        }
         style={{
           paddingBottom: showStickyNav ? 'calc(var(--footer-height) + 2rem)' : '2rem'
         }}
       >
-        <div className="max-w-4xl mx-auto px-4">
+        <div className="max-w-4xl mx-auto px-4 w-full">
           {/* Step Renderer - Dynamically renders the current step */}
           <StepRenderer />
           
