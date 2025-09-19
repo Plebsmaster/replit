@@ -296,6 +296,14 @@ export const slide42CurlyGirlClaimsSchema = z.object({
   standaardClaimCurlyGirlMask: z.string().optional(),
 })
 
+// Step 43: Men's Shampoo Claims Selection (Custom claims for self-determined users)
+export const slide43MannenClaimsSchema = z.object({
+  mannenClaims: z.object({
+    shampoo: z.string().min(1, 'Selecteer een claim voor Mannen Shampoo'),
+  }),
+  standaardClaimMannenShampoo: z.string().optional(),
+})
+
 // Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
@@ -484,6 +492,11 @@ export const FormDataSchema = z.object({
     conditioner: z.string(),
     mask: z.string(),
   }).default({ shampoo: '', conditioner: '', mask: '' }),
+
+  // Men's Shampoo Claims Selection (custom claims when user chooses 'self')
+  mannenClaims: z.object({
+    shampoo: z.string(),
+  }).default({ shampoo: '' }),
   
   // Agreements
   agreeTerms: z.boolean().default(false),
@@ -653,6 +666,7 @@ export const stepSchemas = {
   slide40RepairClaims: slide40RepairClaimsSchema,
   slide41ColorClaims: slide41ColorClaimsSchema,
   slide42CurlyGirlClaims: slide42CurlyGirlClaimsSchema,
+  slide43MannenClaims: slide43MannenClaimsSchema,
   ingredients: ingredientsSchema,
   agreements: agreementsSchema,
 } as const

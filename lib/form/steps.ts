@@ -33,6 +33,7 @@ import {
   slide40RepairClaimsSchema,
   slide41ColorClaimsSchema,
   slide42CurlyGirlClaimsSchema,
+  slide43MannenClaimsSchema,
   ingredientsSchema,
   agreementsSchema,
   FormData,
@@ -703,9 +704,20 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
 
   ['slide43', {
     id: 'slide43',
-    key: 'slide43',
-    title: 'Volgende Stap',
+    key: 'slide43MannenClaims',
+    title: 'Mannen - Kies de claims',
+    schema: slide43MannenClaimsSchema,
     componentFile: 'Slide43.tsx',
+    showGlobalNext: true, // Manual continue
+    showGlobalPrev: true,
+    nextStep: (): string => 'slide44',
+  }],
+
+  ['slide44', {
+    id: 'slide44',
+    key: 'slide44',
+    title: 'Volgende Stap',
+    componentFile: 'Slide44.tsx',
     showGlobalNext: true, // Manual continue
     showGlobalPrev: true,
     nextStep: (): string => 'dashboard-login',
