@@ -127,6 +127,11 @@ export const productNamingChoiceSchema = z.object({
   }),
 })
 
+// Step 27: Haarserum Product Naming Selection
+export const slide27HaarserumSchema = z.object({
+  naamHaarserum: z.string().min(1, 'Selecteer een Haarserum productnaam'),
+})
+
 // Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
@@ -231,6 +236,7 @@ export type Slide16ColorData = z.infer<typeof slide16ColorSchema>
 export type Slide19IconData = z.infer<typeof slide19IconSchema>
 export type IconChoiceData = z.infer<typeof iconChoiceSchema>
 export type ProductNamingChoiceData = z.infer<typeof productNamingChoiceSchema>
+export type Slide27HaarserumData = z.infer<typeof slide27HaarserumSchema>
 export type IngredientsData = z.infer<typeof ingredientsSchema>
 export type AgreementsData = z.infer<typeof agreementsSchema>
 
@@ -318,6 +324,7 @@ export const stepSchemas = {
   slide19Icon: slide19IconSchema,
   iconChoice: iconChoiceSchema,
   productNamingChoice: productNamingChoiceSchema,
+  slide27Haarserum: slide27HaarserumSchema,
   ingredients: ingredientsSchema,
   agreements: agreementsSchema,
 } as const

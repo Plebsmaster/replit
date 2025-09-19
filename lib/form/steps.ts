@@ -18,6 +18,7 @@ import {
   slide19IconSchema,
   iconChoiceSchema,
   productNamingChoiceSchema,
+  slide27HaarserumSchema,
   ingredientsSchema,
   agreementsSchema,
   FormData,
@@ -491,12 +492,24 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     nextStep: (formData: Partial<FormData>): string => 'slide27',
   }],
 
-  // Slide27 placeholder
+  // Haarserum product naming
   ['slide27', {
     id: 'slide27',
-    key: 'slide27',
-    title: 'Slide 27 Placeholder',
+    key: 'slide27Haarserum',
+    title: 'Haarserum - Kies de benaming',
+    schema: slide27HaarserumSchema,
     componentFile: 'Slide27.tsx',
+    showGlobalNext: true, // Manual continue
+    showGlobalPrev: true,
+    nextStep: (formData: Partial<FormData>): string => 'slide28',
+  }],
+
+  // Slide28 placeholder
+  ['slide28', {
+    id: 'slide28',
+    key: 'slide28',
+    title: 'Slide 28 Placeholder',
+    componentFile: 'Slide28.tsx',
     showGlobalNext: true, // Manual continue
     showGlobalPrev: true,
     nextStep: (formData: Partial<FormData>): string => 'ingredients',
