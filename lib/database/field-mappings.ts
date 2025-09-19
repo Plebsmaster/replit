@@ -44,6 +44,7 @@ export interface DatabaseRecord {
   color_mode?: string | null
   'Kleur/Zwart/Wit'?: string | null
   'Icoon ja/nee'?: string | null
+  'Met/zonder claim'?: string | null
   ingredients?: string[]
   product_colors?: Record<string, any>
   agree_terms?: boolean
@@ -159,6 +160,11 @@ export const FIELD_MAPPINGS: FieldMappings = {
   },
   iconChoice: {
     dbField: 'Icoon',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  metZonderClaim: {
+    dbField: 'Met/zonder claim',
     defaultValue: null,
     transform: toNullableString,
   },

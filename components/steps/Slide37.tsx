@@ -1,69 +1,69 @@
 "use client"
-
+import { useState } from "react"
 import { SlideContainer } from "@/components/ui/slide-container"
+import { ResponsiveCarousel } from "@/components/ui/responsive-carousel"
 import { getTypographyClasses } from "@/lib/typography"
 import type { StepProps } from "@/lib/form/steps"
 
-export default function Slide37({ updateFormData, formData }: StepProps) {
+export default function Slide37({ formData, updateFormData, onNext, onBack, goToStep }: StepProps) {
+  const [selectedClaim, setSelectedClaim] = useState<"met-claim" | "zonder-claim" | null>(
+    formData.metZonderClaim || null
+  )
+
+  const handleClaimChoice = (choice: "met-claim" | "zonder-claim") => {
+    setSelectedClaim(choice)
+    
+    // ATOMIC NAVIGATION: Update form data first, then navigate directly to correct step
+    updateFormData({ metZonderClaim: choice })
+    
+    // Navigate directly to the appropriate step based on choice
+    const targetStep = choice === "met-claim" ? "slide38" : "slide46"
+    goToStep(targetStep)
+  }
+
   return (
     <SlideContainer width="wide">
       <section>
-        <h2 className={getTypographyClasses("title", { alignment: "left" })}>
-          Styling Products Succesvol Geconfigureerd
-        </h2>
-
-        <div className="max-w-[760px] space-y-4 mb-8">
-          <p className={getTypographyClasses("paragraph", { alignment: "left" })}>
-            Uitstekend! Je hebt succesvol ingrediënten geselecteerd voor alle styling producten. 
-            Deze selecties zijn opgeslagen en worden gebruikt voor de personalisering van jouw productlijn.
-          </p>
-          <p className={getTypographyClasses("cardDescription", { alignment: "left" })}>
-            Je styling product ingrediënt selecties zijn compleet opgeslagen.
-          </p>
-        </div>
-
-        {/* Display selected ingredients for confirmation */}
-        <div className="bg-gray-50 p-6 rounded-lg">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Geselecteerde Styling Product Ingrediënten:</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex items-center justify-between">
-              <span className="text-gray-700">Haarlak:</span>
-              <span className="font-medium text-gray-900">
-                {formData.stylingProductsIngredients?.haarlak || 'UV Filter'}
-              </span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-gray-700">Mousse:</span>
-              <span className="font-medium text-gray-900">
-                {formData.stylingProductsIngredients?.mousse || 'Vitamine B5'}
-              </span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-gray-700">Droogshampoo:</span>
-              <span className="font-medium text-gray-900">
-                {formData.stylingProductsIngredients?.droogshampoo || 'Arganolie'}
-              </span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-gray-700">Gel:</span>
-              <span className="font-medium text-gray-900">
-                {formData.stylingProductsIngredients?.gel || 'Vitamine B5'}
-              </span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-gray-700">Clay Paste:</span>
-              <span className="font-medium text-gray-900">
-                {formData.stylingProductsIngredients?.clayPaste || 'Vitamine E'}
-              </span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-gray-700">Fiber Paste:</span>
-              <span className="font-medium text-gray-900">
-                {formData.stylingProductsIngredients?.fiberPaste || 'Vitamine E'}
-              </span>
-            </div>
+        <div className="mb-8">
+          <h2 className={getTypographyClasses("title", { alignment: "left" })}>
+            Kies jouw claim voorkeur
+          </h2>
+          <div className="max-w-2xl space-y-4">
+            <p className={getTypographyClasses("paragraph", { alignment: "left" })}>
+              Nu is het tijd om te bepalen hoe je jouw productlijn wilt positioneren. Je kunt kiezen voor 
+              producten met specifieke claims of juist voor producten zonder uitgesproken claims.
+            </p>
+            <p className={getTypographyClasses("paragraph", { alignment: "left" })}>
+              <strong>Met claim:</strong> Producten met duidelijke beloftes en specifieke voordelen die 
+              worden gecommuniceerd naar je klanten.
+            </p>
+            <p className={getTypographyClasses("paragraph", { alignment: "left" })}>
+              <strong>Zonder claim:</strong> Neutrale producten zonder specifieke beloftes, gericht op 
+              basis haarverzorging en styling.
+            </p>
+            <p className={getTypographyClasses("cardDescription", { alignment: "left" })}>
+              Klik op <strong>Met claim</strong> of <strong>Zonder claim</strong> om je keuze te maken.
+            </p>
           </div>
         </div>
+
+        <ResponsiveCarousel
+          items={[
+            { 
+              key: "met-claim", 
+              label: "Met claim", 
+              imageSrc: "/icon-with.png" 
+            },
+            { 
+              key: "zonder-claim", 
+              label: "Zonder claim", 
+              imageSrc: "/icon-without.png" 
+            }
+          ]}
+          selectedItem={selectedClaim}
+          onItemClick={(choice) => handleClaimChoice(choice as "met-claim" | "zonder-claim")}
+          columns={2}
+        />
       </section>
     </SlideContainer>
   )

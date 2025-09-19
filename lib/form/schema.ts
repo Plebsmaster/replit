@@ -219,6 +219,13 @@ export const slide36StylingProductsIngredientsSchema = z.object({
   marketingIngredientenFiberPaste: z.string().optional(),
 })
 
+// Step 37: Met/Zonder Claim Selection
+export const slide37MetZonderClaimSchema = z.object({
+  metZonderClaim: z.enum(['met-claim', 'zonder-claim'], {
+    required_error: 'Kies een optie voor claim',
+  }),
+})
+
 // Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
@@ -357,6 +364,9 @@ export const FormDataSchema = z.object({
   marketingIngredientenClayPaste: z.string().default('Vitamine E'),
   marketingIngredientenFiberPaste: z.string().default('Vitamine E'),
   
+  // Met/Zonder Claim Selection
+  metZonderClaim: z.enum(['met-claim', 'zonder-claim']).nullable().default(null),
+  
   // Agreements
   agreeTerms: z.boolean().default(false),
   subscribeNewsletter: z.boolean().default(false),
@@ -394,6 +404,7 @@ export type Slide33CurlyGirlIngredientsData = z.infer<typeof slide33CurlyGirlIng
 export type Slide34MannenShampooIngredientsData = z.infer<typeof slide34MannenShampooIngredientsSchema>
 export type Slide35HaarserumIngredientsData = z.infer<typeof slide35HaarserumIngredientsSchema>
 export type Slide36StylingProductsIngredientsData = z.infer<typeof slide36StylingProductsIngredientsSchema>
+export type Slide37MetZonderClaimData = z.infer<typeof slide37MetZonderClaimSchema>
 export type IngredientsData = z.infer<typeof ingredientsSchema>
 export type AgreementsData = z.infer<typeof agreementsSchema>
 
@@ -477,6 +488,7 @@ export const getDefaultFormData = (): FormData => {
     marketingIngredientenMannenShampoo: '',
     haarserumIngredient: '',
     marketingIngredientenHaarserum: '',
+    metZonderClaim: null,
     agreeTerms: false,
     subscribeNewsletter: false,
   }
@@ -510,6 +522,8 @@ export const stepSchemas = {
   slide33CurlyGirlIngredients: slide33CurlyGirlIngredientsSchema,
   slide34MannenShampooIngredients: slide34MannenShampooIngredientsSchema,
   slide35HaarserumIngredients: slide35HaarserumIngredientsSchema,
+  slide36StylingProductsIngredients: slide36StylingProductsIngredientsSchema,
+  slide37MetZonderClaim: slide37MetZonderClaimSchema,
   ingredients: ingredientsSchema,
   agreements: agreementsSchema,
 } as const

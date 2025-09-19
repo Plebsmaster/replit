@@ -27,6 +27,7 @@ import {
   slide34MannenShampooIngredientsSchema,
   slide35HaarserumIngredientsSchema,
   slide36StylingProductsIngredientsSchema,
+  slide37MetZonderClaimSchema,
   ingredientsSchema,
   agreementsSchema,
   FormData,
@@ -615,9 +616,38 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
   
   ['slide37', {
     id: 'slide37',
-    key: 'slide37',
-    title: 'Volgende Stap',
+    key: 'slide37MetZonderClaim',
+    title: 'Met/Zonder Claim Keuze',
+    schema: slide37MetZonderClaimSchema,
     componentFile: 'Slide37.tsx',
+    showGlobalNext: false, // Auto-continue
+    showGlobalPrev: true,
+    nextStep: (formData: Partial<FormData>): string => {
+      // Conditional navigation based on claim choice
+      if (formData.metZonderClaim === 'met-claim') {
+        return 'slide38'
+      } else if (formData.metZonderClaim === 'zonder-claim') {
+        return 'slide46'
+      }
+      return 'dashboard-login' // Default fallback
+    },
+  }],
+  
+  ['slide38', {
+    id: 'slide38',
+    key: 'slide38',
+    title: 'Met Claim Vervolg',
+    componentFile: 'Slide38.tsx',
+    showGlobalNext: true, // Manual continue
+    showGlobalPrev: true,
+    nextStep: (): string => 'dashboard-login',
+  }],
+  
+  ['slide46', {
+    id: 'slide46',
+    key: 'slide46',
+    title: 'Zonder Claim Vervolg',
+    componentFile: 'Slide46.tsx',
     showGlobalNext: true, // Manual continue
     showGlobalPrev: true,
     nextStep: (): string => 'dashboard-login',
