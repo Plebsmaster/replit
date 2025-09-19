@@ -5,6 +5,7 @@ import { useMachine } from '@xstate/react'
 import { wizardMachine, wizardGuards, WizardContext as MachineContext, WizardEvent } from './machine'
 import { FormData } from './schema'
 import { getStep, getNextStepId, shouldSkipStep, StepProps, getFlowPath } from './steps'
+import { SlideTransition } from '@/components/ui/slide-transition'
 
 // ===== Context Types =====
 interface WizardContextValue {
@@ -244,20 +245,22 @@ export function StepRenderer() {
     goToNext()
   }, [verifyOtp, goToNext])
   
-  // Wrap in Suspense for lazy-loaded components
+  // Wrap in Suspense for lazy-loaded components with premium fade transitions
   return (
     <Suspense fallback={<StepLoadingFallback />}>
-      <Component
-        formData={formData}
-        updateFormData={updateFormData}
-        onNext={goToNext}
-        onBack={goToPrevious}
-        goToStep={goToStep}
-        email={formData.email}
-        onVerified={handleOtpVerified}
-        verifyOtp={verifyOtp}
-        sendOtp={sendOtp}
-      />
+      <SlideTransition stepId={currentStepId}>
+        <Component
+          formData={formData}
+          updateFormData={updateFormData}
+          onNext={goToNext}
+          onBack={goToPrevious}
+          goToStep={goToStep}
+          email={formData.email}
+          onVerified={handleOtpVerified}
+          verifyOtp={verifyOtp}
+          sendOtp={sendOtp}
+        />
+      </SlideTransition>
     </Suspense>
   )
 }
