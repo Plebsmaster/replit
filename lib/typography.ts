@@ -1,8 +1,8 @@
 export const typography = {
   // Main titles (slide headings)
   title: {
-    className: "text-3xl font-bold leading-tight tracking-tight text-[var(--foreground)] mb-10",
-    mobile: "text-2xl mb-8 font-bold text-[var(--foreground)]",
+    className: "text-3xl font-bold leading-tight tracking-tight text-foreground mb-10",
+    mobile: "text-2xl mb-8 font-bold text-foreground",
   },
 
   // Subtitle text (descriptions under titles)

@@ -51,7 +51,7 @@ function WizardNavigation() {
       {/* Main Content - Adjust padding based on navigation visibility and debug mode */}
       <div className={
         showStickyNav 
-          ? (process.env.NODE_ENV === 'development' ? "pt-36 pb-24" : "pt-28 pb-24")
+          ? (process.env.NODE_ENV === 'development' ? "pt-48 pb-24" : "pt-40 pb-24")
           : (process.env.NODE_ENV === 'development' ? "pt-20 pb-8" : "pt-12 pb-8")
       }>
         <div className="max-w-4xl mx-auto px-4">
