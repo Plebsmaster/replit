@@ -61,16 +61,16 @@ const stepComponents: Record<string, LazyStepComponent> = {
   'slide2': () => import('@/components/steps/Slide2'),
   
   // Elegant Style Flow (with semantic IDs) - CONSOLIDATED
-  'elegant-styles': () => import('@/components/steps/StylePicker'),
-  'slide3': () => import('@/components/steps/StylePicker'),
+  'elegant-styles': () => import('@/components/steps/VariantPicker'),
+  'slide3': () => import('@/components/steps/VariantPicker'),
   'elegant-variant1': () => import('@/components/steps/VariantPicker'),
   'slide4': () => import('@/components/steps/VariantPicker'),
   'elegant-variant2': () => import('@/components/steps/VariantPicker'),
   'slide5': () => import('@/components/steps/VariantPicker'),
   
   // Modern Style Flow (with semantic IDs) - CONSOLIDATED
-  'modern-styles': () => import('@/components/steps/StylePicker'),
-  'slide11': () => import('@/components/steps/StylePicker'),
+  'modern-styles': () => import('@/components/steps/VariantPicker'),
+  'slide11': () => import('@/components/steps/VariantPicker'),
   'modern1-variant': () => import('@/components/steps/VariantPicker'),
   'slide12': () => import('@/components/steps/VariantPicker'),
   'modern2-variant': () => import('@/components/steps/VariantPicker'),

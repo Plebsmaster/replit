@@ -7,10 +7,80 @@
 // VARIANT CONFIGURATIONS
 // ============================================
 export const variantContent: Record<string, any> = {
+  'slide3': {
+    title: 'Kies je template',
+    description: 'Selecteer een elegant variant die het beste bij jouw salon past.',
+    style: 'elegant',
+    columns: 2,
+    options: [
+      { key: 'elegant', label: 'Elegant Template', dbValue: 'elegant', imageSrc: '/img/slide3/elegant-template.jpg' }
+    ],
+    nextStep: 'slide4'
+  },
+  'slide11': {
+    title: 'Kies je template',
+    description: 'Selecteer een modern variant die het beste bij jouw salon past.',
+    style: 'modern',
+    columns: 2,
+    options: [
+      { key: 'modern', label: 'Modern Template', dbValue: 'modern', imageSrc: '/img/slide11/modern-template.jpg' }
+    ],
+    nextStep: 'slide12'
+  },
+  'slide4': {
+    title: 'Kies je Elegant template variant 1',
+    description: 'Selecteer een van de twee elegant varianten die het beste bij jouw salon past.',
+    nextStep: 'slide5',
+    columns: 2,
+    options: [
+      { key: 'elegant-1-1', label: 'Elegant 1.1', dbValue: 'Elegant 1.1', imageSrc: '/img/slide4/elegant-1-1.jpg' },
+      { key: 'elegant-1-2', label: 'Elegant 1.2', dbValue: 'Elegant 1.2', imageSrc: '/img/slide4/elegant-1-2.jpg' }
+    ]
+  },
+  'slide5': {
+    title: 'Kies je Elegant template variant 2',
+    description: 'Selecteer een van de twee elegant varianten die het beste bij jouw salon past.',
+    nextStep: 'slide6',
+    columns: 2,
+    options: [
+      { key: 'elegant-2-1', label: 'Elegant 2.1', dbValue: 'Elegant 2.1', imageSrc: '/img/slide5/elegant-2-1.jpg' },
+      { key: 'elegant-2-2', label: 'Elegant 2.2', dbValue: 'Elegant 2.2', imageSrc: '/img/slide5/elegant-2-2.jpg' }
+    ]
+  },
+  'slide12': {
+    title: 'Kies je Modern template variant',
+    description: 'Selecteer een modern variant die het beste bij jouw salon past.',
+    nextStep: 'slide13',
+    columns: 3,
+    options: [
+      { key: 'modern1', label: 'Modern 1.1', dbValue: 'modern1', imageSrc: '/img/slide12/modern1.jpg' },
+      { key: 'modern2', label: 'Modern 1.2', dbValue: 'modern2', imageSrc: '/img/slide12/modern2.jpg' },
+      { key: 'modern3', label: 'Modern 1.3', dbValue: 'modern3', imageSrc: '/img/slide12/modern3.jpg' }
+    ]
+  },
+  'slide13': {
+    title: 'Kies je Modern template variant 2',
+    description: 'Selecteer een modern variant die het beste bij jouw salon past.',
+    nextStep: 'slide14',
+    columns: 2,
+    options: [
+      { key: 'modern6', label: 'Modern 2.1', dbValue: 'modern6', imageSrc: '/img/slide13/modern6.jpg' }
+    ]
+  },
+  'slide15': {
+    title: 'Kies je Modern template variant 3',
+    description: 'Selecteer een modern variant die het beste bij jouw salon past.',
+    nextStep: 'slide16',
+    columns: 2,
+    options: [
+      { key: 'modern3-1', label: 'Modern 3.1', dbValue: 'Modern 3.1', imageSrc: '/img/slide15/modern-3-1.jpg' },
+      { key: 'modern3-2', label: 'Modern 3.2', dbValue: 'Modern 3.2', imageSrc: '/img/slide15/modern-3-2.jpg' }
+    ]
+  },
   'elegant-variant1': {
     title: 'Kies je Elegant template variant 1',
     description: 'Selecteer een van de twee elegant varianten die het beste bij jouw salon past.',
-    nextStep: 'elegant-variant2',
+    nextStep: 'slide5',
     columns: 2,
     options: [
       { key: 'elegant-1-1', label: 'Elegant 1.1', dbValue: 'Elegant 1.1', imageSrc: '/img/slide4/elegant-1-1.jpg' },
@@ -64,6 +134,15 @@ export const variantContent: Record<string, any> = {
 // ============================================
 export const colorChoiceContent: Record<string, any> = {
   'color-scheme': {
+    title: 'Kies je kleurenschema',
+    description: 'Wil je een zwart-wit schema of liever met kleur?',
+    columns: 2,
+    options: [
+      { key: 'zwart-wit', label: 'Zwart-wit', dbValue: 'Zwart-wit', imageSrc: '/img/slide6/zwart-wit.jpg', nextStep: 'slide7' },
+      { key: 'kleur', label: 'Kleur', dbValue: 'Kleur', imageSrc: '/img/slide6/kleur.jpg', nextStep: 'slide7' }
+    ]
+  },
+  'slide6': {
     title: 'Kies je kleurenschema',
     description: 'Wil je een zwart-wit schema of liever met kleur?',
     columns: 2,

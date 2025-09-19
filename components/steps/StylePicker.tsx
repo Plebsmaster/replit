@@ -18,7 +18,7 @@ export default function StylePicker({ formData, updateFormData, goToStep }: Step
     })
     
     // Navigate directly to the appropriate variant selection step
-    const targetStep = style === "elegant" ? "elegant-variant1" : "modern-variant1"
+    const targetStep = style === "elegant" ? "slide4" : "slide12"
     goToStep(targetStep)
   }
 
