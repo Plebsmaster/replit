@@ -85,7 +85,7 @@ const stepComponents: Record<string, LazyStepComponent> = {
   'slide6': () => import('@/components/steps/ColorChoice'),
   'final-color': () => import('@/components/steps/ColorChoice'),
   'slide7': () => import('@/components/steps/ColorChoice'),
-  'color-palette': () => import('@/components/steps/Slide8'),
+  'color-palette': () => import('@/components/steps/ColorConfigurator'),
   'slide8': () => import('@/components/steps/ColorConfigurator'),
   
   // Icon Flow (with semantic IDs)
