@@ -87,8 +87,16 @@ export function ResponsiveCarousel({
 
   // Desktop grid layout
   if (!isMobile) {
+    const gridClass = columns === 2 
+      ? "grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto"
+      : columns === 3
+      ? "grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto"
+      : columns === 4
+      ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto"
+      : "grid grid-cols-1 gap-8 max-w-5xl mx-auto"
+    
     return (
-      <div className={`grid grid-cols-1 md:grid-cols-${columns} gap-8 max-w-5xl mx-auto`}>
+      <div className={gridClass}>
         {items.map((item) => (
           <ChoiceCard
             key={item.key}

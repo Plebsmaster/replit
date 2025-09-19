@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react"
 import { SlideContainer } from "@/components/ui/slide-container"
-import { ChoiceCard } from "@/components/ui/choice-card"
+import { ResponsiveCarousel } from "@/components/ui/responsive-carousel"
 import { getTypographyClasses } from "@/lib/typography"
 
 type Props = {
@@ -18,13 +18,13 @@ export default function Slide4({ onBack, onNext, selectedVariant: globalSelected
 
   const items = useMemo(
     () => [
-      { key: "Variant 1", label: "Uitlijning links", src: "/img/elegant1/variant1.jpg" },
-      { key: "Variant 2", label: "Uitlijning midden", src: "/img/elegant1/variant2.jpg" },
+      { key: "Variant 1", label: "Uitlijning links", imageSrc: "/img/elegant1/variant1.jpg" },
+      { key: "Variant 2", label: "Uitlijning midden", imageSrc: "/img/elegant1/variant2.jpg" },
     ],
     [],
   )
 
-  const handleChoose = (key: string, label: string) => {
+  const handleChoose = (key: string) => {
     setLocalSelectedVariant(key)
     onSelectionChange?.(key)
 
@@ -47,18 +47,12 @@ export default function Slide4({ onBack, onNext, selectedVariant: globalSelected
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {items.map((item) => (
-            <ChoiceCard
-              key={item.key}
-              label={item.label}
-              imageSrc={item.src}
-              alt={`${item.label} mockup`}
-              isSelected={selectedVariant === item.key}
-              onClick={() => handleChoose(item.key, item.label)}
-            />
-          ))}
-        </div>
+        <ResponsiveCarousel
+          items={items}
+          selectedItem={selectedVariant}
+          onItemClick={handleChoose}
+          columns={2}
+        />
       </section>
     </SlideContainer>
   )
