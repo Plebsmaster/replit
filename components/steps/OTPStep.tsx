@@ -10,7 +10,7 @@ import { getTypographyClasses } from "@/lib/typography"
 import type { StepProps } from "@/lib/form/steps"
 
 export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, formData }: StepProps) {
-  const [otp, setOtp] = useState(["", "", "", "", "", ""])
+  const [otpValue, setOtpValue] = useState("") // Single string for OTP
   const [isVerifying, setIsVerifying] = useState(false)
   const [error, setError] = useState("")
   const [timeLeft, setTimeLeft] = useState(600) // 10 minutes in seconds
@@ -18,7 +18,7 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, fo
   const [isResending, setIsResending] = useState(false)
   const [isGeneratingInitial, setIsGeneratingInitial] = useState(false)
   const [initialOtpGenerated, setInitialOtpGenerated] = useState(false)
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([])
+  const singleInputRef = useRef<HTMLInputElement | null>(null)
 
   // Countdown timer
   useEffect(() => {
@@ -89,44 +89,44 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, fo
     return `${mins}:${secs.toString().padStart(2, "0")}`
   }
 
-  const handleOtpChange = (index: number, value: string) => {
-    if (value.length > 1) {
-      // Handle paste
-      const pastedValue = value.slice(0, 6)
-      const newOtp = [...otp]
-      for (let i = 0; i < pastedValue.length && i + index < 6; i++) {
-        newOtp[i + index] = pastedValue[i]
-      }
-      setOtp(newOtp)
+  const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\D/g, "") // Only allow digits
+    if (value.length <= 6) {
+      setOtpValue(value)
+      // Clear error when user starts typing
+      if (error) setError("")
+    }
+  }
 
-      // Focus the next empty input or the last one
-      const nextIndex = Math.min(index + pastedValue.length, 5)
-      inputRefs.current[nextIndex]?.focus()
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    // Allow ctrl+v for paste
+    if (e.ctrlKey && e.key === 'v') {
       return
     }
-
-    const newOtp = [...otp]
-    newOtp[index] = value
-    setOtp(newOtp)
-
-    // Auto-focus next input
-    if (value && index < 5) {
-      inputRefs.current[index + 1]?.focus()
+    // Allow backspace
+    if (e.key === 'Backspace') {
+      return
     }
+    // Allow tab for navigation
+    if (e.key === 'Tab') {
+      return
+    }
+    // Block non-numeric keys except control keys
+    if (!/[0-9]/.test(e.key) && !e.ctrlKey && !e.metaKey) {
+      e.preventDefault()
+    }
+  }
 
-    // Clear error when user starts typing
+  const handlePaste = (e: React.ClipboardEvent) => {
+    e.preventDefault()
+    const pastedData = e.clipboardData.getData('text/plain')
+    const digitsOnly = pastedData.replace(/\D/g, '').slice(0, 6)
+    setOtpValue(digitsOnly)
     if (error) setError("")
   }
 
-  const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
-    if (e.key === "Backspace" && !otp[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus()
-    }
-  }
-
   const handleVerify = async () => {
-    const otpString = otp.join("")
-    if (otpString.length !== 6) {
+    if (otpValue.length !== 6) {
       setError("Please enter the complete 6-digit code")
       return
     }
@@ -138,7 +138,7 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, fo
       const response = await fetch("/api/otp/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, code: otpString }),
+        body: JSON.stringify({ email, code: otpValue }),
       })
 
       const data = await response.json()
@@ -147,9 +147,9 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, fo
         onVerified()
       } else {
         setError(data.error || "Invalid verification code")
-        // Clear OTP inputs on error
-        setOtp(["", "", "", "", "", ""])
-        inputRefs.current[0]?.focus()
+        // Clear OTP input on error
+        setOtpValue("")
+        singleInputRef.current?.focus()
       }
     } catch (error) {
       setError("Failed to verify code. Please try again.")
@@ -178,7 +178,7 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, fo
         }
         setTimeLeft(600) // Reset timer
         setCanResend(false)
-        setOtp(["", "", "", "", "", ""])
+        setOtpValue("")
 
         // Reset resend timer
         setTimeout(() => setCanResend(true), 60000)
@@ -224,23 +224,58 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, fo
         </div>
 
         <div className="bg-white rounded-lg p-8 max-w-md mx-auto">
-          {/* OTP Input */}
+          {/* OTP Input - Single input with visual boxes */}
           <div className="space-y-4">
-            <div className="flex justify-center gap-3">
-              {otp.map((digit, index) => (
-                <Input
-                  key={index}
-                  ref={(el) => { inputRefs.current[index] = el }}
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={6}
-                  value={digit}
-                  onChange={(e) => handleOtpChange(index, e.target.value.replace(/\D/g, ""))}
-                  onKeyDown={(e) => handleKeyDown(index, e)}
-                  className="w-12 h-12 text-center text-xl font-bold border-2 bg-white text-gray-900 focus:border-black focus:bg-white"
-                  disabled={isVerifying || isGeneratingInitial}
-                />
-              ))}
+            <div className="relative">
+              {/* Hidden input for actual typing */}
+              <input
+                ref={singleInputRef}
+                type="text"
+                inputMode="numeric"
+                maxLength={6}
+                value={otpValue}
+                onChange={handleOtpChange}
+                onKeyDown={handleKeyDown}
+                onPaste={handlePaste}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                disabled={isVerifying || isGeneratingInitial}
+                autoComplete="one-time-code"
+                placeholder=""
+              />
+              
+              {/* Visual representation of OTP boxes */}
+              <div className="flex justify-center gap-2 sm:gap-3 pointer-events-none">
+                {[0, 1, 2, 3, 4, 5].map((index) => (
+                  <div
+                    key={index}
+                    className={`
+                      w-11 h-12 sm:w-12 sm:h-14 
+                      flex items-center justify-center
+                      text-xl sm:text-2xl font-bold 
+                      border-2 rounded-lg
+                      bg-white text-gray-900
+                      transition-all duration-200
+                      ${
+                        otpValue[index] 
+                          ? 'border-black bg-gray-50' 
+                          : index === otpValue.length 
+                            ? 'border-black animate-pulse' 
+                            : 'border-gray-300'
+                      }
+                      ${isVerifying || isGeneratingInitial ? 'opacity-50' : ''}
+                    `}
+                  >
+                    {otpValue[index] || ''}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div 
+              className="text-center text-sm text-gray-500 cursor-pointer"
+              onClick={() => singleInputRef.current?.focus()}
+            >
+              Click here or press Ctrl+V to paste code
             </div>
 
             {error && <p className="text-red-500 text-sm flex items-center justify-center gap-1"><AlertCircle className="w-4 h-4" />{error}</p>}
@@ -281,7 +316,7 @@ export function OTPStep({ email = '', onVerified = () => {}, onBack, sendOtp, fo
             </Button>
             <Button
               onClick={handleVerify}
-              disabled={isVerifying || isGeneratingInitial || otp.join("").length !== 6}
+              disabled={isVerifying || isGeneratingInitial || otpValue.length !== 6}
               className="flex-1 bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 text-base disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
             >
               {isVerifying ? (
