@@ -53,25 +53,49 @@ const stepComponents: Record<string, LazyStepComponent> = {
   'name-phone': () => import('@/components/steps/NamePhoneStep'),
   'client-details': () => import('@/components/steps/ClientDetailsStep'),
   'otp': () => import('@/components/steps/OTPStep'),
+  'otp-verification': () => import('@/components/steps/OTPStep'), // Semantic ID mapping
   'contact': () => import('@/components/steps/ContactStep'),
   
-  // Style Selection Steps
+  // Style Selection Steps (with semantic IDs)
+  'style-selection': () => import('@/components/steps/Slide2'),
   'slide2': () => import('@/components/steps/Slide2'),
   
-  // Questionnaire Steps
+  // Elegant Style Flow (with semantic IDs)
+  'elegant-styles': () => import('@/components/steps/Slide3'),
   'slide3': () => import('@/components/steps/Slide3'),
+  'elegant-variant1': () => import('@/components/steps/Slide4'),
   'slide4': () => import('@/components/steps/Slide4'),
+  'elegant-variant2': () => import('@/components/steps/Slide5'),
   'slide5': () => import('@/components/steps/Slide5'),
-  'slide6': () => import('@/components/steps/Slide6'),
-  'slide7': () => import('@/components/steps/Slide7'),
-  'slide8': () => import('@/components/steps/Slide8'),
-  'slide9': () => import('@/components/steps/Slide9'),
-  'slide10': () => import('@/components/steps/Slide10'),
+  
+  // Modern Style Flow (with semantic IDs)
+  'modern-styles': () => import('@/components/steps/Slide11'),
   'slide11': () => import('@/components/steps/Slide11'),
+  'modern1-variant': () => import('@/components/steps/Slide12'),
   'slide12': () => import('@/components/steps/Slide12'),
+  'modern2-variant': () => import('@/components/steps/Slide13'),
   'slide13': () => import('@/components/steps/Slide13'),
+  'modern3-variant': () => import('@/components/steps/Slide14'),
   'slide14': () => import('@/components/steps/Slide14'),
+  'modern6-variant': () => import('@/components/steps/Slide15'),
   'slide15': () => import('@/components/steps/Slide15'),
+  
+  // Color Configuration Flow (with semantic IDs)
+  'color-scheme': () => import('@/components/steps/Slide6'),
+  'slide6': () => import('@/components/steps/Slide6'),
+  'final-color': () => import('@/components/steps/Slide7'),
+  'slide7': () => import('@/components/steps/Slide7'),
+  'color-palette': () => import('@/components/steps/Slide8'),
+  'slide8': () => import('@/components/steps/Slide8'),
+  
+  // Icon Flow (with semantic IDs)
+  'icon-choice': () => import('@/components/steps/Slide9'),
+  'slide9': () => import('@/components/steps/Slide9'),
+  'icon-selection': () => import('@/components/steps/Slide10'),
+  'slide10': () => import('@/components/steps/Slide10'),
+  
+  // Final Steps (with semantic IDs)
+  'ingredients': () => import('@/components/steps/Slide30'),
   'slide30': () => import('@/components/steps/Slide30'),
   
   // Dashboard Steps
