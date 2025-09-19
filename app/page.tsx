@@ -5,7 +5,7 @@ import { DebugNavigation } from '@/components/ui/debug-navigation'
 import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { QuoteDisplay } from '@/components/ui/quote-display'
-import { useState, useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 
 // Helper function to determine if current step should show sticky navigation
 function shouldShowStickyNavigation(currentStepId: string): boolean {
@@ -25,40 +25,15 @@ function shouldShowStickyNavigation(currentStepId: string): boolean {
 function WizardNavigation() {
   const { currentStepId } = useWizard()
   const showStickyNav = shouldShowStickyNavigation(currentStepId)
-  const headerRef = useRef<HTMLDivElement>(null)
-  const [headerHeight, setHeaderHeight] = useState(0)
 
-  // Dynamically calculate header height with proper timing
+  // Set CSS variables for dev toolbar offset and footer height
   useEffect(() => {
-    const calculateHeaderHeight = () => {
-      if (headerRef.current) {
-        const height = headerRef.current.offsetHeight
-        // Only update if we get a meaningful height
-        if (height > 0) {
-          setHeaderHeight(height)
-          // Set CSS custom property for global use
-          document.documentElement.style.setProperty('--dynamic-header-height', `${height}px`)
-          // Header height calculated successfully
-        }
-      }
-    }
-
-    if (showStickyNav) {
-      // Use requestAnimationFrame to ensure DOM is fully rendered
-      requestAnimationFrame(() => {
-        calculateHeaderHeight()
-        
-        // Fallback: try again after a short delay in case of timing issues
-        setTimeout(calculateHeaderHeight, 100)
-      })
-    }
-
-    // Recalculate on window resize
-    window.addEventListener('resize', calculateHeaderHeight)
-    
-    // Clean up
-    return () => window.removeEventListener('resize', calculateHeaderHeight)
-  }, [showStickyNav]) // Recalculate when sticky nav visibility changes
+    const isDev = process.env.NODE_ENV === 'development'
+    // Set dev toolbar offset (52px in dev for Replit toolbar, 0 in production)
+    document.documentElement.style.setProperty('--dev-toolbar', isDev ? '52px' : '0px')
+    // Set footer height for consistent spacing
+    document.documentElement.style.setProperty('--footer-height', '72px')
+  }, [])
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -68,9 +43,8 @@ function WizardNavigation() {
       {/* Header with Branding and Progress Bar - Only show for slide steps */}
       {showStickyNav && (
         <div 
-          ref={headerRef}
-          className="fixed left-0 right-0 z-50 bg-white shadow-sm" 
-          style={{ top: process.env.NODE_ENV === 'development' ? '52px' : '0px' }}
+          className="sticky z-50 bg-white shadow-sm" 
+          style={{ top: 'var(--dev-toolbar)' }}
           data-header
         >
           <div className="max-w-4xl mx-auto px-4 py-3">
@@ -90,13 +64,11 @@ function WizardNavigation() {
         </div>
       )}
       
-      {/* Main Content - Dynamically adjust padding based on actual header height */}
+      {/* Main Content - With sticky header, no dynamic padding needed */}
       <div 
+        className="pt-6"
         style={{
-          paddingTop: showStickyNav 
-            ? `calc(var(--dynamic-header-height, ${Math.max(headerHeight, 120)}px) + 2rem)` 
-            : (process.env.NODE_ENV === 'development' ? '5rem' : '3rem'),
-          paddingBottom: showStickyNav ? '5rem' : '2rem'
+          paddingBottom: showStickyNav ? 'calc(var(--footer-height) + 2rem)' : '2rem'
         }}
       >
         <div className="max-w-4xl mx-auto px-4">

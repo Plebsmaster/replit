@@ -39,6 +39,12 @@
   --sidebar-ring: rgba(139, 92, 246, 0.5);
 }
 
+/* Scroll padding for smooth navigation with sticky header */
+html {
+  scroll-padding-top: calc(env(safe-area-inset-top) + var(--dev-toolbar, 0px));
+  scroll-behavior: smooth;
+}
+
 .dark {
   --background: #0f172a;
   --foreground: #e2e8f0;
