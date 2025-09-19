@@ -231,11 +231,42 @@ export function useWizard() {
   return context
 }
 
-// ===== Step Renderer Component with Clean Lazy Loading =====
+// ===== Step Renderer Component with Premium Transitions =====
 export function StepRenderer() {
   const { getCurrentStepComponent, formData, updateFormData, goToNext, goToPrevious, goToStep, currentStepId, verifyOtp, sendOtp } = useWizard()
+  const [isTransitioning, setIsTransitioning] = React.useState(false)
+  const [fadeClass, setFadeClass] = React.useState('opacity-100 scale-100 blur-0')
+  const previousStepRef = React.useRef(currentStepId)
   
   const Component = getCurrentStepComponent()
+  
+  // Premium transition effect on step change
+  React.useEffect(() => {
+    if (previousStepRef.current !== currentStepId) {
+      // Start premium fade out with scale and blur
+      setIsTransitioning(true)
+      setFadeClass('opacity-0 scale-95 blur-sm')
+      
+      // After fade out completes, update step and fade in
+      const timer = setTimeout(() => {
+        previousStepRef.current = currentStepId
+        // Fade in from smaller scale with blur removal
+        setFadeClass('opacity-0 scale-105 blur-sm')
+        
+        // Quickly transition to normal state
+        setTimeout(() => {
+          setFadeClass('opacity-100 scale-100 blur-0')
+          
+          // End transition lock after animation completes
+          setTimeout(() => {
+            setIsTransitioning(false)
+          }, 500)
+        }, 50)
+      }, 400) // Initial fade out duration
+      
+      return () => clearTimeout(timer)
+    }
+  }, [currentStepId])
   
   if (!Component) {
     return (
@@ -254,9 +285,9 @@ export function StepRenderer() {
     goToNext()
   }, [verifyOtp, goToNext])
   
-  // Clean Suspense wrapper - let lazy loading handle transitions naturally
+  // Premium transition wrapper with scale, blur, and smooth easing
   return (
-    <div className="transition-opacity duration-300 ease-in-out">
+    <div className={`transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${fadeClass} ${isTransitioning ? 'pointer-events-none' : ''}`}>
       <Suspense fallback={<StepTransitionFallback />}>
         <Component
           formData={formData}
