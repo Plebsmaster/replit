@@ -11,6 +11,9 @@ export function QuoteDisplay() {
   const quotesArray: readonly string[] = quotes
 
   useEffect(() => {
+    // Don't start interval if no quotes available
+    if (quotesArray.length === 0) return
+
     // Change quote every 6 seconds
     const interval = setInterval(() => {
       // Fade out
