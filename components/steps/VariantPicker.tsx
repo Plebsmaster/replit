@@ -55,8 +55,8 @@ export default function VariantPicker({ formData, updateFormData, goToStep, step
       updateFormData({ modernStyle: variant.dbValue })
     }
     
-    // Don't auto-advance - let the user click continue
-    // The StepNavigation component will handle the continue button
+    // Navigate to next step
+    goToStep(config.nextStep)
   }
 
   return (
