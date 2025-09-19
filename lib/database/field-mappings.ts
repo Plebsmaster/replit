@@ -91,6 +91,8 @@ export interface DatabaseRecord {
   'Quote'?: string | null
   'Logo of merknaam'?: string | null
   'Merknaam'?: string | null
+  'Naam logo'?: string | null
+  'AfbeeldingsURL'?: string | null
 }
 
 // ===== Transformation Functions =====
@@ -239,6 +241,19 @@ export const FIELD_MAPPINGS: FieldMappings = {
   // Merknaam Input (Slide 52)
   merknaam: {
     dbField: 'Merknaam',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  
+  // Logo Upload (Slide 53)
+  naamLogo: {
+    dbField: 'Naam logo',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  
+  afbeeldingsURL: {
+    dbField: 'AfbeeldingsURL',
     defaultValue: null,
     transform: toNullableString,
   },

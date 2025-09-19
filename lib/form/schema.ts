@@ -348,6 +348,12 @@ export const slide52MerknaamSchema = z.object({
   merknaam: z.string().max(100, 'Merknaam mag maximaal 100 karakters bevatten').optional(),
 })
 
+// Step 53: Logo Upload
+export const slide53LogoUploadSchema = z.object({
+  naamLogo: z.string().optional(),
+  afbeeldingsURL: z.string().optional(),
+})
+
 // Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
@@ -412,6 +418,10 @@ export const FormDataSchema = z.object({
   
   // Merknaam Input (Slide 52)
   merknaam: z.string().max(100, 'Merknaam mag maximaal 100 karakters bevatten').default(''),
+  
+  // Logo Upload (Slide 53)
+  naamLogo: z.string().default(''),
+  afbeeldingsURL: z.string().default(''),
   
   // Product Names - Auto-fillable fields
   naamNoYellowShampoo: z.string().default(''),

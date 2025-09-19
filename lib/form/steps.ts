@@ -40,6 +40,7 @@ import {
   slide49QuoteSchema,
   slide51LogoMerknaamSchema,
   slide52MerknaamSchema,
+  slide53LogoUploadSchema,
   ingredientsSchema,
   agreementsSchema,
   FormData,
@@ -829,11 +830,12 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
   ['slide53', {
     id: 'slide53',
     key: 'slide53',
-    title: 'Logo Gekozen',
+    title: 'Logo Upload',
+    schema: slide53LogoUploadSchema,
     componentFile: 'Slide53.tsx',
     showGlobalNext: true, // Manual continue
     showGlobalPrev: true,
-    nextStep: (): string => 'dashboard-login',
+    nextStep: (): string => 'slide54',
   }],
   
   ['slide55', {
