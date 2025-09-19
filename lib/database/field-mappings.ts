@@ -303,6 +303,28 @@ export const FIELD_MAPPINGS: FieldMappings = {
     defaultValue: null,
     transform: toNullableString,
   },
+  
+  // Repair Ingredients
+  repairIngredients: {
+    dbField: 'repair_ingredients',
+    defaultValue: { shampoo: null, conditioner: null, mask: null },
+    transform: toObject,
+  },
+  marketingIngredientenRepairShampoo: {
+    dbField: 'Marketing ingredienten Repair Shampoo',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  marketingIngredientenRepairConditioner: {
+    dbField: 'Marketing ingredienten Repair Conditioner',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  marketingIngredientenRepairMask: {
+    dbField: 'Marketing ingredienten Repair Mask',
+    defaultValue: null,
+    transform: toNullableString,
+  },
 }
 
 // ===== Utility Functions =====

@@ -153,6 +153,18 @@ export const slide30NoYellowIngredientsSchema = z.object({
   marketingIngredientenNoYellowConditioner: z.string().optional(),
 })
 
+// Step 31: Repair Ingredients Selection
+export const slide31RepairIngredientsSchema = z.object({
+  repairIngredients: z.object({
+    shampoo: z.string().min(1, 'Selecteer een ingrediënt voor Repair Shampoo'),
+    conditioner: z.string().min(1, 'Selecteer een ingrediënt voor Repair Conditioner'),
+    mask: z.string().min(1, 'Selecteer een ingrediënt voor Repair Mask'),
+  }),
+  marketingIngredientenRepairShampoo: z.string().optional(),
+  marketingIngredientenRepairConditioner: z.string().optional(),
+  marketingIngredientenRepairMask: z.string().optional(),
+})
+
 // Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
@@ -237,6 +249,16 @@ export const FormDataSchema = z.object({
   marketingIngredientenNoYellowShampoo: z.string().default(''),
   marketingIngredientenNoYellowConditioner: z.string().default(''),
   
+  // Repair Ingredients
+  repairIngredients: z.object({
+    shampoo: z.string(),
+    conditioner: z.string(),
+    mask: z.string(),
+  }).default({ shampoo: '', conditioner: '', mask: '' }),
+  marketingIngredientenRepairShampoo: z.string().default(''),
+  marketingIngredientenRepairConditioner: z.string().default(''),
+  marketingIngredientenRepairMask: z.string().default(''),
+  
   // Agreements
   agreeTerms: z.boolean().default(false),
   subscribeNewsletter: z.boolean().default(false),
@@ -268,6 +290,7 @@ export type ProductNamingChoiceData = z.infer<typeof productNamingChoiceSchema>
 export type Slide27HaarserumData = z.infer<typeof slide27HaarserumSchema>
 export type Slide28StylingProductsData = z.infer<typeof slide28StylingProductsSchema>
 export type Slide30NoYellowIngredientsData = z.infer<typeof slide30NoYellowIngredientsSchema>
+export type Slide31RepairIngredientsData = z.infer<typeof slide31RepairIngredientsSchema>
 export type IngredientsData = z.infer<typeof ingredientsSchema>
 export type AgreementsData = z.infer<typeof agreementsSchema>
 
@@ -333,6 +356,10 @@ export const getDefaultFormData = (): FormData => {
     noYellowIngredients: { shampoo: '', conditioner: '' },
     marketingIngredientenNoYellowShampoo: '',
     marketingIngredientenNoYellowConditioner: '',
+    repairIngredients: { shampoo: '', conditioner: '', mask: '' },
+    marketingIngredientenRepairShampoo: '',
+    marketingIngredientenRepairConditioner: '',
+    marketingIngredientenRepairMask: '',
     agreeTerms: false,
     subscribeNewsletter: false,
   }
