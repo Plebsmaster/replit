@@ -472,7 +472,7 @@ export function validateStepData(
  */
 export function getFlowPath(formData: Partial<FormData>): string[] {
   const path: string[] = []
-  let currentStepId: string | null = 'email'
+  let currentStepId: string | null = 'welcome'  // Start with welcome, not email
   const visited = new Set<string>()
   const maxSteps = 1000 // Support up to 1000 steps
   let stepCount = 0

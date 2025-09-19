@@ -500,7 +500,7 @@ export function getProgress(context: WizardContext): number {
  */
 function getFlowPath(formData: Partial<FormData>): string[] {
   const path: string[] = []
-  let currentStepId: string | null = 'email'
+  let currentStepId: string | null = 'welcome'  // Start with welcome to match initialContext
   
   const maxSteps = 1000 // Allow for 100+ steps as designed, with high safety margin
   let stepCount = 0
