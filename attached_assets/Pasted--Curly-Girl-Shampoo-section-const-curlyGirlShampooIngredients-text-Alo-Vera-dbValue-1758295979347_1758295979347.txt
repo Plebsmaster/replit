@@ -1,0 +1,61 @@
+// Curly Girl Shampoo section
+const curlyGirlShampooIngredients = [
+  { text: 'Aloë Vera', dbValue: 'Aloë Vera' },
+  { text: 'Arganolie', dbValue: 'Arganolie' },
+  { text: 'Biotine', dbValue: 'Biotine' },
+  { text: 'Druivenpit Extract', dbValue: 'Druivenpit Extract' },
+  { text: 'Gehydrolyseerd Tarweproteïne', dbValue: 'Gehydrolyseerd Tarweproteïne' },
+  { text: 'Jojoba-olie', dbValue: 'Jojoba-olie' },
+  { text: 'Hyaluronzuur', dbValue: 'Hyaluronzuur', selected: true },
+  { text: 'Vitamine B5', dbValue: 'Vitamine B5' },
+  { text: 'Vitamine C', dbValue: 'Vitamine C' },
+  { text: 'Vitamine E', dbValue: 'Vitamine E' }
+];
+
+// Curly Girl Conditioner section  
+const curlyGirlConditionerIngredients = [
+  { text: 'Aloë Vera', dbValue: 'Aloë Vera' },
+  { text: 'Arganolie', dbValue: 'Arganolie' },
+  { text: 'Biotine', dbValue: 'Biotine' },
+  { text: 'Druivenpit Extract', dbValue: 'Druivenpit Extract' },
+  { text: 'Gehydrolyseerd Tarweproteïne', dbValue: 'Gehydrolyseerd Tarweproteïne' },
+  { text: 'Jojoba-olie', dbValue: 'Jojoba-olie' },
+  { text: 'Hyaluronzuur', dbValue: 'Hyaluronzuur' },
+  { text: 'Vitamine B5', dbValue: 'Vitamine B5' },
+  { text: 'Vitamine C', dbValue: 'Vitamine C' },
+  { text: 'Vitamine E', dbValue: 'Vitamine E', selected: true }
+];
+
+// Curly Girl Mask section
+const curlyGirlMaskIngredients = [
+  { text: 'Aloë Vera', dbValue: 'Aloë Vera' },
+  { text: 'Arganolie', dbValue: 'Arganolie' },
+  { text: 'Biotine', dbValue: 'Biotine' },
+  { text: 'Druivenpit Extract', dbValue: 'Druivenpit Extract' },
+  { text: 'Gehydrolyseerd Tarweproteïne', dbValue: 'Gehydrolyseerd Tarweproteïne' },
+  { text: 'Jojoba-olie', dbValue: 'Jojoba-olie' },
+  { text: 'Hyaluronzuur', dbValue: 'Hyaluronzuur' },
+  { text: 'Vitamine B5', dbValue: 'Vitamine B5' },
+  { text: 'Vitamine C', dbValue: 'Vitamine C' },
+  { text: 'Vitamine E', dbValue: 'Vitamine E', selected: true }
+];
+
+// Database columns: 'Marketing ingredienten Curly Girl Shampoo', 'Marketing ingredienten Curly Girl Conditioner', 'Marketing ingredienten Curly Girl Mask'
+// Default selections: Hyaluronzuur for Shampoo, Vitamine E for Conditioner, Vitamine E for Mask (as shown in code)
+// Next slide: Slide34 after all three selections made
+const handleCurlyGirlShampooIngredientSelection = (ingredient) => {
+  updateDatabase('Marketing ingredienten Curly Girl Shampoo', ingredient.dbValue);
+};
+
+const handleCurlyGirlConditionerIngredientSelection = (ingredient) => {
+  updateDatabase('Marketing ingredienten Curly Girl Conditioner', ingredient.dbValue);
+};
+
+const handleCurlyGirlMaskIngredientSelection = (ingredient) => {
+  updateDatabase('Marketing ingredienten Curly Girl Mask', ingredient.dbValue);
+};
+
+const handleContinue = () => {
+  // Continue to next slide after all three ingredients selected
+  navigateToSlide('Slide34');
+};

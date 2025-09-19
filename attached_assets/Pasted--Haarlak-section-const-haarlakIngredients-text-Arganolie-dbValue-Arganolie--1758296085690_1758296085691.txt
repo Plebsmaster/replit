@@ -1,0 +1,79 @@
+// Haarlak section
+const haarlakIngredients = [
+  { text: 'Arganolie', dbValue: 'Arganolie' },
+  { text: 'UV Filter', dbValue: 'UV Filter', selected: true },
+  { text: 'Vitamine B5', dbValue: 'Vitamine B5' },
+  { text: 'Vitamine E', dbValue: 'Vitamine E' }
+];
+
+// Mousse section
+const mousseIngredients = [
+  { text: 'Arganolie', dbValue: 'Arganolie' },
+  { text: 'UV Filter', dbValue: 'UV Filter' },
+  { text: 'Vitamine B5', dbValue: 'Vitamine B5', selected: true },
+  { text: 'Vitamine E', dbValue: 'Vitamine E' }
+];
+
+// Droogshampoo section (note: typo "Droogshampooo" in code)
+const droogshampooIngredients = [
+  { text: 'Arganolie', dbValue: 'Arganolie', selected: true },
+  { text: 'UV Filter', dbValue: 'UV Filter' },
+  { text: 'Vitamine B5', dbValue: 'Vitamine B5' },
+  { text: 'Vitamine E', dbValue: 'Vitamine E' }
+];
+
+// Gel section
+const gelIngredients = [
+  { text: 'Arganolie', dbValue: 'Arganolie' },
+  { text: 'UV Filter', dbValue: 'UV Filter' },
+  { text: 'Vitamine B5', dbValue: 'Vitamine B5', selected: true },
+  { text: 'Vitamine E', dbValue: 'Vitamine E' }
+];
+
+// Clay Paste section
+const clayPasteIngredients = [
+  { text: 'Arganolie', dbValue: 'Arganolie' },
+  { text: 'UV Filter', dbValue: 'UV Filter' },
+  { text: 'Vitamine B5', dbValue: 'Vitamine B5' },
+  { text: 'Vitamine E', dbValue: 'Vitamine E', selected: true }
+];
+
+// Fiber Paste section
+const fiberPasteIngredients = [
+  { text: 'Arganolie', dbValue: 'Arganolie' },
+  { text: 'UV Filter', dbValue: 'UV Filter' },
+  { text: 'Vitamine B5', dbValue: 'Vitamine B5' },
+  { text: 'Vitamine E', dbValue: 'Vitamine E', selected: true }
+];
+
+// Database columns: 'Marketing ingredienten Haarlak', 'Marketing ingredienten Mousse', 'Marketing ingredienten Droogshampoo', 'Marketing ingredienten Gel', 'Marketing ingredienten Clay Paste', 'Marketing ingredienten Fiber Paste'
+// Default selections (as shown in code): UV Filter for Haarlak, Vitamine B5 for Mousse, Arganolie for Droogshampoo, Vitamine B5 for Gel, Vitamine E for Clay Paste, Vitamine E for Fiber Paste
+// Next slide: Slide37 after all six selections made
+const handleHaarlakIngredientSelection = (ingredient) => {
+  updateDatabase('Marketing ingredienten Haarlak', ingredient.dbValue);
+};
+
+const handleMousseIngredientSelection = (ingredient) => {
+  updateDatabase('Marketing ingredienten Mousse', ingredient.dbValue);
+};
+
+const handleDroogshampooIngredientSelection = (ingredient) => {
+  updateDatabase('Marketing ingredienten Droogshampoo', ingredient.dbValue);
+};
+
+const handleGelIngredientSelection = (ingredient) => {
+  updateDatabase('Marketing ingredienten Gel', ingredient.dbValue);
+};
+
+const handleClayPasteIngredientSelection = (ingredient) => {
+  updateDatabase('Marketing ingredienten Clay Paste', ingredient.dbValue);
+};
+
+const handleFiberPasteIngredientSelection = (ingredient) => {
+  updateDatabase('Marketing ingredienten Fiber Paste', ingredient.dbValue);
+};
+
+const handleContinue = () => {
+  // Continue to next slide after all six ingredients selected
+  navigateToSlide('Slide37');
+};
