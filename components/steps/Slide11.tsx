@@ -12,7 +12,7 @@ type Props = StepProps & {
 }
 
 export default function Slide11({ onBack, onNext, updateFormData, formData, selectedStyle: globalSelectedStyle, onSelectionChange }: Props) {
-  const [localSelectedStyle, setLocalSelectedStyle] = useState<string | null>(globalSelectedStyle || null)
+  const [localSelectedStyle, setLocalSelectedStyle] = useState<string | null>(formData.modernStyle || globalSelectedStyle || null)
   
   const selectedStyle = globalSelectedStyle !== undefined ? globalSelectedStyle : localSelectedStyle
 

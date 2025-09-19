@@ -6,15 +6,17 @@ import { ChoiceCard } from "@/components/ui/choice-card"
 import { getTypographyClasses } from "@/lib/typography"
 
 type Props = {
+  formData: any
+  updateFormData: (updates: any) => void
   onBack: () => void
   onNext: () => void
   selectedVariant?: string | null
   onSelectionChange?: (variant: string | null) => void
 }
 
-export default function Slide12({ onBack, onNext, selectedVariant: globalSelectedVariant, onSelectionChange }: Props) {
+export default function Slide12({ formData, updateFormData, onBack, onNext, selectedVariant: globalSelectedVariant, onSelectionChange }: Props) {
   const [selectedStyle, setSelectedStyle] = useState<string>("")
-  const [localSelectedVariant, setLocalSelectedVariant] = useState<string | null>(globalSelectedVariant || null)
+  const [localSelectedVariant, setLocalSelectedVariant] = useState<string | null>(formData.styleVariant || globalSelectedVariant || null)
   
   const selectedVariant = globalSelectedVariant !== undefined ? globalSelectedVariant : localSelectedVariant
 
@@ -46,6 +48,7 @@ export default function Slide12({ onBack, onNext, selectedVariant: globalSelecte
   const handleChooseVariant = (variantNumber: string) => {
     setLocalSelectedVariant(variantNumber)
     onSelectionChange?.(variantNumber)
+    updateFormData({ styleVariant: `${selectedStyle}${variantNumber}` })
 
     try {
       const finalStyle = `${selectedStyle}${variantNumber}`

@@ -6,15 +6,18 @@ import { ChoiceCard } from "@/components/ui/choice-card"
 import { getTypographyClasses } from "@/lib/typography"
 
 interface Slide9Props {
+  formData: any
+  updateFormData: (updates: any) => void
   onBack: () => void
   onNext: () => void
 }
 
-export default function Slide9({ onBack, onNext }: Slide9Props) {
-  const [selectedOption, setSelectedOption] = useState<string | null>(null)
+export default function Slide9({ formData, updateFormData, onBack, onNext }: Slide9Props) {
+  const [selectedOption, setSelectedOption] = useState<string | null>(formData.iconChoice || null)
 
   const handleOptionSelect = (option: string) => {
     setSelectedOption(option)
+    updateFormData({ iconChoice: option, selectedIcon: option === 'with' })
     try {
       localStorage.setItem("salonid:iconChoice", option)
       localStorage.setItem("salonid:dateISO", new Date().toISOString())

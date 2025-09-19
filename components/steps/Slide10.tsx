@@ -6,12 +6,14 @@ import { getTypographyClasses } from "@/lib/typography"
 import IconButton from "./IconButton"
 
 interface Slide10Props {
+  formData: any
+  updateFormData: (updates: any) => void
   onBack: () => void
   onNext: () => void
 }
 
-export default function Slide10({ onBack, onNext }: Slide10Props) {
-  const [selectedIcon, setSelectedIcon] = useState<string | null>(null)
+export default function Slide10({ formData, updateFormData, onBack, onNext }: Slide10Props) {
+  const [selectedIcon, setSelectedIcon] = useState<string | null>(formData.iconSelection || null)
 
   const icons = [
     {
@@ -54,6 +56,7 @@ export default function Slide10({ onBack, onNext }: Slide10Props) {
 
   const handleIconSelect = (iconId: string) => {
     setSelectedIcon(iconId)
+    updateFormData({ iconSelection: iconId })
     try {
       localStorage.setItem("salonid:selectedIcon", iconId)
       localStorage.setItem("salonid:dateISO", new Date().toISOString())
