@@ -5,6 +5,7 @@ import { useMachine } from '@xstate/react'
 import { wizardMachine, wizardGuards, WizardContext as MachineContext, WizardEvent } from './machine'
 import { FormData } from './schema'
 import { getStep, getNextStepId, shouldSkipStep, StepProps, getFlowPath } from './steps'
+import { getLazyComponent, preloadSteps, getStepsToPreload } from './lazy-step-loader'
 
 // ===== Context Types =====
 interface WizardContextValue {
@@ -57,11 +58,26 @@ export function WizardProvider({ children }: { children: ReactNode }) {
     return Math.round((visitedCount / flowPath.length) * 100)
   }, [state.context.formData, state.context.visitedSteps])
   
-  // Get current step component
+  // Get current step component (lazy loaded)
   const getCurrentStepComponent = React.useCallback(() => {
+    // First try lazy loading
+    const LazyComponent = getLazyComponent(state.context.currentStepId)
+    if (LazyComponent) {
+      return LazyComponent
+    }
+    
+    // Fallback to original step registry if not in lazy loader
     const step = getStep(state.context.currentStepId)
     return step?.Component || null
   }, [state.context.currentStepId])
+  
+  // Preload next steps when current step changes
+  React.useEffect(() => {
+    const stepsToPreload = getStepsToPreload(state.context.currentStepId, state.context.formData)
+    if (stepsToPreload.length > 0) {
+      preloadSteps(stepsToPreload).catch(console.error)
+    }
+  }, [state.context.currentStepId, state.context.formData])
   
   // Action methods
   const updateFormData = React.useCallback((data: Partial<FormData>) => {
@@ -221,11 +237,36 @@ export function useWizard() {
   return context
 }
 
-// ===== Step Renderer Component =====
+// ===== Step Renderer Component with Smooth Transitions =====
 export function StepRenderer() {
   const { getCurrentStepComponent, formData, updateFormData, goToNext, goToPrevious, goToStep, currentStepId, verifyOtp, sendOtp } = useWizard()
+  const [isTransitioning, setIsTransitioning] = React.useState(false)
+  const [fadeClass, setFadeClass] = React.useState('opacity-100')
+  const previousStepRef = React.useRef(currentStepId)
   
   const Component = getCurrentStepComponent()
+  
+  // Handle step transitions with smooth fade effect
+  React.useEffect(() => {
+    if (previousStepRef.current !== currentStepId) {
+      // Start fade out
+      setIsTransitioning(true)
+      setFadeClass('opacity-0')
+      
+      // After fade out, update step and fade in
+      const timer = setTimeout(() => {
+        previousStepRef.current = currentStepId
+        setFadeClass('opacity-100')
+        
+        // End transition after fade in
+        setTimeout(() => {
+          setIsTransitioning(false)
+        }, 300)
+      }, 200) // Fade out duration
+      
+      return () => clearTimeout(timer)
+    }
+  }, [currentStepId])
   
   if (!Component) {
     return (
@@ -244,32 +285,32 @@ export function StepRenderer() {
     goToNext()
   }, [verifyOtp, goToNext])
   
-  // Wrap in Suspense for lazy-loaded components
+  // Wrap in Suspense for lazy-loaded components with smooth transitions
   return (
-    <Suspense fallback={<StepLoadingFallback />}>
-      <Component
-        formData={formData}
-        updateFormData={updateFormData}
-        onNext={goToNext}
-        onBack={goToPrevious}
-        goToStep={goToStep}
-        email={formData.email}
-        onVerified={handleOtpVerified}
-        verifyOtp={verifyOtp}
-        sendOtp={sendOtp}
-      />
-    </Suspense>
+    <div className={`transition-all duration-300 ease-in-out ${fadeClass} ${isTransitioning ? 'pointer-events-none' : ''}`}>
+      <Suspense fallback={<StepTransitionFallback />}>
+        <Component
+          formData={formData}
+          updateFormData={updateFormData}
+          onNext={goToNext}
+          onBack={goToPrevious}
+          goToStep={goToStep}
+          email={formData.email}
+          onVerified={handleOtpVerified}
+          verifyOtp={verifyOtp}
+          sendOtp={sendOtp}
+        />
+      </Suspense>
+    </div>
   )
 }
 
-// ===== Loading Fallback =====
-function StepLoadingFallback() {
+// ===== Smooth Transition Fallback (No Spinner) =====
+function StepTransitionFallback() {
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="text-center">
-        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
-        <p className="mt-4 text-gray-600">Loading step...</p>
-      </div>
+    <div className="animate-pulse">
+      {/* Invisible placeholder to maintain layout during transition */}
+      <div className="min-h-[400px]" />
     </div>
   )
 }

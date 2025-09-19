@@ -1,4 +1,4 @@
-import { lazy, ComponentType, LazyExoticComponent } from 'react'
+// No component imports needed - all components loaded via lazy-step-loader
 import { z } from 'zod'
 import {
   welcomeSchema,
@@ -55,7 +55,7 @@ export interface StepDefinition {
   id: string
   key: string
   title: string
-  Component: ComponentType<StepProps>
+  // Remove Component property - will be loaded via lazy-step-loader
   schema?: z.ZodSchema<Partial<FormData>>
   componentFile?: string  // TSX filename for debug navigation
   guards?: {
@@ -71,68 +71,9 @@ export interface StepDefinition {
   showGlobalPrev?: boolean  // Show "Terug" button (default: true)
 }
 
-// ===== Step Components with Dynamic Imports =====
-// Using lazy loading for code splitting
-const WelcomeStep = lazy(() => 
-  import('@/components/steps/Slide1').then(m => ({ default: m.WelcomeStep }))
-)
-const EmailStep = lazy(() => 
-  import('@/components/steps/EmailStep')
-)
-const NamePhoneStep = lazy(() => 
-  import('@/components/steps/NamePhoneStep')
-)
-const OTPStep = lazy(() => 
-  import('@/components/steps/OTPStep')
-)
-const StyleSelectionStep = lazy(() => 
-  import('@/components/steps/Slide2')
-)
-const ElegantStyleStep = lazy(() => 
-  import('@/components/steps/Slide3')
-)
-const ElegantVariant1Step = lazy(() => 
-  import('@/components/steps/Slide4')
-)
-const ElegantVariant2Step = lazy(() => 
-  import('@/components/steps/Slide5')
-)
-const ColorSchemeStep = lazy(() => 
-  import('@/components/steps/Slide6')
-)
-const FinalColorStep = lazy(() => 
-  import('@/components/steps/Slide7')
-)
-const ColorPaletteStep = lazy(() => 
-  import('@/components/steps/Slide8')
-)
-const IconChoiceStep = lazy(() => 
-  import('@/components/steps/Slide9')
-)
-const IconSelectionStep = lazy(() => 
-  import('@/components/steps/Slide10')
-)
-const ModernStyleStep = lazy(() => 
-  import('@/components/steps/Slide11')
-)
-const Modern1VariantStep = lazy(() => 
-  import('@/components/steps/Slide12')
-)
-const Modern2VariantStep = lazy(() => 
-  import('@/components/steps/Slide13')
-)
-const Modern3VariantStep = lazy(() => 
-  import('@/components/steps/Slide14')
-)
-const Modern6VariantStep = lazy(() => 
-  import('@/components/steps/Slide15')
-)
-const IngredientsStep = lazy(() => 
-  import('@/components/steps/Slide30')
-)
-const DashboardLoginStep = lazy(() => 
-  import('@/components/steps/DashboardLoginStep')
-)
+// ===== Step Components Removed =====
+// Components are now loaded exclusively via lazy-step-loader.ts
+// This ensures true code-splitting and reduces initial bundle size
 
 // ===== Step Registry =====
 export const stepRegistry: Map<string, StepDefinition> = new Map([
@@ -141,7 +82,6 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     id: 'welcome',
     key: 'welcome',
     title: 'Welkom',
-    Component: WelcomeStep,
     schema: welcomeSchema,
     showGlobalNext: true,  // Manual continue
     showGlobalPrev: true,
@@ -153,7 +93,6 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     id: 'email',
     key: 'email',
     title: 'E-mail',
-    Component: EmailStep,
     schema: emailStepSchema,
     showGlobalNext: true,  // Manual continue
     showGlobalPrev: true,
@@ -171,7 +110,6 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     id: 'name-phone',
     key: 'namePhone',
     title: 'Gegevens',
-    Component: NamePhoneStep,
     schema: namePhoneSchema,
     showGlobalNext: true,  // Manual continue
     showGlobalPrev: true,
@@ -190,7 +128,6 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     id: 'otp-verification',
     key: 'otp',
     title: 'Verificatie',
-    Component: OTPStep,
     schema: otpSchema,
     showGlobalNext: false, // Has own button
     showGlobalPrev: true,
@@ -213,7 +150,6 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     id: 'style-selection',
     key: 'styleSelection',
     title: 'Stijl Selectie',
-    Component: StyleSelectionStep,
     schema: styleSelectionSchema,
     componentFile: 'Slide2.tsx',
     showGlobalNext: false, // Auto-continue
@@ -230,7 +166,6 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     id: 'elegant-styles',
     key: 'elegantStyle',
     title: 'Elegante Stijlen',
-    Component: ElegantStyleStep,
     schema: elegantStyleSchema,
     componentFile: 'Slide3.tsx',
     showGlobalNext: false, // Auto-continue
@@ -281,7 +216,6 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     id: 'modern-styles',
     key: 'modernStyle',
     title: 'Moderne Stijlen',
-    Component: ModernStyleStep,
     schema: modernStyleSchema,
     componentFile: 'Slide11.tsx',
     showGlobalNext: false, // Auto-continue
@@ -364,7 +298,6 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     id: 'color-scheme',
     key: 'colorScheme',
     title: 'Kleur Selectie',
-    Component: ColorSchemeStep,
     schema: colorSchemeSchema,
     componentFile: 'Slide6.tsx',
     showGlobalNext: false, // Auto-continue
@@ -376,7 +309,6 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     id: 'final-color',
     key: 'finalColor',
     title: 'Finale Kleur',
-    Component: FinalColorStep,
     schema: finalColorSchema,
     componentFile: 'Slide7.tsx',
     showGlobalNext: false, // Auto-continue
@@ -388,7 +320,6 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     id: 'color-palette',
     key: 'colorPalette',
     title: 'Kleur Palet',
-    Component: ColorPaletteStep,
     schema: colorPaletteSchema,
     componentFile: 'Slide8.tsx',
     showGlobalNext: true,  // Manual continue - SPECIAL CASE: Slide8 requires manual continue
@@ -401,7 +332,6 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     id: 'icon-choice',
     key: 'iconChoice',
     title: 'Icoon Keuze',
-    Component: IconChoiceStep,
     componentFile: 'Slide9.tsx',
     showGlobalNext: false, // Auto-continue
     showGlobalPrev: true,
@@ -412,7 +342,6 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     id: 'icon-selection',
     key: 'iconSelection',
     title: 'Icoon Selectie',
-    Component: IconSelectionStep,
     schema: iconSelectionSchema,
     componentFile: 'Slide10.tsx',
     showGlobalNext: false, // Auto-continue
@@ -425,7 +354,6 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     id: 'ingredients',
     key: 'ingredients',
     title: 'Ingrediënten',
-    Component: IngredientsStep,
     schema: ingredientsSchema,
     componentFile: 'Slide30.tsx',
     showGlobalNext: false, // Auto-continue
@@ -437,7 +365,6 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     id: 'dashboard-login',
     key: 'dashboardLogin',
     title: 'Dashboard',
-    Component: DashboardLoginStep,
     schema: agreementsSchema,
     showGlobalNext: true,  // Manual continue
     showGlobalPrev: true,
