@@ -211,6 +211,13 @@ export const FIELD_MAPPINGS: FieldMappings = {
     defaultValue: null,
     transform: toNullableString,
   },
+  
+  // Country Selection (Slide 46)
+  verkoopland: {
+    dbField: 'Verkoopland',
+    defaultValue: 'NL',
+    transform: toNullableString,
+  },
   naamNoYellowShampoo: {
     dbField: 'Naam No Yellow Shampoo',
     defaultValue: null,

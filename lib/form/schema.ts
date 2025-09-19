@@ -324,6 +324,13 @@ export const slide45StylingClaimsSchema = z.object({
   standaardClaimDroogShampoo: z.string().optional(),
 })
 
+// Step 46: Country Selection
+export const slide46CountrySelectionSchema = z.object({
+  verkoopland: z.enum(['NL', 'DE', 'BE'], {
+    required_error: 'Kies een land',
+  }),
+})
+
 // Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
@@ -374,6 +381,9 @@ export const FormDataSchema = z.object({
   
   // Product Naming Choice
   productNamingChoice: z.enum(['salonid', 'self']).nullable().default(null),
+  
+  // Country Selection (Slide 46)
+  verkoopland: z.enum(['NL', 'DE', 'BE']).default('NL'),
   
   // Product Names - Auto-fillable fields
   naamNoYellowShampoo: z.string().default(''),
@@ -706,6 +716,7 @@ export const stepSchemas = {
   slide43MannenClaims: slide43MannenClaimsSchema,
   slide44HaarseurumClaims: slide44HaarseurumClaimsSchema,
   slide45StylingClaims: slide45StylingClaimsSchema,
+  slide46CountrySelection: slide46CountrySelectionSchema,
   ingredients: ingredientsSchema,
   agreements: agreementsSchema,
 } as const
