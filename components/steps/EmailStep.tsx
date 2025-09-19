@@ -9,6 +9,7 @@ import { useState, useEffect } from "react"
 import type { FormData } from "@/lib/form/schema"
 import { getTypographyClasses } from "@/lib/typography"
 import type { StepProps } from "@/lib/form/steps"
+import Image from "next/image"
 
 export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
   const [email, setEmail] = useState(formData.email || "")
@@ -16,6 +17,25 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
   const [validationState, setValidationState] = useState<"idle" | "valid" | "invalid">("idle")
   const [touched, setTouched] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [buttonText, setButtonText] = useState("Doorgaan")
+  const [showTagline, setShowTagline] = useState(true)
+
+  // Button text animation effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setButtonText((prev) => prev === "Doorgaan" ? "Inloggen op dashboard" : "Doorgaan")
+    }, 3000) // Switch every 3 seconds
+    return () => clearInterval(interval)
+  }, [])
+
+  // Tagline animation effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setShowTagline(false)
+      setTimeout(() => setShowTagline(true), 500)
+    }, 5000) // Fade out and in every 5 seconds
+    return () => clearInterval(interval)
+  }, [])
 
   useEffect(() => {
     if (touched) {
@@ -135,8 +155,23 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
     <div className="min-h-[calc(100vh-12rem)] flex items-center justify-center py-8">
       <div className="space-y-8 w-full max-w-2xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-8">
-          <h2 className={getTypographyClasses("title", { alignment: "center" })}>Welkom bij SalonID</h2>
-          <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} max-w-2xl mx-auto`}>
+          {/* Logo */}
+          <div className="flex justify-center mb-6">
+            <Image 
+              src="/salonid.svg" 
+              alt="SalonID logo" 
+              width={200} 
+              height={80}
+              priority
+            />
+          </div>
+          {/* Animated tagline */}
+          <p className={`font-['Poppins',sans-serif] text-xl text-gray-700 transition-opacity duration-500 ${
+            showTagline ? 'opacity-100' : 'opacity-0'
+          }`}>
+            Your dream, your brand - We make it happen
+          </p>
+          <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} max-w-2xl mx-auto mt-4`}>
             Voer je e-mailadres in om te beginnen. Als je al een account hebt, log je automatisch in op je dashboard.
           </p>
         </div>
@@ -176,10 +211,9 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
                 Controleren...
               </>
             ) : (
-              <>
-                Doorgaan
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </>
+              <span className="transition-all duration-300">
+                {buttonText}
+              </span>
             )}
             </Button>
           </div>

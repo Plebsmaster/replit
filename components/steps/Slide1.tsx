@@ -5,17 +5,22 @@ import { SlideContainer } from "@/components/ui/slide-container"
 import { ArrowRight } from "lucide-react"
 import { getTypographyClasses } from "@/lib/typography"
 import type { StepProps } from "@/lib/form/steps"
+import Image from "next/image"
 
 export function WelcomeStep({ onNext }: StepProps) {
   return (
     <div className="min-h-[calc(100vh-12rem)] flex items-center justify-center py-8">
       <SlideContainer width="standard">
         <div className="space-y-8 text-center">
-          {/* Avatar */}
+          {/* Logo */}
           <div className="flex justify-center mb-8">
-            <div className="w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center">
-              <div className="w-10 h-10 bg-black rounded-full"></div>
-            </div>
+            <Image 
+              src="/favicon.svg" 
+              alt="SalonID logo" 
+              width={80} 
+              height={80}
+              priority
+            />
           </div>
 
           <h1 className={getTypographyClasses("title", { alignment: "center" })}>
