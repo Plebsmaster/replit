@@ -123,28 +123,74 @@ export default function Slide10({ formData, updateFormData, onBack, onNext }: Sl
           </p>
         </div>
 
-        {/* Desktop Icons Grid - 5 columns for better distribution */}
-        <div className="hidden md:grid md:grid-cols-5 gap-6 max-w-6xl mx-auto">
-          {icons.map((icon) => (
-            <IconButton
-              key={icon.id}
-              icon={icon}
-              isSelected={selectedIcon === icon.id}
-              onClick={() => handleIconSelect(icon.id)}
-            />
-          ))}
+        {/* Desktop Icons - Elegant staggered grid layout */}
+        <div className="hidden md:block">
+          <div className="max-w-6xl mx-auto">
+            {/* First row - 5 icons */}
+            <div className="flex justify-center gap-6 mb-6">
+              {icons.slice(0, 5).map((icon) => (
+                <div key={icon.id} className="transform hover:scale-110 transition-transform">
+                  <IconButton
+                    icon={icon}
+                    isSelected={selectedIcon === icon.id}
+                    onClick={() => handleIconSelect(icon.id)}
+                  />
+                </div>
+              ))}
+            </div>
+            {/* Second row - 5 icons */}
+            <div className="flex justify-center gap-6 mb-6">
+              {icons.slice(5, 10).map((icon) => (
+                <div key={icon.id} className="transform hover:scale-110 transition-transform">
+                  <IconButton
+                    icon={icon}
+                    isSelected={selectedIcon === icon.id}
+                    onClick={() => handleIconSelect(icon.id)}
+                  />
+                </div>
+              ))}
+            </div>
+            {/* Third row - 5 icons */}
+            <div className="flex justify-center gap-6">
+              {icons.slice(10, 15).map((icon) => (
+                <div key={icon.id} className="transform hover:scale-110 transition-transform">
+                  <IconButton
+                    icon={icon}
+                    isSelected={selectedIcon === icon.id}
+                    onClick={() => handleIconSelect(icon.id)}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* Mobile Icons - 3 column grid that scrolls vertically */}
-        <div className="md:hidden grid grid-cols-3 gap-4 px-4">
-          {icons.map((icon) => (
-            <IconButton
-              key={icon.id}
-              icon={icon}
-              isSelected={selectedIcon === icon.id}
-              onClick={() => handleIconSelect(icon.id)}
-            />
-          ))}
+        {/* Mobile Icons - Swipeable cards in rows */}
+        <div className="md:hidden">
+          <div className="space-y-4">
+            {/* Group icons in rows of 3 for mobile */}
+            {[0, 3, 6, 9, 12].map((startIdx) => (
+              <div key={startIdx} className="overflow-x-auto">
+                <div className="flex gap-3 px-4 pb-2">
+                  {icons.slice(startIdx, startIdx + 3).map((icon) => (
+                    <div key={icon.id} className="flex-shrink-0">
+                      <div className="transform active:scale-95 transition-transform">
+                        <IconButton
+                          icon={icon}
+                          isSelected={selectedIcon === icon.id}
+                          onClick={() => handleIconSelect(icon.id)}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Mobile hint */}
+          <p className="text-center mt-4 text-sm text-gray-500">
+            Tik om een icoon te selecteren
+          </p>
         </div>
       </section>
     </SlideContainer>
