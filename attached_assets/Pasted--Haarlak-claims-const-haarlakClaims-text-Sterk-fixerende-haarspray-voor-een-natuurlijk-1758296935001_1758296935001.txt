@@ -1,0 +1,47 @@
+// Haarlak claims
+const haarlakClaims = [
+  { text: 'Sterk fixerende haarspray voor een natuurlijke uitstraling en langdurige hold', dbValue: '"1. Sterk fixerende haarspray voor een natuurlijke uitstraling en langdurige hold"', selected: true },
+  { text: 'Biedt langdurige, flexibele fixatie zonder het haar hard te maken', dbValue: '"2. Biedt langdurige, flexibele fixatie zonder het haar hard te maken"' },
+  { text: 'Laat geen witte resten achter en is gemakkelijk uit te borstelen', dbValue: '"3. Laat geen witte resten achter en is gemakkelijk uit te borstelen"' },
+  { text: 'Droogt snel voor een onmiddellijke sterke fixatie', dbValue: '"4. Droogt snel voor een onmiddellijke sterke fixatie"' },
+  { text: 'Houdt het haar de hele dag perfect in model', dbValue: '"5. Houdt het haar de hele dag perfect in model"' }
+];
+
+// Mousse claims
+const mousseClaims = [
+  { text: 'Geeft fijn en futloos haar meer volume en body', dbValue: '"1. Geeft fijn en futloos haar meer volume en body"', selected: true },
+  { text: 'Creëer moeiteloos volle en gedefinieerde kapsels met volume en controle', dbValue: '"2. Creëer moeiteloos volle en gedefinieerde kapsels met volume en controle"' },
+  { text: 'Versterkt en definieert krullen zonder ze te verzwaren', dbValue: '"3. Versterkt en definieert krullen zonder ze te verzwaren"' },
+  { text: 'Luchtige, gewichtloze formule die volume geeft zonder het haar te verzwaren', dbValue: '"4. Luchtige, gewichtloze formule die volume geeft zonder het haar te verzwaren"' },
+  { text: 'Verbetert de textuur en beheersbaarheid van het haar', dbValue: '"5. Verbetert de textuur en beheersbaarheid van het haar"' }
+];
+
+// Droogshampoo claims
+const droogshampooClaims = [
+  { text: 'Zorgt direct voor een fris gevoel en geeft het haar extra volume en textuur', dbValue: '"1. Zorgt direct voor een fris gevoel en geeft het haar extra volume en textuur"', selected: true },
+  { text: 'Verfrist het haar onmiddellijk en absorbeert overtollige olie', dbValue: '"2. Verfrist het haar onmiddellijk en absorbeert overtollige olie"' },
+  { text: 'Frist je haar op en zorgt voor een levendige look', dbValue: '"3. Frist je haar op en zorgt voor een levendige look"' },
+  { text: 'Revitaliseert en geeft het haar een schone, frisse uitstraling', dbValue: '"4. Revitaliseert en geeft het haar een schone, frisse uitstraling"' },
+  { text: 'Verrijkt met een frisse en subtiele geur', dbValue: '"5. Verrijkt met een frisse en subtiele geur"' }
+];
+
+// Database columns: 'Standaard Claim Haarlak', 'Standaard Claim Mousse', 'Standaard Claim Droog Shampoo'
+// Default selections: option 1 for all three (as shown in code)
+// Note: Gel, Clay Paste, Fiber Paste, Cream Paste have no claims (clean look)
+// Next slide: Slide46 after all three selections made
+const handleHaarlakClaimSelection = (claim) => {
+  updateDatabase('Standaard Claim Haarlak', claim.dbValue);
+};
+
+const handleMousseClaimSelection = (claim) => {
+  updateDatabase('Standaard Claim Mousse', claim.dbValue);
+};
+
+const handleDroogshampooClaimSelection = (claim) => {
+  updateDatabase('Standaard Claim Droog Shampoo', claim.dbValue);
+};
+
+const handleContinue = () => {
+  // Continue to next slide after all three claims selected
+  navigateToSlide('Slide46');
+};

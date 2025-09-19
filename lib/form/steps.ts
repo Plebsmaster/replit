@@ -469,12 +469,23 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     nextStep: (formData: Partial<FormData>): string => 'slide25',
   }],
 
-  // Color products confirmation
+  // Curly Girl products naming
   ['slide25', {
     id: 'slide25',
     key: 'slide25',
-    title: 'Color Product Namen Bevestiging',
+    title: 'Curly Girl Product Namen',
     componentFile: 'Slide25.tsx',
+    showGlobalNext: true, // Manual continue
+    showGlobalPrev: true,
+    nextStep: (formData: Partial<FormData>): string => 'slide26',
+  }],
+
+  // Curly Girl products confirmation
+  ['slide26', {
+    id: 'slide26',
+    key: 'slide26',
+    title: 'Curly Girl Product Namen Bevestiging',
+    componentFile: 'Slide26.tsx',
     showGlobalNext: true, // Manual continue
     showGlobalPrev: true,
     nextStep: (formData: Partial<FormData>): string => 'ingredients',
