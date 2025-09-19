@@ -231,52 +231,67 @@ export function useWizard() {
   return context
 }
 
-// ===== Step Renderer Component with Premium Transitions =====
+// ===== Step Renderer Component with Industry-Standard Two-Layer Crossfade =====
 export function StepRenderer() {
   const { formData, updateFormData, goToNext, goToPrevious, goToStep, currentStepId, verifyOtp, sendOtp } = useWizard()
-  const [displayedStepId, setDisplayedStepId] = React.useState(currentStepId)
-  const [isVisible, setIsVisible] = React.useState(true)
+  
+  // Two-layer state: track both previous and current step for crossfade
+  const [prevStepId, setPrevStepId] = React.useState<string | null>(null)
   const [isTransitioning, setIsTransitioning] = React.useState(false)
+  const safetyTimerRef = React.useRef<NodeJS.Timeout>()
   
-  // Load component based on displayedStepId, not currentStepId
-  // This ensures we show the OLD component during fade-out
-  const Component = React.useMemo(() => {
-    return getLazyComponent(displayedStepId)
-  }, [displayedStepId])
-  
-  // Detect step changes and trigger transitions
-  const isStepChanging = displayedStepId !== currentStepId
-  
+  // Detect step changes
+  const previousStepRef = React.useRef(currentStepId)
   React.useEffect(() => {
-    if (isStepChanging && !isTransitioning) {
-      // Start fade out
+    if (previousStepRef.current !== currentStepId && !isTransitioning) {
+      // Start transition: set previous step and mark as transitioning
+      setPrevStepId(previousStepRef.current)
       setIsTransitioning(true)
-      setIsVisible(false)
+      previousStepRef.current = currentStepId
       
-      // After fade out, change step and fade in
-      const fadeOutTimer = setTimeout(() => {
-        setDisplayedStepId(currentStepId)
-        
-        // Small delay before fade in
-        const fadeInTimer = setTimeout(() => {
-          setIsVisible(true)
-          
-          // Unlock after fade in completes
-          const unlockTimer = setTimeout(() => {
-            setIsTransitioning(false)
-          }, 700)
-          
-          return () => clearTimeout(unlockTimer)
-        }, 50)
-        
-        return () => clearTimeout(fadeInTimer)
-      }, 700)
-      
-      return () => clearTimeout(fadeOutTimer)
+      // Safety fallback: ensure transition completes even if transitionend fails
+      clearTimeout(safetyTimerRef.current)
+      safetyTimerRef.current = setTimeout(() => {
+        setPrevStepId(null)
+        setIsTransitioning(false)
+      }, 900) // Slightly longer than animation duration
     }
-  }, [isStepChanging, currentStepId, isTransitioning])
+  }, [currentStepId, isTransitioning])
   
-  if (!Component) {
+  // Load components for both layers
+  const PrevComponent = prevStepId ? getLazyComponent(prevStepId) : null
+  const CurrentComponent = getLazyComponent(currentStepId)
+  
+  // Handle transition end on incoming layer
+  const handleTransitionEnd = React.useCallback((e: React.TransitionEvent) => {
+    // Only handle opacity transitions on the main container
+    if (e.propertyName === 'opacity' && e.currentTarget === e.target) {
+      clearTimeout(safetyTimerRef.current)
+      setPrevStepId(null)
+      setIsTransitioning(false)
+    }
+  }, [])
+  
+  // Handle OTP verification
+  const handleOtpVerified = React.useCallback(() => {
+    verifyOtp()
+    goToNext()
+  }, [verifyOtp, goToNext])
+  
+  // Layer-specific props
+  const stepProps = {
+    formData,
+    updateFormData,
+    onNext: goToNext,
+    onBack: goToPrevious,
+    goToStep,
+    email: formData.email,
+    onVerified: handleOtpVerified,
+    verifyOtp,
+    sendOtp,
+  }
+  
+  if (!CurrentComponent) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
@@ -286,34 +301,43 @@ export function StepRenderer() {
       </div>
     )
   }
-
-  // Handle OTP verification - set state machine flag before advancing
-  const handleOtpVerified = React.useCallback(() => {
-    verifyOtp()
-    goToNext()
-  }, [verifyOtp, goToNext])
   
-  // Compute classes based on visibility state
-  const fadeClass = isVisible 
-    ? 'opacity-100 scale-100 blur-0' 
-    : 'opacity-0 scale-98 blur-sm'
-  
-  // Premium transition wrapper with controlled visibility
+  // Two-layer crossfade: both layers render during transition
   return (
-    <div className={`transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] ${fadeClass} ${isTransitioning ? 'pointer-events-none' : ''}`}>
-      <Suspense fallback={<StepTransitionFallback />}>
-        <Component
-          formData={formData}
-          updateFormData={updateFormData}
-          onNext={goToNext}
-          onBack={goToPrevious}
-          goToStep={goToStep}
-          email={formData.email}
-          onVerified={handleOtpVerified}
-          verifyOtp={verifyOtp}
-          sendOtp={sendOtp}
-        />
-      </Suspense>
+    <div className={`relative ${isTransitioning ? 'pointer-events-none' : ''}`}>
+      {/* Outgoing layer - fades out */}
+      {PrevComponent && prevStepId && (
+        <div 
+          key={prevStepId}
+          className="absolute inset-0 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 scale-98 blur-sm"
+        >
+          <Suspense fallback={null}>
+            <PrevComponent {...stepProps} />
+          </Suspense>
+        </div>
+      )}
+      
+      {/* Incoming layer - fades in with transitionend handler */}
+      <div 
+        key={currentStepId}
+        className={`transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+          prevStepId ? 'opacity-0 scale-102 blur-sm' : 'opacity-100 scale-100 blur-0'
+        }`}
+        onTransitionEnd={handleTransitionEnd}
+        ref={(el) => {
+          // Trigger fade-in after mount when transitioning
+          if (el && prevStepId) {
+            requestAnimationFrame(() => {
+              el.classList.remove('opacity-0', 'scale-102', 'blur-sm')
+              el.classList.add('opacity-100', 'scale-100', 'blur-0')
+            })
+          }
+        }}
+      >
+        <Suspense fallback={<StepTransitionFallback />}>
+          <CurrentComponent {...stepProps} />
+        </Suspense>
+      </div>
     </div>
   )
 }
