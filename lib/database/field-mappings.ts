@@ -287,6 +287,22 @@ export const FIELD_MAPPINGS: FieldMappings = {
     defaultValue: null,
     transform: toNullableString,
   },
+  // No Yellow Ingredient Selections
+  noYellowIngredients: {
+    dbField: 'no_yellow_ingredients',
+    defaultValue: { shampoo: null, conditioner: null },
+    transform: toObject,
+  },
+  marketingIngredientenNoYellowShampoo: {
+    dbField: 'Marketing ingredienten No Yellow Shampoo',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  marketingIngredientenNoYellowConditioner: {
+    dbField: 'Marketing ingredienten No Yellow Conditioner',
+    defaultValue: null,
+    transform: toNullableString,
+  },
 }
 
 // ===== Utility Functions =====

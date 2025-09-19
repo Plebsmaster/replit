@@ -143,6 +143,16 @@ export const slide28StylingProductsSchema = z.object({
   naamCreamPaste: z.string().min(1, 'Selecteer een Cream Paste productnaam'),
 })
 
+// Step 30: No Yellow Ingredients Selection
+export const slide30NoYellowIngredientsSchema = z.object({
+  noYellowIngredients: z.object({
+    shampoo: z.string().min(1, 'Selecteer een ingrediënt voor No Yellow Shampoo'),
+    conditioner: z.string().min(1, 'Selecteer een ingrediënt voor No Yellow Conditioner'),
+  }),
+  marketingIngredientenNoYellowShampoo: z.string().optional(),
+  marketingIngredientenNoYellowConditioner: z.string().optional(),
+})
+
 // Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
@@ -219,6 +229,14 @@ export const FormDataSchema = z.object({
   // Ingredients
   ingredients: z.array(z.string()).default([]),
   
+  // No Yellow Ingredients
+  noYellowIngredients: z.object({
+    shampoo: z.string(),
+    conditioner: z.string(),
+  }).default({ shampoo: '', conditioner: '' }),
+  marketingIngredientenNoYellowShampoo: z.string().default(''),
+  marketingIngredientenNoYellowConditioner: z.string().default(''),
+  
   // Agreements
   agreeTerms: z.boolean().default(false),
   subscribeNewsletter: z.boolean().default(false),
@@ -249,6 +267,7 @@ export type IconChoiceData = z.infer<typeof iconChoiceSchema>
 export type ProductNamingChoiceData = z.infer<typeof productNamingChoiceSchema>
 export type Slide27HaarserumData = z.infer<typeof slide27HaarserumSchema>
 export type Slide28StylingProductsData = z.infer<typeof slide28StylingProductsSchema>
+export type Slide30NoYellowIngredientsData = z.infer<typeof slide30NoYellowIngredientsSchema>
 export type IngredientsData = z.infer<typeof ingredientsSchema>
 export type AgreementsData = z.infer<typeof agreementsSchema>
 
@@ -311,6 +330,9 @@ export const getDefaultFormData = (): FormData => {
     naamMannenShampoo: '',
     naamHaarserum: '',
     ingredients: [],
+    noYellowIngredients: { shampoo: '', conditioner: '' },
+    marketingIngredientenNoYellowShampoo: '',
+    marketingIngredientenNoYellowConditioner: '',
     agreeTerms: false,
     subscribeNewsletter: false,
   }
@@ -338,6 +360,7 @@ export const stepSchemas = {
   productNamingChoice: productNamingChoiceSchema,
   slide27Haarserum: slide27HaarserumSchema,
   slide28StylingProducts: slide28StylingProductsSchema,
+  slide30NoYellowIngredients: slide30NoYellowIngredientsSchema,
   ingredients: ingredientsSchema,
   agreements: agreementsSchema,
 } as const
