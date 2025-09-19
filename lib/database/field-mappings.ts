@@ -42,6 +42,7 @@ export interface DatabaseRecord {
   text_color?: string | null
   color_palette?: string | null
   color_mode?: string | null
+  'Kleur/Zwart/Wit'?: string | null
   ingredients?: string[]
   product_colors?: Record<string, any>
   agree_terms?: boolean
@@ -124,6 +125,11 @@ export const FIELD_MAPPINGS: FieldMappings = {
     defaultValue: null,
     transform: toNullableString,
   },
+  kleurZwartWit: {
+    dbField: 'Kleur/Zwart/Wit',
+    defaultValue: null,
+    transform: toNullableString,
+  },
   ingredients: {
     dbField: 'ingredients',
     defaultValue: [],
@@ -188,7 +194,7 @@ export function createDesignData(formData: Partial<FormData>): DatabaseRecord {
   // Exclude email from design data as it's passed separately to RPC
   return transformFormToDatabase(formData, FIELD_MAPPINGS, [
     'firstName', 'lastName', 'phone', 'style', 'textColor', 
-    'colorPalette', 'colorMode', 'ingredients', 'productColors', 
+    'colorPalette', 'colorMode', 'kleurZwartWit', 'ingredients', 'productColors', 
     'agreeTerms', 'subscribeNewsletter'
   ])
 }

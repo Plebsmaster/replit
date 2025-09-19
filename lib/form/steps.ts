@@ -14,6 +14,7 @@ import {
   textColorSchema,
   iconSelectionSchema,
   modernStyleSchema,
+  slide16ColorSchema,
   ingredientsSchema,
   agreementsSchema,
   FormData,
@@ -333,6 +334,25 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     nextStep: (formData: Partial<FormData>): string => 'ingredients',
   }],
   
+  // Additional Slides
+  ['slide16', {
+    id: 'slide16',
+    key: 'slide16Color',
+    title: 'Kleur Selectie',
+    schema: slide16ColorSchema,
+    componentFile: 'Slide16.tsx',
+    showGlobalNext: false, // Auto-continue
+    showGlobalPrev: true,
+    nextStep: (formData: Partial<FormData>): string => {
+      if (formData.kleurZwartWit === 'Zwart') {
+        return 'slide19'
+      } else if (formData.kleurZwartWit === 'Kleur') {
+        return 'slide18'
+      }
+      return 'ingredients' // fallback
+    },
+  }],
+
   // Final Steps
   ['ingredients', {
     id: 'ingredients',

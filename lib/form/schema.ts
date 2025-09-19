@@ -105,7 +105,12 @@ export const ingredientsSchema = z.object({
     .max(10, 'Selecteer maximaal 10 ingrediënten'),
 })
 
-// Step 16: Terms and Newsletter
+// Step 16: Slide16 Color Selection (Kleur/Zwart/Wit)
+export const slide16ColorSchema = z.object({
+  kleurZwartWit: z.string().min(1, 'Kies een kleur'),
+})
+
+// Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
     message: 'U moet akkoord gaan met de voorwaarden',
@@ -144,6 +149,9 @@ export const FormDataSchema = z.object({
   // Icon Selection
   selectedIcon: z.boolean().optional().default(false),
   
+  // Slide16 Color Selection
+  kleurZwartWit: z.string().default(''),
+  
   // Ingredients
   ingredients: z.array(z.string()).default([]),
   
@@ -171,6 +179,7 @@ export type ColorPaletteData = z.infer<typeof colorPaletteSchema>
 export type TextColorData = z.infer<typeof textColorSchema>
 export type IconSelectionData = z.infer<typeof iconSelectionSchema>
 export type ModernStyleData = z.infer<typeof modernStyleSchema>
+export type Slide16ColorData = z.infer<typeof slide16ColorSchema>
 export type IngredientsData = z.infer<typeof ingredientsSchema>
 export type AgreementsData = z.infer<typeof agreementsSchema>
 
@@ -208,6 +217,7 @@ export const getDefaultFormData = (): FormData => {
     productColors: {},
     colorMode: undefined,
     selectedIcon: false,
+    kleurZwartWit: '',
     ingredients: [],
     agreeTerms: false,
     subscribeNewsletter: false,
@@ -230,6 +240,7 @@ export const stepSchemas = {
   textColor: textColorSchema,
   iconSelection: iconSelectionSchema,
   modernStyle: modernStyleSchema,
+  slide16Color: slide16ColorSchema,
   ingredients: ingredientsSchema,
   agreements: agreementsSchema,
 } as const
