@@ -17,6 +17,7 @@ import {
   slide16ColorSchema,
   slide19IconSchema,
   iconChoiceSchema,
+  productNamingChoiceSchema,
   ingredientsSchema,
   agreementsSchema,
   FormData,
@@ -418,10 +419,41 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
 
   ['slide21', {
     id: 'slide21',
-    key: 'slide21',
-    title: 'Volgende Stap (Slide 21)',
+    key: 'productNamingChoice',
+    title: 'Product Namen Selectie',
+    schema: productNamingChoiceSchema,
     componentFile: 'Slide21.tsx',
     showGlobalNext: false, // Auto-continue
+    showGlobalPrev: true,
+    nextStep: (formData: Partial<FormData>): string => {
+      // Conditional navigation based on product naming choice
+      if (formData.productNamingChoice === 'salonid') {
+        return 'slide29'
+      } else if (formData.productNamingChoice === 'self') {
+        return 'slide22'
+      }
+      return 'ingredients' // Default fallback
+    },
+  }],
+
+  // Custom naming flow (when user chooses "Ik bepaal zelf")
+  ['slide22', {
+    id: 'slide22',
+    key: 'slide22',
+    title: 'Custom Product Namen',
+    componentFile: 'Slide22.tsx',
+    showGlobalNext: true, // Manual continue - user needs to input custom names
+    showGlobalPrev: true,
+    nextStep: (formData: Partial<FormData>): string => 'ingredients',
+  }],
+
+  // SalonID naming flow (when user chooses "Keuze door SalonID")
+  ['slide29', {
+    id: 'slide29',
+    key: 'slide29',
+    title: 'SalonID Product Namen',
+    componentFile: 'Slide29.tsx',
+    showGlobalNext: false, // Auto-continue - names are pre-filled
     showGlobalPrev: true,
     nextStep: (formData: Partial<FormData>): string => 'ingredients',
   }],

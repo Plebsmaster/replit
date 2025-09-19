@@ -1,0 +1,46 @@
+const answers = [
+  { 
+    text: 'Keuze door SalonID', 
+    nextSlide: 'Slide37', 
+    dbValue: 'SalonID',
+    // When this option is selected, auto-fill ingredient database columns (only ingredient names):
+    autoFillIngredients: {
+      'Marketing ingredienten No Yellow Shampoo': 'Hyaluronzuur',
+      'Marketing ingredienten No Yellow Conditioner': 'Jojoba-olie',
+      'Marketing ingredienten Repair Shampoo': 'Gehydrolyseerd Tarweproteïne',
+      'Marketing ingredienten Repair Conditioner': 'Vitamine E',
+      'Marketing ingredienten Repair Mask': 'Vitamine B5',
+      'Marketing ingredienten Color Shampoo': 'Vitamine C',
+      'Marketing ingredienten Color Conditioner': 'Arganolie',
+      'Marketing ingredienten Color Mask': 'Vitamine E',
+      'Marketing ingredienten Curly Girl Shampoo': 'Hyaluronzuur',
+      'Marketing ingredienten Curly Girl Conditioner': 'Hyaluronzuur',
+      'Marketing ingredienten Curly Girl Mask': 'Hyaluronzuur',
+      'Marketing ingredienten Mannen Shampoo': 'Vitamine B5',
+      'Marketing ingredienten Haarserum': 'Vitamine B5',
+      'Marketing ingredienten Haarlak': 'UV Filter',
+      'Marketing ingredienten Mousse': 'Vitamine B5',
+      'Marketing ingredienten Droogshampoo': 'Arganolie',
+      'Marketing ingredienten Gel': 'Vitamine B5',
+      'Marketing ingredienten Clay Paste': 'Vitamine E',
+      'Marketing ingredienten Fiber Paste': 'Vitamine E',
+      'Marketing ingredienten Cream Paste': 'Vitamine E'
+    }
+  },
+  { 
+    text: 'Ik bepaal zelf', 
+    nextSlide: 'Slide30', 
+    dbValue: null 
+  }
+];
+// Database columns: All "Marketing ingredienten [Product]" columns when SalonID selected, none when self-selected
+const handleAnswer = (answer) => {
+  if (answer.autoFillIngredients) {
+    // Fill multiple ingredient database columns at once for SalonID choice
+    Object.entries(answer.autoFillIngredients).forEach(([column, ingredient]) => {
+      updateDatabase(column, ingredient);
+    });
+  }
+  // No database storage for 'Ik bepaal zelf' - ingredient data will be filled later
+  navigateToSlide(answer.nextSlide);
+};

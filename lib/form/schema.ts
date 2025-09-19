@@ -120,6 +120,13 @@ export const iconChoiceSchema = z.object({
   iconChoice: z.string().min(1, 'Kies een icoon'),
 })
 
+// Step 21: Product Naming Choice Selection
+export const productNamingChoiceSchema = z.object({
+  productNamingChoice: z.enum(['salonid', 'self'], {
+    required_error: 'Kies een optie voor productnamen',
+  }),
+})
+
 // Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
@@ -168,6 +175,31 @@ export const FormDataSchema = z.object({
   // Slide20 Icon Choice Selection
   iconChoice: z.string().default(''),
   
+  // Product Naming Choice
+  productNamingChoice: z.enum(['salonid', 'self']).nullable().default(null),
+  
+  // Product Names - Auto-fillable fields
+  naamNoYellowShampoo: z.string().default(''),
+  naamNoYellowConditioner: z.string().default(''),
+  naamRepairShampoo: z.string().default(''),
+  naamRepairConditioner: z.string().default(''),
+  naamColorShampoo: z.string().default(''),
+  naamColorConditioner: z.string().default(''),
+  naamHaarlak: z.string().default(''),
+  naamMousse: z.string().default(''),
+  naamDroogshampoo: z.string().default(''),
+  naamRepairMask: z.string().default(''),
+  naamColorMask: z.string().default(''),
+  naamCurlyGirlShampoo: z.string().default(''),
+  naamCurlyGirlConditioner: z.string().default(''),
+  naamCurlyGirlMask: z.string().default(''),
+  naamGel: z.string().default(''),
+  naamClayPaste: z.string().default(''),
+  naamFiberPaste: z.string().default(''),
+  naamCreamPaste: z.string().default(''),
+  naamMannenShampoo: z.string().default(''),
+  naamHaarserum: z.string().default(''),
+  
   // Ingredients
   ingredients: z.array(z.string()).default([]),
   
@@ -198,6 +230,7 @@ export type ModernStyleData = z.infer<typeof modernStyleSchema>
 export type Slide16ColorData = z.infer<typeof slide16ColorSchema>
 export type Slide19IconData = z.infer<typeof slide19IconSchema>
 export type IconChoiceData = z.infer<typeof iconChoiceSchema>
+export type ProductNamingChoiceData = z.infer<typeof productNamingChoiceSchema>
 export type IngredientsData = z.infer<typeof ingredientsSchema>
 export type AgreementsData = z.infer<typeof agreementsSchema>
 
@@ -238,6 +271,27 @@ export const getDefaultFormData = (): FormData => {
     kleurZwartWit: '',
     icoonJaNee: '',
     iconChoice: '',
+    productNamingChoice: null,
+    naamNoYellowShampoo: '',
+    naamNoYellowConditioner: '',
+    naamRepairShampoo: '',
+    naamRepairConditioner: '',
+    naamColorShampoo: '',
+    naamColorConditioner: '',
+    naamHaarlak: '',
+    naamMousse: '',
+    naamDroogshampoo: '',
+    naamRepairMask: '',
+    naamColorMask: '',
+    naamCurlyGirlShampoo: '',
+    naamCurlyGirlConditioner: '',
+    naamCurlyGirlMask: '',
+    naamGel: '',
+    naamClayPaste: '',
+    naamFiberPaste: '',
+    naamCreamPaste: '',
+    naamMannenShampoo: '',
+    naamHaarserum: '',
     ingredients: [],
     agreeTerms: false,
     subscribeNewsletter: false,
@@ -263,6 +317,7 @@ export const stepSchemas = {
   slide16Color: slide16ColorSchema,
   slide19Icon: slide19IconSchema,
   iconChoice: iconChoiceSchema,
+  productNamingChoice: productNamingChoiceSchema,
   ingredients: ingredientsSchema,
   agreements: agreementsSchema,
 } as const

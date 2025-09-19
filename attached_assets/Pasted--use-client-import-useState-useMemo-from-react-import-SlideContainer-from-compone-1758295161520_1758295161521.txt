@@ -1,0 +1,117 @@
+"use client"
+
+import { useState, useMemo } from "react"
+import { SlideContainer } from "@/components/ui/slide-container"
+import { getTypographyClasses } from "@/lib/typography"
+import type { StepProps } from "@/lib/form/steps"
+
+type NoYellowIngredients = {
+  shampoo?: string
+  conditioner?: string
+}
+
+type Props = StepProps & {}
+
+const ingredients = [
+  { name: "Aloë Vera", description: "Kalmeert de hoofdhuid en geeft het haar een natuurlijke, stralende glans.", icon: "🌿" },
+  { name: "Arganolie", description: "Bevat essentiële vetzuren die zorgen voor diepe hydratatie en verhoogde vitaliteit.", icon: "💧" },
+  { name: "Biotine", description: "Versterkt het haar van wortel tot punt, waardoor het krachtiger en elastischer wordt.", icon: "💪" },
+  { name: "Druivenpit Extract", description: "Bevat krachtige antioxidanten die het haar voeden en beschermen.", icon: "🍇" },
+  { name: "Gehydrolyseerd Tarweproteïne", description: "Versterkt elke haarlaag van binnenuit voor sterker en gezonder haar.", icon: "🌾" },
+  { name: "Jojoba-olie", description: "Biedt intensieve hydratatie zonder het haar zwaar te maken, voor een licht en luchtig gevoel.", icon: "💧" },
+  { name: "Hyaluronzuur", description: "Zorgt voor een intensieve hydratatieboost, waardoor het haar luxueus zacht en soepel aanvoelt.", icon: "💦" },
+  { name: "Vitamine B5", description: "Behoudt vocht in het haar en biedt bescherming tegen haarbreuk, voor gezond en sterk haar.", icon: "🌙" },
+  { name: "Vitamine C", description: "Stimuleert de collageenproductie en verbetert de natuurlijke elasticiteit, voor veerkrachtiger haar.", icon: "🍊" },
+  { name: "Vitamine E", description: "Bevordert de haargroei en geeft het haar een natuurlijke, gezonde glans.", icon: "💊" },
+]
+
+const productOptions: Record<string, typeof ingredients> = {
+  "No Yellow Shampoo": ingredients,
+  "No Yellow Conditioner": ingredients,
+}
+
+export default function Slide18({ updateFormData, formData }: Props) {
+  // Prefill from global formData or use your original defaults
+  const initial: NoYellowIngredients = (formData?.noYellowIngredients as NoYellowIngredients) ?? {
+    shampoo: "Hyaluronzuur",
+    conditioner: "Jojoba-olie",
+  }
+
+  const [selectedChoices, setSelectedChoices] = useState<Record<string, string>>({
+    "No Yellow Shampoo": initial.shampoo ?? "Hyaluronzuur",
+    "No Yellow Conditioner": initial.conditioner ?? "Jojoba-olie",
+  })
+
+  const productTypes = useMemo(() => Object.keys(productOptions), [])
+
+  const handleOptionSelect = (productType: string, choice: string) => {
+    setSelectedChoices(prev => ({ ...prev, [productType]: choice }))
+
+    // Persist normalized structure into the global form state
+    const patch: NoYellowIngredients = {
+      ...(formData?.noYellowIngredients as NoYellowIngredients),
+      shampoo: productType === "No Yellow Shampoo" ? choice : (formData?.noYellowIngredients as NoYellowIngredients)?.shampoo,
+      conditioner:
+        productType === "No Yellow Conditioner" ? choice : (formData?.noYellowIngredients as NoYellowIngredients)?.conditioner,
+    }
+
+    updateFormData({ noYellowIngredients: patch })
+
+    // Keep your localStorage behavior
+    try {
+      localStorage.setItem(`salonid:${productType}Ingredient`, choice)
+      localStorage.setItem("salonid:dateISO", new Date().toISOString())
+    } catch {}
+  }
+
+  return (
+    <SlideContainer width="wide">
+      <section>
+        <h2 className={getTypographyClasses("title", { alignment: "left" })}>
+          No Yellow - Kies het ingrediënt
+        </h2>
+
+        <div className="max-w-[760px] space-y-4 mb-8">
+          <p className={getTypographyClasses("paragraph", { alignment: "left" })}>
+            Er zijn verschillende ingrediënten die worden gebruikt voor de diverse soorten shampoos en conditioners. Maak
+            een keuze uit de selectie hieronder
+          </p>
+        </div>
+
+        <div className="space-y-8">
+          {productTypes.map((productType) => (
+            <div key={productType}>
+              <h3 className="text-xl font-bold text-gray-900 text-left mb-4">{productType}</h3>
+
+              <div className="space-y-3 mt-4">
+                {productOptions[productType].map((ingredient, index) => {
+                  const selected = selectedChoices[productType] === ingredient.name
+                  return (
+                    <div
+                      key={ingredient.name}
+                      className={`p-3 rounded-lg border cursor-pointer transition-all hover:shadow-sm hover:scale-105 ${
+                        selected ? "border-black bg-gray-50" : "border-gray-300 hover:border-gray-400"
+                      }`}
+                      onClick={() => handleOptionSelect(productType, ingredient.name)}
+                    >
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center space-x-3">
+                          <span className="text-xl">{ingredient.icon}</span>
+                          <div>
+                            <span className="text-gray-800 font-medium">{ingredient.name}</span>
+                            <p className="text-sm text-gray-600 mt-1">{ingredient.description}</p>
+                          </div>
+                        </div>
+                        {selected && <div className="w-3 h-3 rounded-full bg-black flex-shrink-0" />}
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </SlideContainer>
+  )
+}

@@ -48,6 +48,27 @@ export interface DatabaseRecord {
   product_colors?: Record<string, any>
   agree_terms?: boolean
   subscribe_newsletter?: boolean
+  product_naming_choice?: string | null
+  'Naam No Yellow Shampoo'?: string | null
+  'Naam No Yellow Conditioner'?: string | null
+  'Naam Repair Shampoo'?: string | null
+  'Naam Repair Conditioner'?: string | null
+  'Naam Color Shampoo'?: string | null
+  'Naam Color Conditioner'?: string | null
+  'Naam Haarlak'?: string | null
+  'Naam Mousse'?: string | null
+  'Naam Droogshampoo'?: string | null
+  'Naam Repair Mask'?: string | null
+  'Naam Color Mask'?: string | null
+  'Naam Curly Girl Shampoo'?: string | null
+  'Naam Curly Girl Conditioner'?: string | null
+  'Naam Curly Girl Mask'?: string | null
+  'Naam Gel'?: string | null
+  'Naam Clay Paste'?: string | null
+  'Naam Fiber Paste'?: string | null
+  'Naam Cream Paste'?: string | null
+  'Naam Mannen Shampoo'?: string | null
+  'Naam Haarserum'?: string | null
 }
 
 // ===== Transformation Functions =====
@@ -160,6 +181,111 @@ export const FIELD_MAPPINGS: FieldMappings = {
     dbField: 'subscribe_newsletter',
     defaultValue: false,
     transform: toBoolean,
+  },
+  productNamingChoice: {
+    dbField: 'product_naming_choice',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  naamNoYellowShampoo: {
+    dbField: 'Naam No Yellow Shampoo',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  naamNoYellowConditioner: {
+    dbField: 'Naam No Yellow Conditioner',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  naamRepairShampoo: {
+    dbField: 'Naam Repair Shampoo',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  naamRepairConditioner: {
+    dbField: 'Naam Repair Conditioner',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  naamColorShampoo: {
+    dbField: 'Naam Color Shampoo',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  naamColorConditioner: {
+    dbField: 'Naam Color Conditioner',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  naamHaarlak: {
+    dbField: 'Naam Haarlak',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  naamMousse: {
+    dbField: 'Naam Mousse',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  naamDroogshampoo: {
+    dbField: 'Naam Droogshampoo',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  naamRepairMask: {
+    dbField: 'Naam Repair Mask',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  naamColorMask: {
+    dbField: 'Naam Color Mask',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  naamCurlyGirlShampoo: {
+    dbField: 'Naam Curly Girl Shampoo',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  naamCurlyGirlConditioner: {
+    dbField: 'Naam Curly Girl Conditioner',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  naamCurlyGirlMask: {
+    dbField: 'Naam Curly Girl Mask',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  naamGel: {
+    dbField: 'Naam Gel',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  naamClayPaste: {
+    dbField: 'Naam Clay Paste',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  naamFiberPaste: {
+    dbField: 'Naam Fiber Paste',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  naamCreamPaste: {
+    dbField: 'Naam Cream Paste',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  naamMannenShampoo: {
+    dbField: 'Naam Mannen Shampoo',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  naamHaarserum: {
+    dbField: 'Naam Haarserum',
+    defaultValue: null,
+    transform: toNullableString,
   },
 }
 

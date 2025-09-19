@@ -1,0 +1,98 @@
+/ Haarspray section
+const haarsprayAnswers = [
+  { text: '1. "Strong Hairspray"', dbValue: '"1. Strong Hairspray"' },
+  { text: '2. "Strong Fix Hairspray"', dbValue: '"2. Strong Fix Hairspray"' },
+  { text: '3. "Extreme Hold Hairspray"', dbValue: '"3. Extreme Hold Hairspray"' },
+  { text: '4. "Fix It Spray"', dbValue: '"4. Fix It Spray"' },
+  { text: '5. "Flexible Hold Hairspray"', dbValue: '"5. Flexible Hold Hairspray"' }
+];
+
+// Mousse section  
+const mousseAnswers = [
+  { text: '1. "Volume Mousse"', dbValue: '"1. Volume Mousse"' },
+  { text: '2. "Full Body Mousse"', dbValue: '"2. Full Body Mousse"' },
+  { text: '3. "Natural Volume Mousse"', dbValue: '"3. Natural Volume Mousse"' },
+  { text: '4. "Styling Mousse"', dbValue: '"4. Styling Mousse"' },
+  { text: '5. "Extreme Hold Mousse"', dbValue: '"5. Extreme Hold Mousse"' }
+];
+
+// Droogshampoo section
+const droogshampooAnswers = [
+  { text: '1. "Dry Shampoo"', dbValue: '"1. Dry Shampoo"' },
+  { text: '2. "Refreshing Dry Shampoo"', dbValue: '"2. Refreshing Dry Shampoo"' },
+  { text: '3. "Bodifying Dry Shampoo"', dbValue: '"3. Bodifying Dry Shampoo"' },
+  { text: '4. "Detox Dry Shampoo"', dbValue: '"4. Detox Dry Shampoo"' },
+  { text: '5. "Fresh Volume Dry Shampoo"', dbValue: '"5. Fresh Volume Dry Shampoo"' }
+];
+
+// Gel section
+const gelAnswers = [
+  { text: '1. "Volume Gel"', dbValue: '"1. Volume Gel"' },
+  { text: '2. "Volume Boost Gel"', dbValue: '"2. Volume Boost Gel"' },
+  { text: '3. "Strong Grip Gel"', dbValue: '"3. Strong Grip Gel"' },
+  { text: '4. "Power Hold Gel"', dbValue: '"4. Power Hold Gel"' },
+  { text: '5. "Ultra Hold Gel"', dbValue: '"5. Ultra Hold Gel"' }
+];
+
+// Clay Paste section
+const clayPasteAnswers = [
+  { text: '1. "Matte Texture Paste"', dbValue: '"1. Matte Texture Paste"' },
+  { text: '2. "Texture Boost Paste"', dbValue: '"2. Texture Boost Paste"' },
+  { text: '3. "Urban Control Paste"', dbValue: '"3. Urban Control Paste"' },
+  { text: '4. "Flex Control Paste"', dbValue: '"4. Flex Control Paste"' },
+  { text: '5. "Ultra Flex Paste"', dbValue: '"5. Ultra Flex Paste"' }
+];
+
+// Fiber Paste section
+const fiberPasteAnswers = [
+  { text: '1. "Shaping Fiber"', dbValue: '"1. Shaping Fiber"' },
+  { text: '2. "Texture Control Fiber"', dbValue: '"2. Texture Control Fiber"' },
+  { text: '3. "Matte Finish Fiber"', dbValue: '"3. Matte Finish Fiber"' },
+  { text: '4. "Ultimate Hold Fiber"', dbValue: '"4. Ultimate Hold Fiber"' },
+  { text: '5. "Flex Style Fiber"', dbValue: '"5. Flex Style Fiber"' }
+];
+
+// Cream Paste section
+const creamPasteAnswers = [
+  { text: '1. "Styling Cream"', dbValue: '"1. Styling Cream"' },
+  { text: '2. "Smooth Control Cream"', dbValue: '"2. Smooth Control Cream"' },
+  { text: '3. "Creative Styling Cream"', dbValue: '"3. Creative Styling Cream"' },
+  { text: '4. "Flexible Style Cream"', dbValue: '"4. Flexible Style Cream"' },
+  { text: '5. "Prestige Styling Cream"', dbValue: '"5. Prestige Styling Cream"' }
+];
+
+// Database columns: 'Naam Haarlak', 'Naam Mousse', 'Naam Droogshampoo', 'Naam Gel', 'Naam Clay Paste', 'Naam Fiber Paste', 'Naam Cream Paste'
+// Default selections: option 1 for all seven (as shown with black dots)
+// Next slide: Slide29 after all selections made
+const handleHaarspraySelection = (answer) => {
+  updateDatabase('Naam Haarlak', answer.dbValue);
+};
+
+const handleMousseSelection = (answer) => {
+  updateDatabase('Naam Mousse', answer.dbValue);
+};
+
+const handleDroogshampooSelection = (answer) => {
+  updateDatabase('Naam Droogshampoo', answer.dbValue);
+};
+
+const handleGelSelection = (answer) => {
+  updateDatabase('Naam Gel', answer.dbValue);
+};
+
+const handleClayPasteSelection = (answer) => {
+  updateDatabase('Naam Clay Paste', answer.dbValue);
+};
+
+const handleFiberPasteSelection = (answer) => {
+  updateDatabase('Naam Fiber Paste', answer.dbValue);
+};
+
+const handleCreamPasteSelection = (answer) => {
+  updateDatabase('Naam Cream Paste', answer.dbValue);
+};
+
+const handleContinue = () => {
+  // Continue to next slide after all seven products selected
+  navigateToSlide('Slide29');
+};
