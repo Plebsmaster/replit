@@ -304,6 +304,14 @@ export const slide43MannenClaimsSchema = z.object({
   standaardClaimMannenShampoo: z.string().optional(),
 })
 
+// Step 44: Hair Serum Claims Selection (Custom claims for self-determined users)
+export const slide44HaarseurumClaimsSchema = z.object({
+  haarseurumClaims: z.object({
+    serum: z.string().min(1, 'Selecteer een claim voor Haarserum'),
+  }),
+  standaardClaimHaarserum: z.string().optional(),
+})
+
 // Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
@@ -497,6 +505,11 @@ export const FormDataSchema = z.object({
   mannenClaims: z.object({
     shampoo: z.string(),
   }).default({ shampoo: '' }),
+
+  // Hair Serum Claims Selection (custom claims when user chooses 'self')
+  haarseurumClaims: z.object({
+    serum: z.string(),
+  }).default({ serum: '' }),
   
   // Agreements
   agreeTerms: z.boolean().default(false),
@@ -541,6 +554,8 @@ export type Slide39NoYellowClaimsData = z.infer<typeof slide39NoYellowClaimsSche
 export type Slide40RepairClaimsData = z.infer<typeof slide40RepairClaimsSchema>
 export type Slide41ColorClaimsData = z.infer<typeof slide41ColorClaimsSchema>
 export type Slide42CurlyGirlClaimsData = z.infer<typeof slide42CurlyGirlClaimsSchema>
+export type Slide43MannenClaimsData = z.infer<typeof slide43MannenClaimsSchema>
+export type Slide44HaarseurumClaimsData = z.infer<typeof slide44HaarseurumClaimsSchema>
 export type IngredientsData = z.infer<typeof ingredientsSchema>
 export type AgreementsData = z.infer<typeof agreementsSchema>
 
@@ -625,6 +640,8 @@ export const getDefaultFormData = (): FormData => {
     haarserumIngredient: '',
     marketingIngredientenHaarserum: '',
     noYellowClaims: { shampoo: '', conditioner: '' },
+    mannenClaims: { shampoo: '' },
+    haarseurumClaims: { serum: '' },
     metZonderClaim: null,
     agreeTerms: false,
     subscribeNewsletter: false,
@@ -667,6 +684,7 @@ export const stepSchemas = {
   slide41ColorClaims: slide41ColorClaimsSchema,
   slide42CurlyGirlClaims: slide42CurlyGirlClaimsSchema,
   slide43MannenClaims: slide43MannenClaimsSchema,
+  slide44HaarseurumClaims: slide44HaarseurumClaimsSchema,
   ingredients: ingredientsSchema,
   agreements: agreementsSchema,
 } as const
