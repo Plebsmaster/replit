@@ -401,6 +401,13 @@ export const FIELD_MAPPINGS: FieldMappings = {
     transform: toNullableString,
   },
   
+  // Styling Products Claims Selection (Slide 45 - Self-determined claims)
+  stylingClaims: {
+    dbField: 'styling_claims',
+    defaultValue: { haarlak: null, mousse: null, droogshampoo: null },
+    transform: toObject,
+  },
+  
   // Custom Claims Selection (Slide 39 - Self-determined claims)
   // Note: When user selects custom claims, these will override the auto-filled standaard claim fields
   noYellowClaims: {

@@ -35,6 +35,7 @@ import {
   slide42CurlyGirlClaimsSchema,
   slide43MannenClaimsSchema,
   slide44HaarseurumClaimsSchema,
+  slide45StylingClaimsSchema,
   ingredientsSchema,
   agreementsSchema,
   FormData,
@@ -728,11 +729,12 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
   ['slide45', {
     id: 'slide45',
     key: 'slide45',
-    title: 'Volgende Stap',
+    title: 'Styling - Kies de claims',
+    schema: slide45StylingClaimsSchema,
     componentFile: 'Slide45.tsx',
     showGlobalNext: true, // Manual continue
     showGlobalPrev: true,
-    nextStep: (): string => 'dashboard-login',
+    nextStep: (): string => 'slide46',
   }],
   
   ['slide46', {

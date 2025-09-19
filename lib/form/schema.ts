@@ -312,6 +312,18 @@ export const slide44HaarseurumClaimsSchema = z.object({
   standaardClaimHaarserum: z.string().optional(),
 })
 
+// Step 45: Styling Products Claims Selection (Custom claims for self-determined users)
+export const slide45StylingClaimsSchema = z.object({
+  stylingClaims: z.object({
+    haarlak: z.string().min(1, 'Selecteer een claim voor Haarlak'),
+    mousse: z.string().min(1, 'Selecteer een claim voor Mousse'),
+    droogshampoo: z.string().min(1, 'Selecteer een claim voor Droogshampoo'),
+  }),
+  standaardClaimHaarlak: z.string().optional(),
+  standaardClaimMousse: z.string().optional(),
+  standaardClaimDroogShampoo: z.string().optional(),
+})
+
 // Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
@@ -511,6 +523,13 @@ export const FormDataSchema = z.object({
     serum: z.string(),
   }).default({ serum: '' }),
   
+  // Styling Products Claims Selection (custom claims when user chooses 'self')
+  stylingClaims: z.object({
+    haarlak: z.string(),
+    mousse: z.string(),
+    droogshampoo: z.string(),
+  }).default({ haarlak: '', mousse: '', droogshampoo: '' }),
+  
   // Agreements
   agreeTerms: z.boolean().default(false),
   subscribeNewsletter: z.boolean().default(false),
@@ -642,6 +661,7 @@ export const getDefaultFormData = (): FormData => {
     noYellowClaims: { shampoo: '', conditioner: '' },
     mannenClaims: { shampoo: '' },
     haarseurumClaims: { serum: '' },
+    stylingClaims: { haarlak: '', mousse: '', droogshampoo: '' },
     metZonderClaim: null,
     agreeTerms: false,
     subscribeNewsletter: false,
@@ -685,6 +705,7 @@ export const stepSchemas = {
   slide42CurlyGirlClaims: slide42CurlyGirlClaimsSchema,
   slide43MannenClaims: slide43MannenClaimsSchema,
   slide44HaarseurumClaims: slide44HaarseurumClaimsSchema,
+  slide45StylingClaims: slide45StylingClaimsSchema,
   ingredients: ingredientsSchema,
   agreements: agreementsSchema,
 } as const
