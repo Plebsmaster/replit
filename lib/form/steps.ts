@@ -85,7 +85,7 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     schema: welcomeSchema,
     showGlobalNext: true,  // Manual continue
     showGlobalPrev: true,
-    nextStep: (formData: Partial<FormData>): string => 'email',
+    nextStep: (formData: Partial<FormData>): string => 'style-selection',
   }],
   
   // Authentication Flow
@@ -114,13 +114,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     showGlobalNext: true,  // Manual continue
     showGlobalPrev: true,
     nextStep: (formData: Partial<FormData>): string => {
-      // For new users, skip OTP and go directly to questionnaire
-      if (!formData.isExistingUser) {
-        return 'style-selection'
-      }
-      // For existing users, they should have already gone through OTP from email step
-      // This shouldn't happen in normal flow, but fallback to style-selection
-      return 'style-selection'
+      // For new users, go to welcome after collecting name/phone
+      return 'welcome'
     },
   }],
   
@@ -136,12 +131,8 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     },
     skipIf: (formData: Partial<FormData>) => formData.isExistingUser !== true,
     nextStep: (formData: Partial<FormData>): string => {
-      // If existing user, go to dashboard login after OTP verification
-      if (formData.isExistingUser) {
-        return 'dashboard-login'
-      }
-      // If new user, proceed to questionnaire (style selection)
-      return 'style-selection'
+      // Both existing and new users go to welcome after OTP verification
+      return 'welcome'
     },
   }],
   
@@ -472,7 +463,7 @@ export function validateStepData(
  */
 export function getFlowPath(formData: Partial<FormData>): string[] {
   const path: string[] = []
-  let currentStepId: string | null = 'welcome'  // Start with welcome, not email
+  let currentStepId: string | null = 'email'  // Start with email first
   const visited = new Set<string>()
   const maxSteps = 1000 // Support up to 1000 steps
   let stepCount = 0
