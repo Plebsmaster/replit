@@ -1,14 +1,14 @@
 export const typography = {
   // Main titles (slide headings)
   title: {
-    className: "text-3xl font-bold leading-tight tracking-tight text-foreground",
-    mobile: "text-2xl",
+    className: "text-3xl font-bold leading-tight tracking-tight text-foreground mb-10",
+    mobile: "text-2xl mb-8",
   },
 
   // Subtitle text (descriptions under titles)
   subtitle: {
-    className: "text-lg text-foreground/80 leading-relaxed mb-6",
-    mobile: "text-base mb-4",
+    className: "text-lg text-foreground/80 leading-relaxed mb-8",
+    mobile: "text-base mb-6",
   },
 
   // Choice card titles
