@@ -5,7 +5,6 @@ import { useMachine } from '@xstate/react'
 import { wizardMachine, wizardGuards, WizardContext as MachineContext, WizardEvent } from './machine'
 import { FormData } from './schema'
 import { getStep, getNextStepId, shouldSkipStep, StepProps, getFlowPath } from './steps'
-import { SlideTransition } from '@/components/ui/slide-transition'
 
 // ===== Context Types =====
 interface WizardContextValue {
@@ -245,9 +244,9 @@ export function StepRenderer() {
     goToNext()
   }, [verifyOtp, goToNext])
   
-  // Simple premium transitions without loading interference
+  // Wrap in Suspense for lazy-loaded components
   return (
-    <SlideTransition stepId={currentStepId}>
+    <Suspense fallback={<StepLoadingFallback />}>
       <Component
         formData={formData}
         updateFormData={updateFormData}
@@ -259,7 +258,7 @@ export function StepRenderer() {
         verifyOtp={verifyOtp}
         sendOtp={sendOtp}
       />
-    </SlideTransition>
+    </Suspense>
   )
 }
 

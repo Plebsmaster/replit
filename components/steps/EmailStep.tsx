@@ -61,16 +61,18 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
       const data = await response.json()
       return data
     } catch (error) {
-      console.error('[EmailStep] Error checking user existence:', error)
       throw error
     }
   }
 
   const handleNext = async () => {
-    if (validationState !== "valid") return
+    if (validationState !== "valid") {
+      return
+    }
 
     setIsLoading(true)
-    
+    setError("")
+
     try {
       const userCheckResult = await checkUserExistence(email)
       
@@ -92,72 +94,74 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
           userId: '',
         })
       }
-      
+
       onNext()
     } catch (error) {
-      console.error('Error during user check:', error)
-      setError("Er is een fout opgetreden. Probeer het opnieuw.")
-      setValidationState("invalid")
+      setError("Er is een probleem opgetreden. Probeer het opnieuw.")
     } finally {
       setIsLoading(false)
     }
   }
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && validationState === "valid" && !isLoading) {
+      handleNext()
+    }
+  }
+
+  const getInputClassName = () => {
+    const baseClass = "w-full p-4 border rounded-lg transition-colors duration-200 text-lg"
+    const focusClass = "focus:outline-none focus:ring-2 focus:ring-offset-1"
+
+    if (validationState === "valid") {
+      return `${baseClass} ${focusClass} border-green-300 focus:border-green-500 focus:ring-green-200`
+    } else if (validationState === "invalid") {
+      return `${baseClass} ${focusClass} border-red-300 focus:border-red-500 focus:ring-red-200`
+    } else {
+      return `${baseClass} ${focusClass} border-gray-300 focus:border-black focus:ring-black/10`
+    }
+  }
+
   const getValidationIcon = () => {
     if (validationState === "valid") {
-      return <CheckCircle className="w-5 h-5 text-green-500" />
+      return <CheckCircle className="w-6 h-6 text-green-500" />
     } else if (validationState === "invalid") {
-      return <AlertCircle className="w-5 h-5 text-red-500" />
+      return <AlertCircle className="w-6 h-6 text-red-500" />
     }
     return null
   }
 
-  const getInputClassName = () => {
-    if (validationState === "valid") {
-      return "border-green-500 focus:border-green-500 focus:ring-green-200"
-    } else if (validationState === "invalid") {
-      return "border-red-500 focus:border-red-500 focus:ring-red-200"
-    }
-    return "border-gray-300 focus:border-black focus:ring-black"
-  }
-
   return (
-    <div className="min-h-[calc(100vh-12rem)] flex items-center justify-center py-8">
-      <div className="space-y-8 w-full max-w-2xl mx-auto px-4 sm:px-6 pt-8 pb-12">
-        <div className="text-center">
-          <h2 className={getTypographyClasses("title", { alignment: "center" })}>Welkom bij SalonID</h2>
-          <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} max-w-2xl mx-auto`}>
-            Voer je e-mailadres in om te beginnen. Als je al een account hebt, log je automatisch in op je dashboard.
-          </p>
+    <div className="space-y-8">
+      <div className="text-center">
+        <h2 className={getTypographyClasses("title", { alignment: "center" })}>Welkom bij SalonID</h2>
+        <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} max-w-2xl mx-auto`}>
+          Voer je e-mailadres in om te beginnen. Als je al een account hebt, log je automatisch in op je dashboard.
+        </p>
+      </div>
+
+      <div className="bg-white rounded-lg p-8 max-w-md mx-auto">
+        <div className="relative">
+          <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400 z-10" />
+          <Input
+            type="email"
+            placeholder="je@email.com"
+            value={email}
+            onChange={(e) => handleEmailChange(e.target.value)}
+            onBlur={() => setTouched(true)}
+            onKeyPress={handleKeyPress}
+            className={`${getInputClassName()} pl-12 pr-12`}
+            autoFocus
+          />
+          <div className="absolute right-4 top-1/2 transform -translate-y-1/2">{getValidationIcon()}</div>
         </div>
 
-        <div className="bg-white rounded-lg p-8 max-w-md mx-auto">
-          <div className="relative">
-            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <Input
-              type="email"
-              placeholder="Je e-mailadres"
-              value={email}
-              onChange={(e) => handleEmailChange(e.target.value)}
-              className={`pl-10 pr-10 py-3 text-base ${getInputClassName()}`}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && validationState === "valid" && !isLoading) {
-                  handleNext()
-                }
-              }}
-            />
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-              {getValidationIcon()}
-            </div>
-          </div>
-          
-          {error && (
-            <p className="text-red-500 text-sm mt-2 flex items-center gap-1">
-              <AlertCircle className="w-4 h-4" />
-              {error}
-            </p>
-          )}
-        </div>
+        {error && (
+          <p className="text-red-500 text-sm mt-2 flex items-center gap-1">
+            <AlertCircle className="w-4 h-4" />
+            {error}
+          </p>
+        )}
 
         <div className="mt-6">
           <Button
