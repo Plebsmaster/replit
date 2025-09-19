@@ -209,6 +209,7 @@ export const getRequiredFieldsForStep = (stepId: StepId): Array<keyof FormData> 
     slide39NoYellowClaims: ['noYellowClaims'],
     slide40RepairClaims: ['repairClaims'],
     slide41ColorClaims: ['colorClaims'],
+    slide42CurlyGirlClaims: ['curlyGirlClaims'],
     ingredients: ['ingredients'],
     agreements: ['agreeTerms', 'subscribeNewsletter'],
   }

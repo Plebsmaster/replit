@@ -284,6 +284,18 @@ export const slide41ColorClaimsSchema = z.object({
   standaardClaimColorMask: z.string().optional(),
 })
 
+// Step 42: Curly Girl Claims Selection (Custom claims for self-determined users)
+export const slide42CurlyGirlClaimsSchema = z.object({
+  curlyGirlClaims: z.object({
+    shampoo: z.string().min(1, 'Selecteer een claim voor Curly Girl Shampoo'),
+    conditioner: z.string().min(1, 'Selecteer een claim voor Curly Girl Conditioner'),
+    mask: z.string().min(1, 'Selecteer een claim voor Curly Girl Mask'),
+  }),
+  standaardClaimCurlyGirlShampoo: z.string().optional(),
+  standaardClaimCurlyGirlConditioner: z.string().optional(),
+  standaardClaimCurlyGirlMask: z.string().optional(),
+})
+
 // Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
@@ -465,6 +477,13 @@ export const FormDataSchema = z.object({
     conditioner: z.string(),
     mask: z.string(),
   }).default({ shampoo: '', conditioner: '', mask: '' }),
+
+  // Curly Girl Claims Selection (custom claims when user chooses 'self')
+  curlyGirlClaims: z.object({
+    shampoo: z.string(),
+    conditioner: z.string(),
+    mask: z.string(),
+  }).default({ shampoo: '', conditioner: '', mask: '' }),
   
   // Agreements
   agreeTerms: z.boolean().default(false),
@@ -508,6 +527,7 @@ export type ClaimChoiceData = z.infer<typeof claimChoiceSchema>
 export type Slide39NoYellowClaimsData = z.infer<typeof slide39NoYellowClaimsSchema>
 export type Slide40RepairClaimsData = z.infer<typeof slide40RepairClaimsSchema>
 export type Slide41ColorClaimsData = z.infer<typeof slide41ColorClaimsSchema>
+export type Slide42CurlyGirlClaimsData = z.infer<typeof slide42CurlyGirlClaimsSchema>
 export type IngredientsData = z.infer<typeof ingredientsSchema>
 export type AgreementsData = z.infer<typeof agreementsSchema>
 
@@ -630,6 +650,9 @@ export const stepSchemas = {
   slide37MetZonderClaim: slide37MetZonderClaimSchema,
   claimChoice: claimChoiceSchema,
   slide39NoYellowClaims: slide39NoYellowClaimsSchema,
+  slide40RepairClaims: slide40RepairClaimsSchema,
+  slide41ColorClaims: slide41ColorClaimsSchema,
+  slide42CurlyGirlClaims: slide42CurlyGirlClaimsSchema,
   ingredients: ingredientsSchema,
   agreements: agreementsSchema,
 } as const

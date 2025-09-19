@@ -453,6 +453,20 @@ export const FIELD_MAPPINGS: FieldMappings = {
     defaultValue: { shampoo: null, conditioner: null, mask: null },
     transform: toObject,
   },
+
+  // Color Claims Selection (Custom claims for self-determined users)
+  colorClaims: {
+    dbField: 'color_claims',
+    defaultValue: { shampoo: null, conditioner: null, mask: null },
+    transform: toObject,
+  },
+
+  // Curly Girl Claims Selection (Custom claims for self-determined users)
+  curlyGirlClaims: {
+    dbField: 'curly_girl_claims',
+    defaultValue: { shampoo: null, conditioner: null, mask: null },
+    transform: toObject,
+  },
   marketingIngredientenColorShampoo: {
     dbField: 'Marketing ingredienten Color Shampoo',
     defaultValue: null,
