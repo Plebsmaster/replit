@@ -19,6 +19,7 @@ import {
   iconChoiceSchema,
   productNamingChoiceSchema,
   slide27HaarserumSchema,
+  slide28StylingProductsSchema,
   ingredientsSchema,
   agreementsSchema,
   FormData,
@@ -504,15 +505,16 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
     nextStep: (formData: Partial<FormData>): string => 'slide28',
   }],
 
-  // Slide28 placeholder
+  // Styling Products naming (7 products)
   ['slide28', {
     id: 'slide28',
-    key: 'slide28',
-    title: 'Slide 28 Placeholder',
+    key: 'slide28StylingProducts',
+    title: 'Styling Producten - Kies de benaming',
+    schema: slide28StylingProductsSchema,
     componentFile: 'Slide28.tsx',
     showGlobalNext: true, // Manual continue
     showGlobalPrev: true,
-    nextStep: (formData: Partial<FormData>): string => 'ingredients',
+    nextStep: (formData: Partial<FormData>): string => 'slide29',
   }],
 
   // SalonID naming flow (when user chooses "Keuze door SalonID")
