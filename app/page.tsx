@@ -2,6 +2,7 @@
 
 import { WizardProvider, StepRenderer, WizardProgressBar, StepNavigation, useWizard } from '@/lib/form/wizard-context'
 import { DebugNavigation } from '@/components/ui/debug-navigation'
+import { DebugOverlay } from '@/components/ui/debug-overlay'
 import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { QuoteDisplay } from '@/components/ui/quote-display'
@@ -163,6 +164,9 @@ function WizardNavigation() {
           </div>
         </div>
       )}
+      
+      {/* Debug Overlay for Testing */}
+      <DebugOverlay />
     </div>
   )
 }

@@ -52,7 +52,7 @@ export function WelcomeStep({ onNext, goToStep }: StepProps) {
 
           <div className="pt-8">
             <Button
-              onClick={() => goToStep('slide2')}
+              onClick={() => goToStep('style-selection')}
               variant="default"
               size="lg"
               className="bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 text-base font-medium"
