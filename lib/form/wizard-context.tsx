@@ -236,41 +236,39 @@ export function StepRenderer() {
   const { getCurrentStepComponent, formData, updateFormData, goToNext, goToPrevious, goToStep, currentStepId, verifyOtp, sendOtp } = useWizard()
   const [isTransitioning, setIsTransitioning] = React.useState(false)
   const [currentDisplayedStep, setCurrentDisplayedStep] = React.useState(currentStepId)
-  const [fadeClass, setFadeClass] = React.useState('opacity-0 scale-105 blur-sm')
+  const [isVisible, setIsVisible] = React.useState(false)
   
   const Component = getCurrentStepComponent()
   
-  // Handle step changes with relaxed, smooth transitions
+  // Handle step changes with proper visibility control
   React.useEffect(() => {
     if (currentDisplayedStep !== currentStepId) {
-      // Start fade out
+      // Start transition - fade out current content
       setIsTransitioning(true)
-      setFadeClass('opacity-0 scale-98 blur-sm')
+      setIsVisible(false)
       
-      // After fade out, switch component and fade in
+      // After fade out completes, switch to new step
       const timer = setTimeout(() => {
         setCurrentDisplayedStep(currentStepId)
-        // Start from invisible state
-        setFadeClass('opacity-0 scale-102 blur-sm')
         
-        // Fade in to normal state
+        // Small delay then fade in new content
         requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            setFadeClass('opacity-100 scale-100 blur-0')
+          setTimeout(() => {
+            setIsVisible(true)
             
-            // End transition lock after animation completes
+            // End transition lock after fade in completes
             setTimeout(() => {
               setIsTransitioning(false)
-            }, 800)
-          })
+            }, 700)
+          }, 50)
         })
-      }, 700) // Slower fade out for relaxed feeling
+      }, 700) // Wait for fade out
       
       return () => clearTimeout(timer)
     } else {
-      // Initial load - fade in from invisible
+      // Initial load - fade in after a frame
       requestAnimationFrame(() => {
-        setFadeClass('opacity-100 scale-100 blur-0')
+        setIsVisible(true)
       })
     }
   }, [currentStepId, currentDisplayedStep])
@@ -292,7 +290,12 @@ export function StepRenderer() {
     goToNext()
   }, [verifyOtp, goToNext])
   
-  // Premium transition wrapper with slower, more relaxed animation
+  // Compute classes based on visibility state
+  const fadeClass = isVisible 
+    ? 'opacity-100 scale-100 blur-0' 
+    : 'opacity-0 scale-98 blur-sm'
+  
+  // Premium transition wrapper with controlled visibility
   return (
     <div className={`transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] ${fadeClass} ${isTransitioning ? 'pointer-events-none' : ''}`}>
       <Suspense fallback={<StepTransitionFallback />}>
