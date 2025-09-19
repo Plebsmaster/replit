@@ -20,12 +20,12 @@ interface ValidationState {
 }
 
 const countries = [
-  { code: "+31", flag: "🇳🇱", name: "NL" },
-  { code: "+32", flag: "🇧🇪", name: "BE" },
-  { code: "+49", flag: "🇩🇪", name: "DE" },
-  { code: "+33", flag: "🇫🇷", name: "FR" },
-  { code: "+44", flag: "🇬🇧", name: "GB" },
-  { code: "+1", flag: "🇺🇸", name: "US" },
+  { code: "+31", flag: "🇳🇱", name: "Nederland", short: "NL" },
+  { code: "+32", flag: "🇧🇪", name: "België", short: "BE" },
+  { code: "+49", flag: "🇩🇪", name: "Duitsland", short: "DE" },
+  { code: "+33", flag: "🇫🇷", name: "Frankrijk", short: "FR" },
+  { code: "+44", flag: "🇬🇧", name: "Verenigd Koninkrijk", short: "GB" },
+  { code: "+1", flag: "🇺🇸", name: "Verenigde Staten", short: "US" },
 ]
 
 export function NamePhoneStep({ formData, updateFormData, onNext }: StepProps) {
@@ -203,15 +203,15 @@ export function NamePhoneStep({ formData, updateFormData, onNext }: StepProps) {
               <select
                 value={countryCode}
                 onChange={(e) => setCountryCode(e.target.value)}
-                className="appearance-none bg-white border border-gray-300 rounded-lg px-3 py-3 pr-8 focus:border-black focus:ring-1 focus:ring-black min-w-[100px]"
+                className="appearance-none bg-white border border-gray-300 rounded-lg px-3 py-3 pr-8 focus:border-black focus:ring-1 focus:ring-black min-w-[120px] text-sm font-medium shadow-sm hover:border-gray-400 transition-colors cursor-pointer"
               >
                 {countries.map((country) => (
-                  <option key={country.code} value={country.code}>
-                    {country.flag} {country.name}
+                  <option key={country.code} value={country.code} className="py-2">
+                    {country.flag} {country.code}
                   </option>
                 ))}
               </select>
-              <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+              <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
             </div>
             <div className="flex-1 relative">
               <Input

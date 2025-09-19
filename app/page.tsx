@@ -7,8 +7,9 @@ import { Button } from '@/components/ui/button'
 
 // Helper function to determine if current step should show sticky navigation
 function shouldShowStickyNavigation(currentStepId: string): boolean {
-  // Registration steps and dashboard login should NOT show sticky navigation
+  // Registration steps, welcome page, and dashboard login should NOT show sticky navigation
   const stepsWithoutNavigation = [
+    'welcome',
     'email',
     'name-phone', 
     'otp-verification',
@@ -51,7 +52,7 @@ function WizardNavigation() {
       <div className={
         showStickyNav 
           ? (process.env.NODE_ENV === 'development' ? "pt-36 pb-24" : "pt-28 pb-24")
-          : (process.env.NODE_ENV === 'development' ? "pt-14 py-4" : "py-4")
+          : (process.env.NODE_ENV === 'development' ? "pt-20 pb-8" : "pt-12 pb-8")
       }>
         <div className="max-w-4xl mx-auto px-4">
           {/* Step Renderer - Dynamically renders the current step */}
