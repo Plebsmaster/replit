@@ -85,6 +85,11 @@ The application uses several database tables (SQL scripts available in `/scripts
   - Desktop: 3 rows of 5 icons with hover scale effects for visual feedback
   - Mobile: Grouped icons in swipeable rows of 3 with tap feedback
   - Auto-advances on selection without requiring separate button
+- **COMPLETED: Fixed uniform navigation behavior across all choice slides**
+  - Fixed StepNavigation component to properly recognize icon-selection and ingredients as choice steps
+  - When users navigate back to slides with existing selections, the "Doorgaan" button is now properly enabled
+  - Ensures consistent behavior across all selection slides (Slide10, Slide30, etc.)
+  - Users can now use sticky footer navigation to continue from previously completed choice slides
 
 ## Recent Changes (September 18, 2025)
 - Configured for Replit environment

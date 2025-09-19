@@ -335,7 +335,7 @@ export function StepNavigation() {
   const showGlobalPrev = currentStep?.showGlobalPrev !== false // Default to true
   
   // Check if a choice has been made for steps that require selection
-  const choiceSteps = ['style-selection', 'elegant-styles', 'modern-styles', 'color-selection', 'ingredient-selection']
+  const choiceSteps = ['style-selection', 'elegant-styles', 'modern-styles', 'color-selection', 'icon-selection', 'ingredients']
   const isChoiceStep = choiceSteps.includes(currentStepId)
   const hasChoice = isChoiceStep && canGoNext()
   
