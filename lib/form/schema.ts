@@ -177,6 +177,18 @@ export const slide32ColorIngredientsSchema = z.object({
   marketingIngredientenColorMask: z.string().optional(),
 })
 
+// Step 33: Curly Girl Ingredients Selection
+export const slide33CurlyGirlIngredientsSchema = z.object({
+  curlyGirlIngredients: z.object({
+    shampoo: z.string().min(1, 'Selecteer een ingrediënt voor Curly Girl Shampoo'),
+    conditioner: z.string().min(1, 'Selecteer een ingrediënt voor Curly Girl Conditioner'),
+    mask: z.string().min(1, 'Selecteer een ingrediënt voor Curly Girl Mask'),
+  }),
+  marketingIngredientenCurlyGirlShampoo: z.string().optional(),
+  marketingIngredientenCurlyGirlConditioner: z.string().optional(),
+  marketingIngredientenCurlyGirlMask: z.string().optional(),
+})
+
 // Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
@@ -243,6 +255,16 @@ export const FormDataSchema = z.object({
   naamCurlyGirlShampoo: z.string().default(''),
   naamCurlyGirlConditioner: z.string().default(''),
   naamCurlyGirlMask: z.string().default(''),
+  
+  // Curly Girl ingredient selections
+  curlyGirlIngredients: z.object({
+    shampoo: z.string().default('Hyaluronzuur'),
+    conditioner: z.string().default('Vitamine E'),
+    mask: z.string().default('Vitamine E'),
+  }).default({ shampoo: 'Hyaluronzuur', conditioner: 'Vitamine E', mask: 'Vitamine E' }),
+  marketingIngredientenCurlyGirlShampoo: z.string().default('Hyaluronzuur'),
+  marketingIngredientenCurlyGirlConditioner: z.string().default('Vitamine E'),
+  marketingIngredientenCurlyGirlMask: z.string().default('Vitamine E'),
   naamGel: z.string().default(''),
   naamClayPaste: z.string().default(''),
   naamFiberPaste: z.string().default(''),
@@ -314,6 +336,7 @@ export type Slide28StylingProductsData = z.infer<typeof slide28StylingProductsSc
 export type Slide30NoYellowIngredientsData = z.infer<typeof slide30NoYellowIngredientsSchema>
 export type Slide31RepairIngredientsData = z.infer<typeof slide31RepairIngredientsSchema>
 export type Slide32ColorIngredientsData = z.infer<typeof slide32ColorIngredientsSchema>
+export type Slide33CurlyGirlIngredientsData = z.infer<typeof slide33CurlyGirlIngredientsSchema>
 export type IngredientsData = z.infer<typeof ingredientsSchema>
 export type AgreementsData = z.infer<typeof agreementsSchema>
 
@@ -369,6 +392,12 @@ export const getDefaultFormData = (): FormData => {
     naamCurlyGirlShampoo: '',
     naamCurlyGirlConditioner: '',
     naamCurlyGirlMask: '',
+    
+    // Curly Girl ingredient selections
+    curlyGirlIngredients: { shampoo: 'Hyaluronzuur', conditioner: 'Vitamine E', mask: 'Vitamine E' },
+    marketingIngredientenCurlyGirlShampoo: 'Hyaluronzuur',
+    marketingIngredientenCurlyGirlConditioner: 'Vitamine E',
+    marketingIngredientenCurlyGirlMask: 'Vitamine E',
     naamGel: '',
     naamClayPaste: '',
     naamFiberPaste: '',
@@ -417,6 +446,7 @@ export const stepSchemas = {
   slide30NoYellowIngredients: slide30NoYellowIngredientsSchema,
   slide31RepairIngredients: slide31RepairIngredientsSchema,
   slide32ColorIngredients: slide32ColorIngredientsSchema,
+  slide33CurlyGirlIngredients: slide33CurlyGirlIngredientsSchema,
   ingredients: ingredientsSchema,
   agreements: agreementsSchema,
 } as const

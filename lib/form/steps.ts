@@ -23,6 +23,7 @@ import {
   slide30NoYellowIngredientsSchema,
   slide31RepairIngredientsSchema,
   slide32ColorIngredientsSchema,
+  slide33CurlyGirlIngredientsSchema,
   ingredientsSchema,
   agreementsSchema,
   FormData,
@@ -567,9 +568,20 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
   
   ['slide33', {
     id: 'slide33',
-    key: 'slide33',
-    title: 'Next Step',
+    key: 'slide33CurlyGirlIngredients',
+    title: 'Curly Girl - Kies de ingrediënten',
+    schema: slide33CurlyGirlIngredientsSchema,
     componentFile: 'Slide33.tsx',
+    showGlobalNext: true, // Manual continue
+    showGlobalPrev: true,
+    nextStep: (): string => 'slide34',
+  }],
+  
+  ['slide34', {
+    id: 'slide34',
+    key: 'slide34',
+    title: 'Next Step',
+    componentFile: 'Slide34.tsx',
     showGlobalNext: true, // Manual continue
     showGlobalPrev: true,
     nextStep: (): string => 'dashboard-login',

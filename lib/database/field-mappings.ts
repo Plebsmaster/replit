@@ -347,6 +347,28 @@ export const FIELD_MAPPINGS: FieldMappings = {
     defaultValue: null,
     transform: toNullableString,
   },
+  
+  // Curly Girl Ingredients
+  curlyGirlIngredients: {
+    dbField: 'curly_girl_ingredients',
+    defaultValue: { shampoo: null, conditioner: null, mask: null },
+    transform: toObject,
+  },
+  marketingIngredientenCurlyGirlShampoo: {
+    dbField: 'Marketing ingredienten Curly Girl Shampoo',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  marketingIngredientenCurlyGirlConditioner: {
+    dbField: 'Marketing ingredienten Curly Girl Conditioner',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  marketingIngredientenCurlyGirlMask: {
+    dbField: 'Marketing ingredienten Curly Girl Mask',
+    defaultValue: null,
+    transform: toNullableString,
+  },
 }
 
 // ===== Utility Functions =====
