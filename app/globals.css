@@ -127,17 +127,17 @@
 /* Button text rotation animations */
 @keyframes glare {
   from {
-    left: -150%;
+    transform: translateX(-150%) skewX(-20deg);
   }
   to {
-    left: 150%;
+    transform: translateX(200%) skewX(-20deg);
   }
 }
 
 @keyframes fadeSwap {
   from {
     opacity: 0;
-    transform: translateY(2px);
+    transform: translateY(3px);
   }
   to {
     opacity: 1;
@@ -145,36 +145,34 @@
   }
 }
 
-.glare-container {
-  position: relative;
-  overflow: hidden;
-}
-
+/* Glare effect for entire button */
 .glare-run {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  z-index: 20;
 }
 
 .glare-run::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: -150%;
-  width: 50%;
-  height: 100%;
+  top: -50%;
+  left: 0;
+  width: 100%;
+  height: 200%;
   background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255, 255, 255, 0.35),
-    transparent
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 60%
   );
-  transform: skewX(-20deg);
-  animation: glare 800ms ease-out 1;
+  animation: glare 800ms ease-out;
 }
 
+/* Text swap animation */
 .animate-fade-swap {
-  animation: fadeSwap 250ms ease-out;
+  display: inline-block;
+  animation: fadeSwap 300ms ease-out;
 }
 
 /* Respect user's motion preferences */
