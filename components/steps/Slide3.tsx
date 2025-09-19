@@ -11,40 +11,48 @@ type Props = StepProps & {
   onSelectionChange?: (style: string | null) => void
 }
 
-export default function Slide3({ onBack, onNext, updateFormData, formData, selectedStyle: globalSelectedStyle, onSelectionChange }: Props) {
+export default function Slide3({ onBack, onNext, updateFormData, formData, selectedStyle: globalSelectedStyle, onSelectionChange, goToStep }: Props) {
   const [localSelectedStyle, setLocalSelectedStyle] = useState<string | null>(formData.elegantStyle || globalSelectedStyle || null)
   const selectedStyle = globalSelectedStyle !== undefined ? globalSelectedStyle : localSelectedStyle
 
-  const items = useMemo(
+  const answers = useMemo(
     () => [
-      { key: "elegant1", label: "Elegant 1", imageSrc: "/img/slide3/e1.jpg" },
-      { key: "elegant2", label: "Elegant 2", imageSrc: "/img/slide3/e2.jpg" },
-      { key: "elegant3", label: "Elegant 3", imageSrc: "/img/slide3/e3.jpg" },
-      { key: "elegant4", label: "Elegant 4", imageSrc: "/img/slide3/e4.jpg" },
-      { key: "elegant5", label: "Elegant 5", imageSrc: "/img/slide3/e5.jpg" },
+      { text: "Elegant 1", nextSlide: "slide4", dbValue: null, key: "elegant1", imageSrc: "/img/slide3/e1.jpg" },
+      { text: "Elegant 2", nextSlide: "slide5", dbValue: null, key: "elegant2", imageSrc: "/img/slide3/e2.jpg" },
+      { text: "Elegant 3", nextSlide: "slide7", dbValue: "Elegant 3.", key: "elegant3", imageSrc: "/img/slide3/e3.jpg" },
+      { text: "Elegant 4", nextSlide: "slide6", dbValue: "Elegant 4.", key: "elegant4", imageSrc: "/img/slide3/e4.jpg" },
+      { text: "Elegant 5", nextSlide: "slide6", dbValue: "Elegant 5.", key: "elegant5", imageSrc: "/img/slide3/e5.jpg" },
     ],
     [],
   )
 
-  const handleChoose = (key: string) => {
-    const item = items.find(i => i.key === key)
-    if (!item) return
-    setLocalSelectedStyle(key)
-    onSelectionChange?.(key)
+  const handleAnswer = (answer: any) => {
+    setLocalSelectedStyle(answer.key)
+    onSelectionChange?.(answer.key)
 
     // Update form data with the selected elegant style
-    updateFormData({ elegantStyle: key })
+    updateFormData({ elegantStyle: answer.key })
+
+    // Store database value if not null (Template column)
+    if (answer.dbValue) {
+      // Store template value - using elegantStyle field for Template column
+      updateFormData({ elegantStyle: answer.dbValue })
+    }
 
     try {
-      localStorage.setItem("salonid:styleChoice", key)
+      localStorage.setItem("salonid:styleChoice", answer.key)
       localStorage.setItem("salonid:dateISO", new Date().toISOString())
     } catch {}
 
-    // Auto-progress with delay to allow state machine to process the update
-    setTimeout(() => {
-      onNext()
-    }, 100)
+    // Navigate to the specified slide
+    goToStep(answer.nextSlide)
   }
+
+  const items = answers.map(answer => ({
+    key: answer.key,
+    label: answer.text,
+    imageSrc: answer.imageSrc
+  }))
 
   return (
     <SlideContainer width="extraWide">
@@ -66,7 +74,10 @@ export default function Slide3({ onBack, onNext, updateFormData, formData, selec
         <ResponsiveCarousel
           items={items}
           selectedItem={selectedStyle}
-          onItemClick={handleChoose}
+          onItemClick={(key) => {
+            const answer = answers.find(a => a.key === key)
+            if (answer) handleAnswer(answer)
+          }}
           columns={2}
         />
       </section>

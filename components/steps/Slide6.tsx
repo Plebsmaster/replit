@@ -8,28 +8,46 @@ import { getTypographyClasses } from "@/lib/typography"
 type Props = {
   onBack: () => void
   onNext: () => void
+  goToStep?: (stepId: string) => void
 }
 
-export default function Slide6({ onBack, onNext }: Props) {
+export default function Slide6({ onBack, onNext, goToStep }: Props) {
   const { formData, updateFormData } = useWizard()
 
-  const handleChooseColor = (colorChoice: string) => {
-    updateFormData({ colorScheme: colorChoice })
-    onNext()
-  }
-
-  const colorOptions = [
-    {
+  const answers = [
+    { 
+      text: "Zwart", 
+      nextSlide: "slide9", 
+      dbValue: "Zwart",
       key: "Zwart",
       label: "Zwart",
       imageSrc: "/img/slide6/black.jpg",
     },
-    {
+    { 
+      text: "Kleur", 
+      nextSlide: "slide8", 
+      dbValue: "Kleur",
       key: "Kleur",
       label: "Kleur",
       imageSrc: "/img/slide6/color.jpg",
-    },
+    }
   ]
+
+  const handleAnswer = (answer: any) => {
+    // Store database value in 'Kleur/Zwart/Wit' column
+    updateFormData({ colorScheme: answer.dbValue })
+
+    // Navigate to the specified slide
+    if (goToStep) {
+      goToStep(answer.nextSlide)
+    }
+  }
+
+  const colorOptions = answers.map(answer => ({
+    key: answer.key,
+    label: answer.label,
+    imageSrc: answer.imageSrc
+  }))
 
   return (
     <SlideContainer width="extraWide">
@@ -89,7 +107,10 @@ export default function Slide6({ onBack, onNext }: Props) {
         <ResponsiveCarousel
           items={colorOptions}
           selectedItem={formData.colorScheme}
-          onItemClick={handleChooseColor}
+          onItemClick={(key) => {
+            const answer = answers.find(a => a.key === key)
+            if (answer) handleAnswer(answer)
+          }}
           columns={2}
         />
 

@@ -1,0 +1,182 @@
+Slide9.tsx
+const answers = [
+  { 
+    text: 'Met icoon', 
+    nextSlide: 'Slide10', 
+    dbValue: 'Met icoon' 
+  },
+  { 
+    text: 'Zonder icoon', 
+    nextSlide: 'Slide21', 
+    dbValue: 'Zonder icoon' 
+  }
+];
+// Database column: 'Icoon ja/nee'
+const handleAnswer = (answer) => {
+  updateDatabase('Icoon ja/nee', answer.dbValue);
+  navigateToSlide(answer.nextSlide);
+};
+
+
+Slide10.tsx
+
+const answers = [
+  { 
+    text: 'Icoon 16', 
+    nextSlide: 'Slide21', 
+    dbValue: 'Icoon 16' 
+  },
+  { 
+    text: 'Icoon 17', 
+    nextSlide: 'Slide21', 
+    dbValue: 'Icoon 17' 
+  },
+  { 
+    text: 'Icoon 18', 
+    nextSlide: 'Slide21', 
+    dbValue: 'Icoon 18' 
+  },
+  { 
+    text: 'Icoon 19', 
+    nextSlide: 'Slide21', 
+    dbValue: 'Icoon 19' 
+  },
+  { 
+    text: 'Icoon 20', 
+    nextSlide: 'Slide21', 
+    dbValue: 'Icoon 20' 
+  },
+  { 
+    text: 'Icoon 21', 
+    nextSlide: 'Slide21', 
+    dbValue: 'Icoon 21' 
+  },
+  { 
+    text: 'Icoon 22', 
+    nextSlide: 'Slide21', 
+    dbValue: 'Icoon 22' 
+  },
+  { 
+    text: 'Icoon 23', 
+    nextSlide: 'Slide21', 
+    dbValue: 'Icoon 23' 
+  }
+];
+// Database column: 'Icoon'
+const handleAnswer = (answer) => {
+  updateDatabase('Icoon', answer.dbValue);
+  navigateToSlide(answer.nextSlide);
+};
+
+Slide11.tsx
+const answers = [
+  { text: 'Modern 1', nextSlide: 'Slide12', dbValue: null },
+  { text: 'Modern 2', nextSlide: 'Slide13', dbValue: null },
+  { text: 'Modern 3', nextSlide: 'Slide14', dbValue: null  },
+  { text: 'Modern 4', nextSlide: 'Slide16', dbValue: 'Modern 4.' },
+  { text: 'Modern 5', nextSlide: 'Slide16', dbValue: 'Modern 5.' },
+  { text: 'Modern 6', nextSlide: 'Slide15', dbValue: null }
+];
+// Database column: 'Template'
+// Only store dbValue when it's not null
+const handleAnswer = (answer) => {
+  if (answer.dbValue) {
+    updateDatabase('Template', answer.dbValue);
+  }
+  navigateToSlide(answer.nextSlide);
+};
+
+Slide12.tsx
+const answers = [
+  { 
+    text: 'Uitlijning links', 
+    nextSlide: 'Slide16', 
+    dbValue: 'Modern 1.1' 
+  },
+  { 
+    text: 'Uitlijning midden', 
+    nextSlide: 'Slide16', 
+    dbValue: 'Modern 1.2' 
+  }
+];
+// Database column: 'Template'
+const handleAnswer = (answer) => {
+  updateDatabase('Template', answer.dbValue);
+  navigateToSlide(answer.nextSlide);
+};
+
+Slide13.tsx
+const answers = [
+  { 
+    text: 'Uitlijning links', 
+    nextSlide: 'Slide16', 
+    dbValue: 'Modern 2.1' 
+  },
+  { 
+    text: 'Uitlijning midden', 
+    nextSlide: 'Slide16', 
+    dbValue: 'Modern 2.2' 
+  }
+];
+// Database column: 'Template'
+const handleAnswer = (answer) => {
+  updateDatabase('Template', answer.dbValue);
+  navigateToSlide(answer.nextSlide);};
+
+
+Slide14.tsx
+
+const answers = [
+  { 
+    text: ‘Vlak ronding', 
+    nextSlide: 'Slide17', 
+    dbValue: 'Modern 3.1' 
+  },
+  { 
+    text: 'Vlak vierkant', 
+    nextSlide: 'Slide17', 
+    dbValue: 'Modern 3.2' 
+  }
+];
+// Database column: 'Template'
+const handleAnswer = (answer) => {
+  updateDatabase('Template', answer.dbValue);
+  navigateToSlide(answer.nextSlide);};
+
+Slide15.tsx
+const answers = [
+  { 
+    text: 'Uitlijning links', 
+    nextSlide: 'Slide16', 
+    dbValue: 'Modern 6.1' 
+  },
+  { 
+    text: 'Uitlijning midden', 
+    nextSlide: 'Slide16', 
+    dbValue: 'Modern 6.2' 
+  }
+];
+// Database column: 'Template'
+const handleAnswer = (answer) => {
+  updateDatabase('Template', answer.dbValue);
+  navigateToSlide(answer.nextSlide);};
+
+
+Slide16.tsx
+const answers = [
+  { 
+    text: 'Zwart', 
+    nextSlide: 'Slide19', 
+    dbValue: 'Zwart' 
+  },
+  { 
+    text: 'Kleur', 
+    nextSlide: 'Slide18', 
+    dbValue: 'Kleur' 
+  }
+];
+// Database column: 'Kleur/Zwart/Wit'
+const handleAnswer = (answer) => {
+  updateDatabase('Kleur/Zwart/Wit', answer.dbValue);
+  navigateToSlide(answer.nextSlide);
+};

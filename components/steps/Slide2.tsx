@@ -24,7 +24,7 @@ export default function StyleSelectionStep({ formData, updateFormData, onNext, o
     updateFormData({ style })
     
     // Navigate directly to the appropriate step based on choice
-    const targetStep = style === "elegant" ? "elegant-styles" : "modern-styles"
+    const targetStep = style === "elegant" ? "slide3" : "slide11"
     goToStep(targetStep)
   }
 

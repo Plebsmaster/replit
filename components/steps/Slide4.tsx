@@ -10,28 +10,54 @@ type Props = {
   onNext: (selectedVariant?: string) => void
   selectedVariant?: string | null
   onSelectionChange?: (variant: string | null) => void
+  goToStep?: (stepId: string) => void
+  updateFormData?: (data: any) => void
 }
 
-export default function Slide4({ onBack, onNext, selectedVariant: globalSelectedVariant, onSelectionChange }: Props) {
+export default function Slide4({ onBack, onNext, selectedVariant: globalSelectedVariant, onSelectionChange, goToStep, updateFormData }: Props) {
   const [localSelectedVariant, setLocalSelectedVariant] = useState<string | null>(globalSelectedVariant || null)
   const selectedVariant = globalSelectedVariant !== undefined ? globalSelectedVariant : localSelectedVariant
 
-  const items = useMemo(
+  const answers = useMemo(
     () => [
-      { key: "Variant 1", label: "Uitlijning links", imageSrc: "/img/slide4/variant1.jpg" },
-      { key: "Variant 2", label: "Uitlijning midden", imageSrc: "/img/slide4/variant2.jpg" },
+      { 
+        text: "Uitlijning links", 
+        nextSlide: "slide6", 
+        dbValue: "Elegant 1.1",
+        key: "Variant 1",
+        imageSrc: "/img/slide4/variant1.jpg"
+      },
+      { 
+        text: "Uitlijning midden", 
+        nextSlide: "slide6", 
+        dbValue: "Elegant 1.2",
+        key: "Variant 2",
+        imageSrc: "/img/slide4/variant2.jpg"
+      }
     ],
     [],
   )
 
-  const handleChoose = (key: string) => {
-    setLocalSelectedVariant(key)
-    onSelectionChange?.(key)
+  const handleAnswer = (answer: any) => {
+    setLocalSelectedVariant(answer.key)
+    onSelectionChange?.(answer.key)
 
-    queueMicrotask(() => {
-      onNext(key)
-    })
+    // Store database value in Template column
+    if (updateFormData && answer.dbValue) {
+      updateFormData({ elegantStyle: answer.dbValue })
+    }
+
+    // Navigate to the specified slide
+    if (goToStep) {
+      goToStep(answer.nextSlide)
+    }
   }
+
+  const items = answers.map(answer => ({
+    key: answer.key,
+    label: answer.text,
+    imageSrc: answer.imageSrc
+  }))
 
   return (
     <SlideContainer width="extraWide">
@@ -50,7 +76,10 @@ export default function Slide4({ onBack, onNext, selectedVariant: globalSelected
         <ResponsiveCarousel
           items={items}
           selectedItem={selectedVariant}
-          onItemClick={handleChoose}
+          onItemClick={(key) => {
+            const answer = answers.find(a => a.key === key)
+            if (answer) handleAnswer(answer)
+          }}
           columns={2}
         />
       </section>

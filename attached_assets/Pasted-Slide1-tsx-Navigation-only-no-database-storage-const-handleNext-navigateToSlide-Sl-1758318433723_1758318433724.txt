@@ -1,0 +1,110 @@
+Slide1.tsx
+// Navigation only - no database storage
+const handleNext = () => {
+  navigateToSlide('Slide2');
+};
+
+Slide2.tsx
+// No database storage for this slide
+const answers = [
+  { text: 'Elegant', nextSlide: 'Slide3' },
+  { text: 'Modern', nextSlide: 'Slide11' }
+];
+// Database: NONE
+
+Slide3.tsx
+const answers = [
+  { text: 'Elegant 1', nextSlide: 'Slide4', dbValue: null },
+  { text: 'Elegant 2', nextSlide: 'Slide5', dbValue: null },
+  { text: 'Elegant 3', nextSlide: 'Slide7', dbValue: 'Elegant 3.' },
+  { text: 'Elegant 4', nextSlide: 'Slide6', dbValue: 'Elegant 4.' },
+  { text: 'Elegant 5', nextSlide: 'Slide6', dbValue: 'Elegant 5.' }
+];
+// Database column: 'Template'
+// Only store dbValue when it's not null
+const handleAnswer = (answer) => {
+  if (answer.dbValue) {
+    updateDatabase('Template', answer.dbValue);
+  }
+  navigateToSlide(answer.nextSlide);
+};
+
+Slide4.tsx
+const answers = [
+  { 
+    text: 'Uitlijning links', 
+    nextSlide: 'Slide6', 
+    dbValue: 'Elegant 1.1' 
+  },
+  { 
+    text: 'Uitlijning midden', 
+    nextSlide: 'Slide6', 
+    dbValue: 'Elegant 1.2' 
+  }
+];
+// Database column: 'Template'
+const handleAnswer = (answer) => {
+  updateDatabase('Template', answer.dbValue);
+  navigateToSlide(answer.nextSlide);
+};
+Slide5.tsx
+const answers = [
+  { 
+    text: 'Uitlijning links', 
+    nextSlide: 'Slide6', 
+    dbValue: 'Elegant 2.1' 
+  },
+  { 
+    text: 'Uitlijning midden', 
+    nextSlide: 'Slide6', 
+    dbValue: 'Elegant 2.2' 
+  }
+];
+// Database column: 'Template'
+const handleAnswer = (answer) => {
+  updateDatabase('Template', answer.dbValue);
+  navigateToSlide(answer.nextSlide);
+};
+
+Slide6.tsx
+const answers = [
+  { 
+    text: 'Zwart', 
+    nextSlide: 'Slide9', 
+    dbValue: 'Zwart' 
+  },
+  { 
+    text: 'Kleur', 
+    nextSlide: 'Slide8', 
+    dbValue: 'Kleur' 
+  }
+];
+// Database column: 'Kleur/Zwart/Wit'
+const handleAnswer = (answer) => {
+  updateDatabase('Kleur/Zwart/Wit', answer.dbValue);
+  navigateToSlide(answer.nextSlide);
+};
+
+Slide7.tsx
+const answers = [
+  { 
+    text: 'Zwart', 
+    nextSlide: 'Slide9', 
+    dbValue: 'Zwart' 
+  },
+  { 
+    text: 'Kleur', 
+    nextSlide: 'Slide8', 
+    dbValue: 'Kleur' 
+  },
+  { 
+    text: 'Wit', 
+    nextSlide: 'Slide9', 
+    dbValue: 'Wit' 
+  }
+];
+// Database column: 'Kleur/Zwart/Wit'
+const handleAnswer = (answer) => {
+  updateDatabase('Kleur/Zwart/Wit', answer.dbValue);
+  navigateToSlide(answer.nextSlide);
+};

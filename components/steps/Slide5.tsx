@@ -8,29 +8,47 @@ import { getTypographyClasses } from "@/lib/typography"
 type Props = {
   onBack: () => void
   onNext: () => void
+  goToStep?: (stepId: string) => void
+  updateFormData?: (data: any) => void
 }
 
-export default function Slide5({ onBack, onNext }: Props) {
+export default function Slide5({ onBack, onNext, goToStep, updateFormData: propUpdateFormData }: Props) {
   const { formData, updateFormData } = useWizard()
 
-  const handleChooseVariant = (variantNumber: string) => {
-    const finalStyle = `${formData.style}${variantNumber}`
-    updateFormData({ styleVariant: finalStyle })
-    onNext()
-  }
-
-  const variants = [
-    {
+  const answers = [
+    { 
+      text: "Uitlijning links", 
+      nextSlide: "slide6", 
+      dbValue: "Elegant 2.1",
       key: "1",
       label: "Uitlijning links",
       imageSrc: "/img/slide5/variant1.jpg",
     },
-    {
-      key: "2",
+    { 
+      text: "Uitlijning midden", 
+      nextSlide: "slide6", 
+      dbValue: "Elegant 2.2",
+      key: "2", 
       label: "Uitlijning midden",
       imageSrc: "/img/slide5/variant2.jpg",
-    },
+    }
   ]
+
+  const handleAnswer = (answer: any) => {
+    // Store database value in Template column
+    updateFormData({ elegantStyle: answer.dbValue })
+
+    // Navigate to the specified slide
+    if (goToStep) {
+      goToStep(answer.nextSlide)
+    }
+  }
+
+  const variants = answers.map(answer => ({
+    key: answer.key,
+    label: answer.label,
+    imageSrc: answer.imageSrc
+  }))
 
   return (
     <SlideContainer width="extraWide">
@@ -49,7 +67,10 @@ export default function Slide5({ onBack, onNext }: Props) {
         <ResponsiveCarousel
           items={variants}
           selectedItem={formData.styleVariant?.endsWith('1') ? '1' : formData.styleVariant?.endsWith('2') ? '2' : null}
-          onItemClick={handleChooseVariant}
+          onItemClick={(key) => {
+            const answer = answers.find(a => a.key === key)
+            if (answer) handleAnswer(answer)
+          }}
           columns={2}
         />
 
