@@ -5,7 +5,7 @@ import { DebugNavigation } from '@/components/ui/debug-navigation'
 import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { QuoteDisplay } from '@/components/ui/quote-display'
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 // Helper function to determine if current step should show sticky navigation
 function shouldShowStickyNavigation(currentStepId: string): boolean {
@@ -21,10 +21,67 @@ function shouldShowStickyNavigation(currentStepId: string): boolean {
   return !stepsWithoutNavigation.includes(currentStepId)
 }
 
+// Custom hook for mobile scroll fade behavior
+function useMobileScrollFade() {
+  const [isScrolling, setIsScrolling] = useState(false)
+  const scrollTimeoutRef = useRef<NodeJS.Timeout>()
+  const lastScrollY = useRef(0)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    // Check if mobile on mount and resize
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+
+    // Handle scroll events
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+      
+      // Only apply fade behavior on mobile and when actually scrolling
+      if (!isMobile) return
+      
+      // Detect if scrolling direction changed or started
+      if (Math.abs(currentScrollY - lastScrollY.current) > 5) {
+        setIsScrolling(true)
+        
+        // Clear existing timeout
+        if (scrollTimeoutRef.current) {
+          clearTimeout(scrollTimeoutRef.current)
+        }
+        
+        // Set new timeout to fade back in when scrolling stops
+        scrollTimeoutRef.current = setTimeout(() => {
+          setIsScrolling(false)
+        }, 150) // Fade back in 150ms after scroll stops
+      }
+      
+      lastScrollY.current = currentScrollY
+    }
+
+    if (isMobile) {
+      window.addEventListener('scroll', handleScroll, { passive: true })
+    }
+
+    return () => {
+      window.removeEventListener('resize', checkMobile)
+      window.removeEventListener('scroll', handleScroll)
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current)
+      }
+    }
+  }, [isMobile])
+
+  return { isScrolling: isScrolling && isMobile, isMobile }
+}
+
 // Thin wrapper component that provides navigation UI
 function WizardNavigation() {
   const { currentStepId } = useWizard()
   const showStickyNav = shouldShowStickyNavigation(currentStepId)
+  const { isScrolling, isMobile } = useMobileScrollFade()
 
   // Set CSS variables for dev toolbar offset and footer height
   useEffect(() => {
@@ -43,7 +100,9 @@ function WizardNavigation() {
       {/* Header with Branding and Progress Bar - Only show for slide steps */}
       {showStickyNav && (
         <div 
-          className="sticky z-50 bg-white shadow-sm" 
+          className={`sticky z-50 bg-white shadow-sm transition-opacity duration-300 ${
+            isScrolling ? 'opacity-20' : 'opacity-100'
+          }`}
           style={{ top: 'var(--dev-toolbar)' }}
           data-header
         >
@@ -96,7 +155,9 @@ function WizardNavigation() {
       
       {/* Sticky Footer with Navigation - Only show for slide steps */}
       {showStickyNav && (
-        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-lg border-t border-gray-200">
+        <div className={`fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-lg border-t border-gray-200 transition-opacity duration-300 ${
+          isScrolling ? 'opacity-20' : 'opacity-100'
+        }`}>
           <div className="max-w-4xl mx-auto px-4 py-3">
             <StepNavigation />
           </div>
