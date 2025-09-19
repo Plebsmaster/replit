@@ -354,6 +354,11 @@ export const slide53LogoUploadSchema = z.object({
   afbeeldingsURL: z.string().optional(),
 })
 
+// Step 55: QR-Code Website Input
+export const slide55QRCodeSchema = z.object({
+  qrCode: z.string().optional(),
+})
+
 // Step 17: Terms and Newsletter
 export const agreementsSchema = z.object({
   agreeTerms: z.boolean().refine((val) => val === true, {
@@ -422,6 +427,9 @@ export const FormDataSchema = z.object({
   // Logo Upload (Slide 53)
   naamLogo: z.string().default(''),
   afbeeldingsURL: z.string().default(''),
+  
+  // QR-Code Website Input (Slide 55)
+  qrCode: z.string().default(''),
   
   // Product Names - Auto-fillable fields
   naamNoYellowShampoo: z.string().default(''),

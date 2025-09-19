@@ -93,6 +93,7 @@ export interface DatabaseRecord {
   'Merknaam'?: string | null
   'Naam logo'?: string | null
   'AfbeeldingsURL'?: string | null
+  'QRCode'?: string | null
 }
 
 // ===== Transformation Functions =====
@@ -254,6 +255,13 @@ export const FIELD_MAPPINGS: FieldMappings = {
   
   afbeeldingsURL: {
     dbField: 'AfbeeldingsURL',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  
+  // QR-Code Website Input (Slide 55)
+  qrCode: {
+    dbField: 'QRCode',
     defaultValue: null,
     transform: toNullableString,
   },

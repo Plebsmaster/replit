@@ -41,6 +41,7 @@ import {
   slide51LogoMerknaamSchema,
   slide52MerknaamSchema,
   slide53LogoUploadSchema,
+  slide55QRCodeSchema,
   ingredientsSchema,
   agreementsSchema,
   FormData,
@@ -841,11 +842,12 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
   ['slide55', {
     id: 'slide55',
     key: 'slide55',
-    title: 'Met QR-Code',
+    title: 'QR-Code Website',
+    schema: slide55QRCodeSchema,
     componentFile: 'Slide55.tsx',
     showGlobalNext: true, // Manual continue
     showGlobalPrev: true,
-    nextStep: (): string => 'dashboard-login',
+    nextStep: (): string => 'slide51',
   }],
   
   ['dashboard-login', {
