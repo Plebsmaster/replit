@@ -440,9 +440,20 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
   ['slide22', {
     id: 'slide22',
     key: 'slide22',
-    title: 'Custom Product Namen',
+    title: 'No Yellow Product Namen',
     componentFile: 'Slide22.tsx',
-    showGlobalNext: true, // Manual continue - user needs to input custom names
+    showGlobalNext: true, // Manual continue - user needs to select custom names
+    showGlobalPrev: true,
+    nextStep: (formData: Partial<FormData>): string => 'slide23',
+  }],
+
+  // Continue custom naming flow  
+  ['slide23', {
+    id: 'slide23',
+    key: 'slide23',
+    title: 'Custom Product Namen - Verder',
+    componentFile: 'Slide23.tsx', // Will need to be created or use existing component
+    showGlobalNext: true, // Manual continue
     showGlobalPrev: true,
     nextStep: (formData: Partial<FormData>): string => 'ingredients',
   }],

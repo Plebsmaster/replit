@@ -1,0 +1,61 @@
+// Repair Shampoo section
+const repairShampooIngredients = [
+  { text: 'Aloë Vera', dbValue: 'Aloë Vera' },
+  { text: 'Arganolie', dbValue: 'Arganolie' },
+  { text: 'Biotine', dbValue: 'Biotine' },
+  { text: 'Druivenpit Extract', dbValue: 'Druivenpit Extract' },
+  { text: 'Gehydrolyseerd Tarweproteïne', dbValue: 'Gehydrolyseerd Tarweproteïne', selected: true },
+  { text: 'Jojoba-olie', dbValue: 'Jojoba-olie' },
+  { text: 'Hyaluronzuur', dbValue: 'Hyaluronzuur' },
+  { text: 'Vitamine B5', dbValue: 'Vitamine B5' },
+  { text: 'Vitamine C', dbValue: 'Vitamine C' },
+  { text: 'Vitamine E', dbValue: 'Vitamine E' }
+];
+
+// Repair Conditioner section  
+const repairConditionerIngredients = [
+  { text: 'Aloë Vera', dbValue: 'Aloë Vera' },
+  { text: 'Arganolie', dbValue: 'Arganolie' },
+  { text: 'Biotine', dbValue: 'Biotine' },
+  { text: 'Druivenpit Extract', dbValue: 'Druivenpit Extract' },
+  { text: 'Gehydrolyseerd Tarweproteïne', dbValue: 'Gehydrolyseerd Tarweproteïne' },
+  { text: 'Jojoba-olie', dbValue: 'Jojoba-olie' },
+  { text: 'Hyaluronzuur', dbValue: 'Hyaluronzuur' },
+  { text: 'Vitamine B5', dbValue: 'Vitamine B5' },
+  { text: 'Vitamine C', dbValue: 'Vitamine C' },
+  { text: 'Vitamine E', dbValue: 'Vitamine E', selected: true }
+];
+
+// Repair Mask section
+const repairMaskIngredients = [
+  { text: 'Aloë Vera', dbValue: 'Aloë Vera' },
+  { text: 'Arganolie', dbValue: 'Arganolie' },
+  { text: 'Biotine', dbValue: 'Biotine' },
+  { text: 'Druivenpit Extract', dbValue: 'Druivenpit Extract' },
+  { text: 'Gehydrolyseerd Tarweproteïne', dbValue: 'Gehydrolyseerd Tarweproteïne' },
+  { text: 'Jojoba-olie', dbValue: 'Jojoba-olie' },
+  { text: 'Hyaluronzuur', dbValue: 'Hyaluronzuur' },
+  { text: 'Vitamine B5', dbValue: 'Vitamine B5', selected: true },
+  { text: 'Vitamine C', dbValue: 'Vitamine C' },
+  { text: 'Vitamine E', dbValue: 'Vitamine E' }
+];
+
+// Database columns: 'Marketing ingredienten Repair Shampoo', 'Marketing ingredienten Repair Conditioner', 'Marketing ingredienten Repair Mask'
+// Default selections: Gehydrolyseerd Tarweproteïne for Shampoo, Vitamine E for Conditioner, Vitamine B5 for Mask (as shown in code)
+// Next slide: Slide32 after all three selections made
+const handleRepairShampooIngredientSelection = (ingredient) => {
+  updateDatabase('Marketing ingredienten Repair Shampoo', ingredient.dbValue);
+};
+
+const handleRepairConditionerIngredientSelection = (ingredient) => {
+  updateDatabase('Marketing ingredienten Repair Conditioner', ingredient.dbValue);
+};
+
+const handleRepairMaskIngredientSelection = (ingredient) => {
+  updateDatabase('Marketing ingredienten Repair Mask', ingredient.dbValue);
+};
+
+const handleContinue = () => {
+  // Continue to next slide after all three ingredients selected
+  navigateToSlide('Slide32');
+};

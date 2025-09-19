@@ -1,0 +1,61 @@
+// Color Shampoo section
+const colorShampooIngredients = [
+  { text: 'Aloë Vera', dbValue: 'Aloë Vera' },
+  { text: 'Arganolie', dbValue: 'Arganolie' },
+  { text: 'Biotine', dbValue: 'Biotine' },
+  { text: 'Druivenpit Extract', dbValue: 'Druivenpit Extract' },
+  { text: 'Gehydrolyseerd Tarweproteïne', dbValue: 'Gehydrolyseerd Tarweproteïne' },
+  { text: 'Jojoba-olie', dbValue: 'Jojoba-olie' },
+  { text: 'Hyaluronzuur', dbValue: 'Hyaluronzuur' },
+  { text: 'Vitamine B5', dbValue: 'Vitamine B5' },
+  { text: 'Vitamine C', dbValue: 'Vitamine C', selected: true },
+  { text: 'Vitamine E', dbValue: 'Vitamine E' }
+];
+
+// Color Conditioner section  
+const colorConditionerIngredients = [
+  { text: 'Aloë Vera', dbValue: 'Aloë Vera' },
+  { text: 'Arganolie', dbValue: 'Arganolie', selected: true },
+  { text: 'Biotine', dbValue: 'Biotine' },
+  { text: 'Druivenpit Extract', dbValue: 'Druivenpit Extract' },
+  { text: 'Gehydrolyseerd Tarweproteïne', dbValue: 'Gehydrolyseerd Tarweproteïne' },
+  { text: 'Jojoba-olie', dbValue: 'Jojoba-olie' },
+  { text: 'Hyaluronzuur', dbValue: 'Hyaluronzuur' },
+  { text: 'Vitamine B5', dbValue: 'Vitamine B5' },
+  { text: 'Vitamine C', dbValue: 'Vitamine C' },
+  { text: 'Vitamine E', dbValue: 'Vitamine E' }
+];
+
+// Color Mask section
+const colorMaskIngredients = [
+  { text: 'Aloë Vera', dbValue: 'Aloë Vera' },
+  { text: 'Arganolie', dbValue: 'Arganolie' },
+  { text: 'Biotine', dbValue: 'Biotine' },
+  { text: 'Druivenpit Extract', dbValue: 'Druivenpit Extract' },
+  { text: 'Gehydrolyseerd Tarweproteïne', dbValue: 'Gehydrolyseerd Tarweproteïne' },
+  { text: 'Jojoba-olie', dbValue: 'Jojoba-olie' },
+  { text: 'Hyaluronzuur', dbValue: 'Hyaluronzuur' },
+  { text: 'Vitamine B5', dbValue: 'Vitamine B5' },
+  { text: 'Vitamine C', dbValue: 'Vitamine C' },
+  { text: 'Vitamine E', dbValue: 'Vitamine E', selected: true }
+];
+
+// Database columns: 'Marketing ingredienten Color Shampoo', 'Marketing ingredienten Color Conditioner', 'Marketing ingredienten Color Mask'
+// Default selections: Vitamine C for Shampoo, Arganolie for Conditioner, Vitamine E for Mask (as shown in code)
+// Next slide: Slide33 after all three selections made
+const handleColorShampooIngredientSelection = (ingredient) => {
+  updateDatabase('Marketing ingredienten Color Shampoo', ingredient.dbValue);
+};
+
+const handleColorConditionerIngredientSelection = (ingredient) => {
+  updateDatabase('Marketing ingredienten Color Conditioner', ingredient.dbValue);
+};
+
+const handleColorMaskIngredientSelection = (ingredient) => {
+  updateDatabase('Marketing ingredienten Color Mask', ingredient.dbValue);
+};
+
+const handleContinue = () => {
+  // Continue to next slide after all three ingredients selected
+  navigateToSlide('Slide33');
+};
