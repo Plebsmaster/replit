@@ -233,45 +233,48 @@ export function useWizard() {
 
 // ===== Step Renderer Component with Premium Transitions =====
 export function StepRenderer() {
-  const { getCurrentStepComponent, formData, updateFormData, goToNext, goToPrevious, goToStep, currentStepId, verifyOtp, sendOtp } = useWizard()
+  const { formData, updateFormData, goToNext, goToPrevious, goToStep, currentStepId, verifyOtp, sendOtp } = useWizard()
+  const [displayedStepId, setDisplayedStepId] = React.useState(currentStepId)
+  const [isVisible, setIsVisible] = React.useState(true)
   const [isTransitioning, setIsTransitioning] = React.useState(false)
-  const [currentDisplayedStep, setCurrentDisplayedStep] = React.useState(currentStepId)
-  const [isVisible, setIsVisible] = React.useState(false)
   
-  const Component = getCurrentStepComponent()
+  // Load component based on displayedStepId, not currentStepId
+  // This ensures we show the OLD component during fade-out
+  const Component = React.useMemo(() => {
+    return getLazyComponent(displayedStepId)
+  }, [displayedStepId])
   
-  // Handle step changes with proper visibility control
+  // Detect step changes and trigger transitions
+  const isStepChanging = displayedStepId !== currentStepId
+  
   React.useEffect(() => {
-    if (currentDisplayedStep !== currentStepId) {
-      // Start transition - fade out current content
+    if (isStepChanging && !isTransitioning) {
+      // Start fade out
       setIsTransitioning(true)
       setIsVisible(false)
       
-      // After fade out completes, switch to new step
-      const timer = setTimeout(() => {
-        setCurrentDisplayedStep(currentStepId)
+      // After fade out, change step and fade in
+      const fadeOutTimer = setTimeout(() => {
+        setDisplayedStepId(currentStepId)
         
-        // Small delay then fade in new content
-        requestAnimationFrame(() => {
-          setTimeout(() => {
-            setIsVisible(true)
-            
-            // End transition lock after fade in completes
-            setTimeout(() => {
-              setIsTransitioning(false)
-            }, 700)
-          }, 50)
-        })
-      }, 700) // Wait for fade out
+        // Small delay before fade in
+        const fadeInTimer = setTimeout(() => {
+          setIsVisible(true)
+          
+          // Unlock after fade in completes
+          const unlockTimer = setTimeout(() => {
+            setIsTransitioning(false)
+          }, 700)
+          
+          return () => clearTimeout(unlockTimer)
+        }, 50)
+        
+        return () => clearTimeout(fadeInTimer)
+      }, 700)
       
-      return () => clearTimeout(timer)
-    } else {
-      // Initial load - fade in after a frame
-      requestAnimationFrame(() => {
-        setIsVisible(true)
-      })
+      return () => clearTimeout(fadeOutTimer)
     }
-  }, [currentStepId, currentDisplayedStep])
+  }, [isStepChanging, currentStepId, isTransitioning])
   
   if (!Component) {
     return (
