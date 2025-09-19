@@ -95,7 +95,10 @@ export function NamePhoneStep({ formData, updateFormData, onNext }: StepProps) {
           break
 
         case "phone":
-          if (value.trim()) {
+          if (!value.trim()) {
+            newErrors.phone = "Telefoonnummer is verplicht"
+            newValidationState.phone = "invalid"
+          } else {
             const phoneRegex = /^[\d\s\-+()]+$/
             if (!phoneRegex.test(value) || value.replace(/\D/g, "").length < 8) {
               newErrors.phone = "Voer een geldig telefoonnummer in"
@@ -104,9 +107,6 @@ export function NamePhoneStep({ formData, updateFormData, onNext }: StepProps) {
               delete newErrors.phone
               newValidationState.phone = "valid"
             }
-          } else {
-            delete newErrors.phone
-            newValidationState.phone = "idle"
           }
           break
       }
@@ -138,8 +138,7 @@ export function NamePhoneStep({ formData, updateFormData, onNext }: StepProps) {
     const hasFirstName = formData.firstName && formData.firstName.trim().length >= 2
     const hasLastName = formData.lastName && formData.lastName.trim().length >= 2
     const hasValidPhone =
-      !formData.phone ||
-      (formData.phone && /^[\d\s\-+()]+$/.test(formData.phone) && formData.phone.replace(/\D/g, "").length >= 8)
+      formData.phone && /^[\d\s\-+()]+$/.test(formData.phone) && formData.phone.replace(/\D/g, "").length >= 8
 
     return hasFirstName && hasLastName && hasValidPhone
   }
@@ -250,7 +249,7 @@ export function NamePhoneStep({ formData, updateFormData, onNext }: StepProps) {
             <div className="space-y-2 animate-in fade-in slide-in-from-bottom-2 duration-300">
               <h3 className="text-sm font-medium text-gray-700 flex items-center gap-2">
                 <Phone className="w-4 h-4" />
-                Telefoonnummer <span className="text-gray-400">(optioneel)</span>
+                Telefoonnummer <span className="text-red-400">*</span>
               </h3>
               <div className="flex flex-col sm:flex-row gap-3">
                 {/* Modern Country Selector */}
@@ -261,7 +260,6 @@ export function NamePhoneStep({ formData, updateFormData, onNext }: StepProps) {
                     className="w-full sm:w-auto h-14 px-4 bg-white border border-gray-200 rounded-xl hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-black/10 transition-all duration-200 flex items-center justify-between gap-2 min-w-[140px]"
                   >
                     <span className="flex items-center gap-2 text-base">
-                      <span className="text-xl">{countries.find(c => c.code === countryCode)?.flag}</span>
                       <span className="font-medium">{countryCode}</span>
                     </span>
                     <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${isCountryDropdownOpen ? 'rotate-180' : ''}`} />
