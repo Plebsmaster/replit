@@ -25,18 +25,13 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
   const [currentLabelIndex, setCurrentLabelIndex] = useState(0)
   const [showGlare, setShowGlare] = useState(false)
 
-  // Button text rotation effect
+  // Button text rotation effect - simplified and mobile-friendly
   useEffect(() => {
     if (isLoading) return // Pause rotation during loading
     
     const rotationInterval = setInterval(() => {
       setCurrentLabelIndex((prev) => (prev + 1) % BUTTON_LABELS.length)
-      // Stagger glare animation to start after text transition begins
-      setTimeout(() => {
-        setShowGlare(true)
-        setTimeout(() => setShowGlare(false), 600) // Shorter duration to prevent overlap
-      }, 250) // 250ms delay after text change starts
-    }, 5000) // Switch every 5 seconds
+    }, 4000) // Switch every 4 seconds
     
     return () => clearInterval(rotationInterval)
   }, [isLoading])
@@ -134,8 +129,8 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
   }
 
   const getInputClassName = () => {
-    const baseClass = "w-full p-4 border rounded-lg transition-colors duration-200 text-lg"
-    const focusClass = "focus:outline-none focus:ring-2 focus:ring-offset-1"
+    const baseClass = "w-full h-14 px-4 border rounded-xl transition-all duration-200 text-base sm:text-lg"
+    const focusClass = "focus:outline-none focus:ring-2 focus:ring-offset-0"
 
     if (validationState === "valid") {
       return `${baseClass} ${focusClass} border-green-300 focus:border-green-500 focus:ring-green-200`
@@ -156,43 +151,46 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
   }
 
   return (
-    <div className="min-h-[calc(100vh-12rem)] flex items-center justify-center py-8">
-      <div className="space-y-8 w-full max-w-2xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-8">
-          {/* Logo */}
-          <div className="flex justify-center mb-6">
+    <div className="min-h-[calc(100vh-12rem)] flex items-center justify-center py-6 sm:py-8">
+      <div className="space-y-6 sm:space-y-8 w-full max-w-2xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-6 sm:mb-8">
+          {/* Logo - responsive size */}
+          <div className="flex justify-center mb-4 sm:mb-6">
             <Image 
               src="/salonid.svg" 
               alt="SalonID logo" 
-              width={280} 
-              height={120}
+              width={220} 
+              height={95}
+              className="w-48 sm:w-56 lg:w-64 h-auto"
               priority
             />
           </div>
-          <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} max-w-2xl mx-auto`}>
+          <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} max-w-md sm:max-w-2xl mx-auto px-2`}>
             Start nu je eigen merk of ga direct naar je dashboard.
           </p>
         </div>
 
-        <div className="bg-white rounded-lg p-8 max-w-md mx-auto flex flex-col justify-center">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8 max-w-md mx-auto flex flex-col justify-center">
           <div className="relative">
-            <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400 z-10" />
+            <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 z-10" />
             <Input
               type="email"
+              inputMode="email"
               placeholder="je@email.com"
               value={email}
               onChange={(e) => handleEmailChange(e.target.value)}
               onBlur={() => setTouched(true)}
               onKeyPress={handleKeyPress}
-              className={`${getInputClassName()} pl-12 pr-12`}
+              className={`${getInputClassName()} pl-11 pr-11`}
               autoFocus
+              autoComplete="email"
             />
             <div className="absolute right-4 top-1/2 transform -translate-y-1/2">{getValidationIcon()}</div>
           </div>
 
           {error && (
-            <p className="text-red-500 text-sm mt-2 flex items-center gap-1">
-              <AlertCircle className="w-4 h-4" />
+            <p className="text-red-500 text-xs sm:text-sm mt-2 flex items-center gap-1">
+              <AlertCircle className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
               {error}
             </p>
           )}
@@ -201,7 +199,7 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
             <Button
               onClick={handleNext}
               disabled={validationState !== "valid" || isLoading}
-              className="relative w-full bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 text-base disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 overflow-hidden"
+              className="relative w-full h-14 bg-gray-900 text-white hover:bg-gray-800 rounded-xl text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 overflow-hidden shadow-sm hover:shadow-md"
               aria-label="Starten of inloggen"
             >
               {isLoading ? (
@@ -211,41 +209,30 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
                 </>
               ) : (
                 <>
-                  {/* Button text container with crossfade */}
-                  <span className="relative inline-flex items-center justify-center w-full z-10">
+                  {/* Simplified button text with smooth fade */}
+                  <span className="relative inline-flex items-center justify-center gap-2">
                     {BUTTON_LABELS.map((label, index) => (
                       <span
                         key={label}
-                        className={`absolute inset-0 flex items-center justify-center transition-all duration-500 will-change-transform ${
+                        className={`absolute inset-0 flex items-center justify-center transition-opacity duration-700 ${
                           index === currentLabelIndex 
-                            ? 'opacity-100 transform translate-y-0' 
-                            : 'opacity-0 transform translate-y-1'
+                            ? 'opacity-100' 
+                            : 'opacity-0'
                         }`}
-                        style={{
-                          backfaceVisibility: 'hidden',
-                          WebkitBackfaceVisibility: 'hidden'
-                        }}
                         aria-hidden={index !== currentLabelIndex}
                       >
                         {label}
+                        <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
                       </span>
                     ))}
                   </span>
-                  
-                  {/* Glare animation on entire button */}
-                  {showGlare && (
-                    <span 
-                      className="glare-run" 
-                      aria-hidden="true" 
-                    />
-                  )}
                 </>
               )}
             </Button>
           </div>
 
           <div className="mt-4 text-center">
-            <p className={getTypographyClasses("paragraph", { alignment: "center", removeSpacing: true })}>
+            <p className={`${getTypographyClasses("paragraph", { alignment: "center", removeSpacing: true })} text-sm sm:text-base`}>
               Hulp nodig? <a href="https://salonid.com/pages/contact" target="_blank" rel="noopener noreferrer" className="text-black underline hover:text-gray-700">Klantenservice</a>
             </p>
           </div>
