@@ -59,6 +59,21 @@ The application uses several database tables (SQL scripts available in `/scripts
 - **Build**: `npm run build`
 - **Start**: `npm start`
 
+## Recent Changes (September 19, 2025)
+- **COMPLETED: Fixed selection state persistence across 8+ form slides**
+  - Updated Slide3, Slide11, Slide12-15, Slide9-10 to read from formData
+  - Selections now properly persist when navigating back and forward
+  - All variant selections, icon choices, and style selections maintained
+- **COMPLETED: Updated phone number requirements and UI**
+  - Made phone number field mandatory (was optional)
+  - Removed flag emojis from country selector button to prevent height issues
+  - Updated validation to require phone input before continuing
+- **COMPLETED: Added mobile navigation scroll behavior**
+  - Implemented fade-out/fade-in effect for sticky header and footer on mobile
+  - Navigation bars fade to 20% opacity during scroll on screens ≤768px width
+  - Navigation automatically fades back in 150ms after scrolling stops
+  - Desktop behavior remains unchanged with persistent navigation
+
 ## Recent Changes (September 18, 2025)
 - Configured for Replit environment
 - Set up proper Next.js configuration for proxy environment
