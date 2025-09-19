@@ -17,11 +17,11 @@ export default function Slide3({ onBack, onNext, updateFormData, formData, selec
 
   const items = useMemo(
     () => [
-      { key: "elegant1", label: "Elegant 1", imageSrc: "/img/elegant/e1.jpg" },
-      { key: "elegant2", label: "Elegant 2", imageSrc: "/img/elegant/e2.jpg" },
-      { key: "elegant3", label: "Elegant 3", imageSrc: "/img/elegant/e3.jpg" },
-      { key: "elegant4", label: "Elegant 4", imageSrc: "/img/elegant/e4.jpg" },
-      { key: "elegant5", label: "Elegant 5", imageSrc: "/img/elegant/e5.jpg" },
+      { key: "elegant1", label: "Elegant 1", imageSrc: "/img/slide3/e1.jpg" },
+      { key: "elegant2", label: "Elegant 2", imageSrc: "/img/slide3/e2.jpg" },
+      { key: "elegant3", label: "Elegant 3", imageSrc: "/img/slide3/e3.jpg" },
+      { key: "elegant4", label: "Elegant 4", imageSrc: "/img/slide3/e4.jpg" },
+      { key: "elegant5", label: "Elegant 5", imageSrc: "/img/slide3/e5.jpg" },
     ],
     [],
   )

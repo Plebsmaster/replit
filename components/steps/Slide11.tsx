@@ -19,10 +19,10 @@ export default function Slide11({ onBack, onNext, updateFormData, formData, sele
 
   const items = useMemo(
     () => [
-      { key: "modern1", label: "Modern 1", imageSrc: "/img/elegant/e1.jpg" },
-      { key: "modern2", label: "Modern 2", imageSrc: "/img/elegant/e2.jpg" },
-      { key: "modern3", label: "Modern 3", imageSrc: "/img/elegant/e3.jpg" },
-      { key: "modern6", label: "Modern 6", imageSrc: "/img/variants/variant1.jpg" },
+      { key: "modern1", label: "Modern 1", imageSrc: "/img/slide11/e1.jpg" },
+      { key: "modern2", label: "Modern 2", imageSrc: "/img/slide11/e2.jpg" },
+      { key: "modern3", label: "Modern 3", imageSrc: "/img/slide11/e3.jpg" },
+      { key: "modern6", label: "Modern 6", imageSrc: "/img/slide11/variant1.jpg" },
     ],
     [],
   )

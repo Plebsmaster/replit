@@ -52,8 +52,8 @@ export default function StyleSelectionStep({ formData, updateFormData, onNext, o
 
         <ResponsiveCarousel
           items={[
-            { key: "elegant", label: "Elegant", imageSrc: "/elegant-cosmetic-product-mockup.jpg" },
-            { key: "modern", label: "Modern", imageSrc: "/modern-cosmetic-product-mockup.jpg" }
+            { key: "elegant", label: "Elegant", imageSrc: "/img/slide2/elegant-cosmetic-product-mockup.jpg" },
+            { key: "modern", label: "Modern", imageSrc: "/img/slide2/modern-cosmetic-product-mockup.jpg" }
           ]}
           selectedItem={selectedStyle}
           onItemClick={(style) => handleStyleChoice(style as "elegant" | "modern")}

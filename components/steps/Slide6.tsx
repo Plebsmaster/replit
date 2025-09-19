@@ -22,12 +22,12 @@ export default function Slide6({ onBack, onNext }: Props) {
     {
       key: "Zwart",
       label: "Zwart",
-      imageSrc: "/img/colors/black.jpg",
+      imageSrc: "/img/slide6/black.jpg",
     },
     {
       key: "Kleur",
       label: "Kleur",
-      imageSrc: "/img/colors/color.jpg",
+      imageSrc: "/img/slide6/color.jpg",
     },
   ]
 

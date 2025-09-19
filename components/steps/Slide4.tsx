@@ -18,8 +18,8 @@ export default function Slide4({ onBack, onNext, selectedVariant: globalSelected
 
   const items = useMemo(
     () => [
-      { key: "Variant 1", label: "Uitlijning links", imageSrc: "/img/elegant1/variant1.jpg" },
-      { key: "Variant 2", label: "Uitlijning midden", imageSrc: "/img/elegant1/variant2.jpg" },
+      { key: "Variant 1", label: "Uitlijning links", imageSrc: "/img/slide4/variant1.jpg" },
+      { key: "Variant 2", label: "Uitlijning midden", imageSrc: "/img/slide4/variant2.jpg" },
     ],
     [],
   )

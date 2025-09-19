@@ -34,13 +34,13 @@ export default function Slide15({ formData, updateFormData, onBack, onNext, sele
     {
       key: "1",
       label: "Uitlijning links",
-      imageSrc: "/img/variants/variant1.jpg",
+      imageSrc: "/img/slide15/variant1.jpg",
       alt: "Modern 6 Variant 1 - Left alignment",
     },
     {
       key: "2",
       label: "Uitlijning midden",
-      imageSrc: "/img/variants/variant2.jpg",
+      imageSrc: "/img/slide15/variant2.jpg",
       alt: "Modern 6 Variant 2 - Center alignment",
     },
   ]

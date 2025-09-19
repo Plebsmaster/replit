@@ -25,13 +25,13 @@ export default function Slide7({ onBack, onNext }: Props) {
     {
       key: "Zwart",
       label: "Zwart",
-      imageSrc: "/img/elegant3/black.jpg",
+      imageSrc: "/img/slide7/black.jpg",
       alt: "Black color scheme",
     },
     {
       key: "Wit", 
       label: "Wit",
-      imageSrc: "/img/elegant3/white.jpg",
+      imageSrc: "/img/slide7/white.jpg",
       alt: "White color scheme",
     },
   ]

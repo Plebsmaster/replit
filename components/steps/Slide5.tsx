@@ -23,12 +23,12 @@ export default function Slide5({ onBack, onNext }: Props) {
     {
       key: "1",
       label: "Uitlijning links",
-      imageSrc: "/img/elegant2/variant1.jpg",
+      imageSrc: "/img/slide5/variant1.jpg",
     },
     {
       key: "2",
       label: "Uitlijning midden",
-      imageSrc: "/img/elegant2/variant2.jpg",
+      imageSrc: "/img/slide5/variant2.jpg",
     },
   ]
 

@@ -32,13 +32,13 @@ export default function Slide9({ formData, updateFormData, onBack, onNext }: Sli
     {
       key: "with-icon",
       label: "Met Icoon",
-      imageSrc: "/icon-with.png",
+      imageSrc: "/img/slide9/icon-with.png",
       alt: "Met icoon",
     },
     {
       key: "without-icon", 
       label: "Zonder Icoon",
-      imageSrc: "/icon-without.png",
+      imageSrc: "/img/slide9/icon-without.png",
       alt: "Zonder icoon",
     },
   ]
