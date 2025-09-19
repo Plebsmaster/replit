@@ -52,7 +52,6 @@ export default function Slide10({ formData, updateFormData, onBack, onNext }: Sl
       name: "Icoon 8",
       path: "M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M13,7H11V11H7V13H11V17H13V13H17V11H13V7Z",
     },
-    // Add more icons to demonstrate the scrolling functionality
     {
       id: "icon24",
       name: "Icoon 9",
@@ -73,6 +72,21 @@ export default function Slide10({ formData, updateFormData, onBack, onNext }: Sl
       name: "Icoon 12",
       path: "M12,2L1,21H23L12,2M12,6L19.53,19H4.47L12,6M11,10V14H13V10H11M11,16V18H13V16H11Z",
     },
+    {
+      id: "icon28",
+      name: "Icoon 13",
+      path: "M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12L4.04,12.5L16.5,4.04C15.08,3.37 13.58,3 12,3Z",
+    },
+    {
+      id: "icon29",
+      name: "Icoon 14",
+      path: "M12,2L2,12L12,22L22,12L12,2M12,5.8L18.2,12L12,18.2L5.8,12L12,5.8Z",
+    },
+    {
+      id: "icon30",
+      name: "Icoon 15",
+      path: "M12,2C17.5,2 22,6.5 22,12C22,17.5 17.5,22 12,22C6.5,22 2,17.5 2,12C2,6.5 6.5,2 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6Z",
+    },
   ]
 
   const handleIconSelect = (iconId: string) => {
@@ -84,46 +98,33 @@ export default function Slide10({ formData, updateFormData, onBack, onNext }: Sl
     } catch (error) {
       // localStorage not available, continue silently
     }
-  }
-
-  const handleContinue = () => {
-    if (selectedIcon) {
+    // Auto-advance to next slide
+    queueMicrotask(() => {
       onNext()
-    }
+    })
   }
 
 
   return (
     <SlideContainer width="extraWide">
-      <section className="text-center">
-        {/* Avatar */}
-        <div className="mt-5 mb-5">
-          <div className="w-16 h-16 mx-auto bg-gray-200 rounded-full flex items-center justify-center">
-            <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
-              <svg width="20" height="20" fill="white" viewBox="0 0 24 24">
-                <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1L9 7V9H7V11H9V15L11 18V22H13V18L15 15V11H17V9H21Z" />
-              </svg>
-            </div>
-          </div>
-        </div>
-
+      <section>
         {/* Title */}
-        <h1 className={getTypographyClasses("title", { alignment: "center" })}>Selecteer jouw icoon</h1>
+        <h1 className={getTypographyClasses("title", { alignment: "left" })}>Selecteer jouw icoon</h1>
 
         {/* Description */}
-        <div className="max-w-[600px] mx-auto mb-10 space-y-3">
-          <p className={getTypographyClasses("paragraph", { alignment: "center" })}>
+        <div className="max-w-[760px] space-y-3 mb-10">
+          <p className={getTypographyClasses("paragraph", { alignment: "left" })}>
             Nu je hebt gekozen om een icoon aan je ontwerp toe te voegen, is het tijd om het perfecte icoon te
             selecteren dat het beste bij jou past.
           </p>
-          <p className={getTypographyClasses("paragraph", { alignment: "center" })}>
+          <p className={getTypographyClasses("paragraph", { alignment: "left" })}>
             Kies uit de onderstaande opties om je productlijn een extra visuele boost te geven en je merkidentiteit te
             versterken.
           </p>
         </div>
 
-        {/* Desktop Icons Grid - 4 columns */}
-        <div className="hidden md:grid md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-10">
+        {/* Desktop Icons Grid - 5 columns for better distribution */}
+        <div className="hidden md:grid md:grid-cols-5 gap-6 max-w-6xl mx-auto">
           {icons.map((icon) => (
             <IconButton
               key={icon.id}
@@ -134,44 +135,16 @@ export default function Slide10({ formData, updateFormData, onBack, onNext }: Sl
           ))}
         </div>
 
-        {/* Mobile Icons - Horizontal Scrolling */}
-        <div className="md:hidden mb-10">
-          <div className="overflow-x-auto pb-4">
-            <div className="flex gap-4 px-4 w-max">
-              {icons.map((icon) => (
-                <div key={icon.id} className="flex-shrink-0">
-                  <IconButton
-                    icon={icon}
-                    isSelected={selectedIcon === icon.id}
-                    onClick={() => handleIconSelect(icon.id)}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-          {/* Scroll Indicator */}
-          <div className="text-center mt-2">
-            <p className="text-sm text-gray-500">← Veeg om meer iconen te zien →</p>
-          </div>
-        </div>
-
-        {/* Continue Button */}
-        <div className="flex justify-center mb-8">
-          <button
-            onClick={handleContinue}
-            disabled={!selectedIcon}
-            className="px-8 py-3 bg-gray-900 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-800 transition-colors text-base font-medium"
-          >
-            Doorgaan
-          </button>
-        </div>
-
-
-        {/* Footer */}
-        <div className="border-t border-gray-200 pt-4">
-          <p className={getTypographyClasses("cardDescription", { alignment: "center" })}>
-            BEGIN YOUR TAILORED JOURNEY — UPLOAD YOUR LOGO OR EMBARK ON CREATING ONE.
-          </p>
+        {/* Mobile Icons - 3 column grid that scrolls vertically */}
+        <div className="md:hidden grid grid-cols-3 gap-4 px-4">
+          {icons.map((icon) => (
+            <IconButton
+              key={icon.id}
+              icon={icon}
+              isSelected={selectedIcon === icon.id}
+              onClick={() => handleIconSelect(icon.id)}
+            />
+          ))}
         </div>
       </section>
     </SlideContainer>
