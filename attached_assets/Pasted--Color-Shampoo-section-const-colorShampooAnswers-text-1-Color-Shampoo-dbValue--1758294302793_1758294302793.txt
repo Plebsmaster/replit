@@ -1,0 +1,46 @@
+// Color Shampoo section
+const colorShampooAnswers = [
+  { text: '1. "Color Shampoo"', dbValue: '"1. Color Shampoo"' },
+  { text: '2. "Color Protect Shampoo"', dbValue: '"2. Color Protect Shampoo"' },
+  { text: '3. "Color Brilliance Shampoo"', dbValue: '"3. Color Brilliance Shampoo"' },
+  { text: '4. "Vibrant Color Shampoo"', dbValue: '"4. Vibrant Color Shampoo"' },
+  { text: '5. "Color Shine Shampoo"', dbValue: '"5. Color Shine Shampoo"' }
+];
+
+// Color Conditioner section  
+const colorConditionerAnswers = [
+  { text: '1. "Color Conditioner"', dbValue: '"1. Color Conditioner"' },
+  { text: '2. "Color Protect Conditioner"', dbValue: '"2. Color Protect Conditioner"' },
+  { text: '3. "Color Brilliance Conditioner"', dbValue: '"3. Color Brilliance Conditioner"' },
+  { text: '4. "Vibrant Color Conditioner"', dbValue: '"4. Vibrant Color Conditioner"' },
+  { text: '5. "Color Shine Conditioner"', dbValue: '"5. Color Shine Conditioner"' }
+];
+
+// Color Mask section
+const colorMaskAnswers = [
+  { text: '1. "Color Mask"', dbValue: '"1. Color Mask"' },
+  { text: '2. "Color Protect Mask"', dbValue: '"2. Color Protect Mask"' },
+  { text: '3. "Color Brilliance Mask"', dbValue: '"3. Color Brilliance Mask"' },
+  { text: '4. "Vibrant Color Mask"', dbValue: '"4. Vibrant Color Mask"' },
+  { text: '5. "Color Shine Mask"', dbValue: '"5. Color Shine Mask"' }
+];
+
+// Database columns: 'Naam Color Shampoo', 'Naam Color Conditioner', 'Naam Color Mask'
+// Default selections: option 1 for all three (as shown with black dots)
+// Next slide: Slide25 after all selections made
+const handleColorShampooSelection = (answer) => {
+  updateDatabase('Naam Color Shampoo', answer.dbValue);
+};
+
+const handleColorConditionerSelection = (answer) => {
+  updateDatabase('Naam Color Conditioner', answer.dbValue);
+};
+
+const handleColorMaskSelection = (answer) => {
+  updateDatabase('Naam Color Mask', answer.dbValue);
+};
+
+const handleContinue = () => {
+  // Continue to next slide after all three products selected
+  navigateToSlide('Slide25');
+};

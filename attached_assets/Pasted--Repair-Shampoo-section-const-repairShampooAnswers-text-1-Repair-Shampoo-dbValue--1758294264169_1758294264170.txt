@@ -1,0 +1,46 @@
+// Repair Shampoo section
+const repairShampooAnswers = [
+  { text: '1. "Repair Shampoo"', dbValue: '"1. Repair Shampoo"' },
+  { text: '2. "Deep Care Shampoo"', dbValue: '"2. Deep Care Shampoo"' },
+  { text: '3. "Reconstruct Shampoo"', dbValue: '"3. Reconstruct Shampoo"' },
+  { text: '4. "Moisturizing Shampoo"', dbValue: '"4. Moisturizing Shampoo"' },
+  { text: '5. "Intense Hydrate Shampoo"', dbValue: '"5. Intense Hydrate Shampoo"' }
+];
+
+// Repair Conditioner section  
+const repairConditionerAnswers = [
+  { text: '1. "Repair Conditioner"', dbValue: '"1. Repair Conditioner"' },
+  { text: '2. "Deep Care Conditioner"', dbValue: '"2. Deep Care Conditioner"' },
+  { text: '3. "Reconstruct Conditioner"', dbValue: '"3. Reconstruct Conditioner"' },
+  { text: '4. "Moisturizing Conditioner"', dbValue: '"4. Moisturizing Conditioner"' },
+  { text: '5. "Intense Hydrate Conditioner"', dbValue: '"5. Intense Hydrate Conditioner"' }
+];
+
+// Repair Mask section
+const repairMaskAnswers = [
+  { text: '1. "Repair Mask"', dbValue: '"1. Repair Mask"' },
+  { text: '2. "Deep Care Mask"', dbValue: '"2. Deep Care Mask"' },
+  { text: '3. "Reconstruct Mask"', dbValue: '"3. Reconstruct Mask"' },
+  { text: '4. "Moisturizing Mask"', dbValue: '"4. Moisturizing Mask"' },
+  { text: '5. "Intense Hydrate Mask"', dbValue: '"5. Intense Hydrate Mask"' }
+];
+
+// Database columns: 'Naam Repair Shampoo', 'Naam Repair Conditioner', 'Naam Repair Mask'
+// Default selections: option 1 for all three (as shown with black dots)
+// Next slide: Slide24 after all selections made
+const handleRepairShampooSelection = (answer) => {
+  updateDatabase('Naam Repair Shampoo', answer.dbValue);
+};
+
+const handleRepairConditionerSelection = (answer) => {
+  updateDatabase('Naam Repair Conditioner', answer.dbValue);
+};
+
+const handleRepairMaskSelection = (answer) => {
+  updateDatabase('Naam Repair Mask', answer.dbValue);
+};
+
+const handleContinue = () => {
+  // Continue to next slide after all three products selected
+  navigateToSlide('Slide24');
+};
