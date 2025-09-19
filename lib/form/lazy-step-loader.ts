@@ -86,17 +86,22 @@ const stepComponents: Record<string, LazyStepComponent> = {
   'final-color': () => import('@/components/steps/Slide7'),
   'slide7': () => import('@/components/steps/Slide7'),
   'color-palette': () => import('@/components/steps/Slide8'),
-  'slide8': () => import('@/components/steps/Slide8'),
+  'slide8': () => import('@/components/steps/ColorConfigurator'),
   
   // Icon Flow (with semantic IDs)
   'icon-choice': () => import('@/components/steps/Slide9'),
-  'slide9': () => import('@/components/steps/Slide9'),
+  'slide9': () => import('@/components/steps/IconYesNoSlide'),
   'icon-selection': () => import('@/components/steps/Slide10'),
-  'slide10': () => import('@/components/steps/Slide10'),
+  'slide10': () => import('@/components/steps/IconPickerSlide'),
   
   // Final Steps (with semantic IDs)
   'ingredients': () => import('@/components/steps/Slide30'),
   'slide30': () => import('@/components/steps/Slide30'),
+  
+  // Consolidated components
+  'slide18': () => import('@/components/steps/ColorConfigurator'), // Same as slide8
+  'slide19': () => import('@/components/steps/IconYesNoSlide'), // Same as slide9
+  'slide20': () => import('@/components/steps/IconPickerSlide'), // Same as slide10
   
   // Explicit mappings for critical slides (will be supplemented by fallback)
   'slide22': () => import('@/components/steps/Slide22'),

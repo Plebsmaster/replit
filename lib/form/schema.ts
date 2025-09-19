@@ -78,6 +78,13 @@ export const colorPaletteSchema = z.object({
   colorMode: z.enum(['variation', 'uniform']).optional(),
 })
 
+// Color Configurator fields (Slides 8 & 18)
+export const colorConfiguratorSchema = z.object({
+  kleurVariatie: z.enum(['kleur', 'per_product']).nullable(),
+  kleur: z.string().nullable(),
+  productKleuren: z.record(z.string()).nullable(),
+})
+
 // Step 12: Text Color Selection
 export const textColorSchema = z.object({
   textColor: z.enum(['black', 'white', ''], {
@@ -394,6 +401,11 @@ export const FormDataSchema = z.object({
   colorPalette: z.string().default(''),
   productColors: z.record(z.string()).default({}),
   colorMode: z.enum(['variation', 'uniform']).optional(),
+  
+  // Color Configurator fields (Slides 8 & 18)
+  kleurVariatie: z.enum(['kleur', 'per_product']).nullable().default(null),
+  kleur: z.string().nullable().default(null),
+  productKleuren: z.record(z.string()).nullable().default(null),
   
   // Icon Selection
   selectedIcon: z.boolean().optional().default(false),
