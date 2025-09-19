@@ -4,6 +4,7 @@ import { WizardProvider, StepRenderer, WizardProgressBar, StepNavigation, useWiz
 import { DebugNavigation } from '@/components/ui/debug-navigation'
 import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { QuoteDisplay } from '@/components/ui/quote-display'
 
 // Helper function to determine if current step should show sticky navigation
 function shouldShowStickyNavigation(currentStepId: string): boolean {
@@ -59,6 +60,9 @@ function WizardNavigation() {
           <StepRenderer />
         </div>
       </div>
+      
+      {/* Quote Display - Shows above the footer */}
+      <QuoteDisplay />
       
       {/* Sticky Footer with Navigation - Only show for slide steps */}
       {showStickyNav && (
