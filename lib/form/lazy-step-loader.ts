@@ -163,48 +163,115 @@ export async function preloadSteps(stepIds: string[]) {
 }
 
 /**
- * Get the next steps that should be preloaded based on current step
- * This helps eliminate loading delays by fetching likely next steps
+ * Get the next steps that should be preloaded based on current step and conditional logic
+ * This intelligently analyzes step registry to preload all possible next paths
  */
 export function getStepsToPreload(currentStepId: string, formData: any): string[] {
   const stepsToPreload: string[] = []
   
-  // Preload based on current step and likely next steps
+  // Import the step registry dynamically to get conditional logic
+  const { getStep, getNextStepId } = require('./steps')
+  const currentStep = getStep(currentStepId)
+  
+  if (!currentStep) {
+    return []
+  }
+  
+  // Smart preloading based on conditional logic in step definitions
   switch (currentStepId) {
     case 'email':
-      stepsToPreload.push('welcome', 'name-phone')
+      // Preload both paths: new user (name-phone) and existing user (otp-verification)
+      stepsToPreload.push('name-phone', 'otp-verification')
       break
+      
     case 'welcome':
-      stepsToPreload.push('name-phone', 'slide2')
+      stepsToPreload.push('email', 'name-phone')
       break
+      
     case 'name-phone':
-      stepsToPreload.push('slide2', 'slide3')
+      // Next is style-selection for all users
+      stepsToPreload.push('style-selection')
       break
+      
+    case 'style-selection':
     case 'slide2':
-      // Preload next slides
-      stepsToPreload.push('slide3', 'slide4')
+      // Preload BOTH style paths since user hasn't chosen yet
+      stepsToPreload.push('elegant-styles', 'modern-styles')
+      // Also preload the first slides of each path
+      stepsToPreload.push('slide3', 'slide11')
       break
+      
+    case 'elegant-styles':
+    case 'slide3':
+      // User chose elegant, preload both elegant variants
+      stepsToPreload.push('elegant-variant1', 'elegant-variant2')
+      stepsToPreload.push('slide4', 'slide5')
+      break
+      
+    case 'modern-styles':
+    case 'slide11':
+      // User chose modern, preload all modern variants
+      stepsToPreload.push('modern1-variant', 'modern2-variant', 'modern3-variant', 'modern6-variant')
+      stepsToPreload.push('slide12', 'slide13', 'slide14', 'slide15')
+      break
+      
+    case 'elegant-variant1':
+    case 'elegant-variant2':
+    case 'slide4':
+    case 'slide5':
+    case 'modern1-variant':
+    case 'modern2-variant':
+    case 'modern3-variant':
+    case 'modern6-variant':
+    case 'slide12':
+    case 'slide13':
+    case 'slide14':
+    case 'slide15':
+      // All these lead to color-scheme
+      stepsToPreload.push('color-scheme', 'slide6')
+      break
+      
+    case 'color-scheme':
+    case 'slide6':
+      stepsToPreload.push('final-color', 'slide7')
+      break
+      
+    case 'final-color':
+    case 'slide7':
+      stepsToPreload.push('color-palette', 'slide8')
+      break
+      
+    case 'color-palette':
+    case 'slide8':
+      stepsToPreload.push('icon-choice', 'slide9')
+      break
+      
+    case 'icon-choice':
+    case 'slide9':
+      stepsToPreload.push('icon-selection', 'slide10')
+      break
+      
+    case 'icon-selection':
+    case 'slide10':
+      stepsToPreload.push('ingredients', 'slide30')
+      break
+      
+    case 'ingredients':
+    case 'slide30':
+      stepsToPreload.push('dashboard-login')
+      break
+      
     default:
-      // For numbered slides, preload next 2 slides
-      const match = currentStepId.match(/slide(\d+)/)
-      if (match) {
-        const num = parseInt(match[1], 10)
-        const nextSlides = []
-        
-        // Handle special cases for existing slides
-        if (num === 15) {
-          nextSlides.push('slide30')
-        } else if (num < 15) {
-          nextSlides.push(`slide${num + 1}`)
-          if (num < 14) {
-            nextSlides.push(`slide${num + 2}`)
-          }
+      // Try to get next step from the step definition
+      if (currentStep.nextStep && typeof currentStep.nextStep === 'function') {
+        const nextStepId = currentStep.nextStep(formData)
+        if (nextStepId) {
+          stepsToPreload.push(nextStepId)
         }
-        
-        stepsToPreload.push(...nextSlides.filter(id => stepComponents[id]))
       }
       break
   }
   
-  return stepsToPreload.filter(id => id !== currentStepId)
+  // Filter out invalid steps and the current step
+  return stepsToPreload.filter(id => id !== currentStepId && stepComponents[id])
 }
