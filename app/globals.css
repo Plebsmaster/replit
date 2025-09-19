@@ -123,3 +123,64 @@
     @apply bg-background text-foreground font-sans;
   }
 }
+
+/* Button text rotation animations */
+@keyframes glare {
+  from {
+    left: -150%;
+  }
+  to {
+    left: 150%;
+  }
+}
+
+@keyframes fadeSwap {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.glare-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.glare-run {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.glare-run::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+  transform: skewX(-20deg);
+  animation: glare 800ms ease-out 1;
+}
+
+.animate-fade-swap {
+  animation: fadeSwap 250ms ease-out;
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .glare-run::before,
+  .animate-fade-swap {
+    animation: none !important;
+  }
+}
