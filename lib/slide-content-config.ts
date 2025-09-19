@@ -51,7 +51,7 @@ export const variantContent: Record<string, any> = {
   'slide4': {
     title: 'Kies je Elegant template variant 1',
     description: 'Selecteer een van de twee elegant varianten die het beste bij jouw salon past.',
-    nextStep: 'elegant-variant2',
+    nextStep: 'color-scheme',
     columns: 2,
     options: [
       { key: 'elegant-1-1', label: 'Elegant 1.1', dbValue: 'Elegant 1.1', imageSrc: '/img/slide4/elegant-1-1.jpg' },
