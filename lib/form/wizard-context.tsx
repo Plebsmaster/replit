@@ -235,38 +235,45 @@ export function useWizard() {
 export function StepRenderer() {
   const { getCurrentStepComponent, formData, updateFormData, goToNext, goToPrevious, goToStep, currentStepId, verifyOtp, sendOtp } = useWizard()
   const [isTransitioning, setIsTransitioning] = React.useState(false)
-  const [fadeClass, setFadeClass] = React.useState('opacity-100 scale-100 blur-0')
-  const previousStepRef = React.useRef(currentStepId)
+  const [currentDisplayedStep, setCurrentDisplayedStep] = React.useState(currentStepId)
+  const [fadeClass, setFadeClass] = React.useState('opacity-0 scale-105 blur-sm')
   
   const Component = getCurrentStepComponent()
   
-  // Premium transition effect on step change
+  // Handle step changes with relaxed, smooth transitions
   React.useEffect(() => {
-    if (previousStepRef.current !== currentStepId) {
-      // Start premium fade out with scale and blur
+    if (currentDisplayedStep !== currentStepId) {
+      // Start fade out
       setIsTransitioning(true)
-      setFadeClass('opacity-0 scale-95 blur-sm')
+      setFadeClass('opacity-0 scale-98 blur-sm')
       
-      // After fade out completes, update step and fade in
+      // After fade out, switch component and fade in
       const timer = setTimeout(() => {
-        previousStepRef.current = currentStepId
-        // Fade in from smaller scale with blur removal
-        setFadeClass('opacity-0 scale-105 blur-sm')
+        setCurrentDisplayedStep(currentStepId)
+        // Start from invisible state
+        setFadeClass('opacity-0 scale-102 blur-sm')
         
-        // Quickly transition to normal state
-        setTimeout(() => {
-          setFadeClass('opacity-100 scale-100 blur-0')
-          
-          // End transition lock after animation completes
-          setTimeout(() => {
-            setIsTransitioning(false)
-          }, 500)
-        }, 50)
-      }, 400) // Initial fade out duration
+        // Fade in to normal state
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            setFadeClass('opacity-100 scale-100 blur-0')
+            
+            // End transition lock after animation completes
+            setTimeout(() => {
+              setIsTransitioning(false)
+            }, 800)
+          })
+        })
+      }, 700) // Slower fade out for relaxed feeling
       
       return () => clearTimeout(timer)
+    } else {
+      // Initial load - fade in from invisible
+      requestAnimationFrame(() => {
+        setFadeClass('opacity-100 scale-100 blur-0')
+      })
     }
-  }, [currentStepId])
+  }, [currentStepId, currentDisplayedStep])
   
   if (!Component) {
     return (
@@ -285,9 +292,9 @@ export function StepRenderer() {
     goToNext()
   }, [verifyOtp, goToNext])
   
-  // Premium transition wrapper with scale, blur, and smooth easing
+  // Premium transition wrapper with slower, more relaxed animation
   return (
-    <div className={`transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${fadeClass} ${isTransitioning ? 'pointer-events-none' : ''}`}>
+    <div className={`transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] ${fadeClass} ${isTransitioning ? 'pointer-events-none' : ''}`}>
       <Suspense fallback={<StepTransitionFallback />}>
         <Component
           formData={formData}
@@ -320,7 +327,7 @@ export function WizardProgressBar() {
   const { progress } = useWizard()
   
   return (
-    <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+    <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden mb-10">
       <div
         className="h-full bg-gradient-to-r from-gray-800 to-black transition-all duration-300 ease-out"
         style={{ width: `${progress}%` }}
