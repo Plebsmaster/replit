@@ -215,11 +215,22 @@ export function StepRenderer() {
   const [fadeState, setFadeState] = React.useState<'visible' | 'fading-out' | 'fading-in'>('visible')
   const transitionTimerRef = React.useRef<NodeJS.Timeout>()
   
+  // Load component based on displayed step - always call this hook
+  const Component = getLazyComponent(displayedStepId)
+  
+  // Handle OTP verification
+  const handleOtpVerified = React.useCallback(() => {
+    verifyOtp()
+    goToNext()
+  }, [verifyOtp, goToNext])
+  
   // Detect step changes and trigger animation
   React.useEffect(() => {
     if (displayedStepId !== currentStepId) {
       // Clear any existing timer
-      clearTimeout(transitionTimerRef.current)
+      if (transitionTimerRef.current) {
+        clearTimeout(transitionTimerRef.current)
+      }
       
       // Start fade out
       setFadeState('fading-out')
@@ -229,37 +240,33 @@ export function StepRenderer() {
         setDisplayedStepId(currentStepId)
         setFadeState('fading-in')
         
-        // Complete fade in
+        // Fix setState during render by using proper async scheduling
+        const completeTransition = () => {
+          setFadeState('visible')
+        }
+        
+        // Use double RAF to ensure render is complete before state update
         requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            setFadeState('visible')
-          })
+          requestAnimationFrame(completeTransition)
         })
       }, 700) // Match transition duration
       
-      return () => clearTimeout(transitionTimerRef.current)
+      return () => {
+        if (transitionTimerRef.current) {
+          clearTimeout(transitionTimerRef.current)
+        }
+      }
     }
   }, [currentStepId, displayedStepId])
   
-  // Load component based on displayed step
-  const Component = getLazyComponent(displayedStepId)
-  
-  // Handle OTP verification
-  const handleOtpVerified = React.useCallback(() => {
-    verifyOtp()
-    goToNext()
-  }, [verifyOtp, goToNext])
-  
-  if (!Component) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-2">Step Not Found</h2>
-          <p className="text-gray-600">The step "{displayedStepId}" could not be loaded.</p>
-        </div>
-      </div>
-    )
-  }
+  // Cleanup timer on unmount
+  React.useEffect(() => {
+    return () => {
+      if (transitionTimerRef.current) {
+        clearTimeout(transitionTimerRef.current)
+      }
+    }
+  }, [])
   
   // Determine animation classes based on fade state
   const animationClasses = React.useMemo(() => {
@@ -273,6 +280,18 @@ export function StepRenderer() {
         return 'opacity-100 scale-100 blur-0'
     }
   }, [fadeState])
+  
+  // Handle missing component case WITHOUT early return (to maintain hook order)
+  if (!Component) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-2">Step Not Found</h2>
+          <p className="text-gray-600">The step "{displayedStepId}" could not be loaded.</p>
+        </div>
+      </div>
+    )
+  }
   
   // Single layer with proper fade transitions
   return (

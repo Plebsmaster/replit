@@ -98,6 +98,15 @@ const stepComponents: Record<string, LazyStepComponent> = {
   'ingredients': () => import('@/components/steps/Slide30'),
   'slide30': () => import('@/components/steps/Slide30'),
   
+  // Explicit mappings for critical slides (will be supplemented by fallback)
+  'slide22': () => import('@/components/steps/Slide22'),
+  
+  // New Slides (46-50) - Country Selection and Slogan Flow
+  'slide46': () => import('@/components/steps/Slide46'),
+  'slide48': () => import('@/components/steps/Slide48'),
+  'slide49': () => import('@/components/steps/Slide49'),
+  'slide50': () => import('@/components/steps/Slide50'),
+  
   // Dashboard Steps
   'dashboard-login': () => import('@/components/steps/DashboardLoginStep'),
 }
@@ -106,13 +115,35 @@ const stepComponents: Record<string, LazyStepComponent> = {
 const lazyComponentCache = new Map<string, ReturnType<typeof lazy>>()
 
 /**
+ * Fallback loader for numeric slides (slide1, slide2, etc.)
+ * Dynamically imports components/steps/SlideN for slideN pattern
+ */
+function createFallbackLoader(stepId: string): LazyStepComponent | null {
+  const match = stepId.match(/^slide(\d+)$/)
+  if (match) {
+    const slideNumber = match[1]
+    return () => import(`@/components/steps/Slide${slideNumber}`)
+  }
+  return null
+}
+
+/**
  * Get a lazy-loaded component for a given step ID
  * Components are cached after first creation to avoid re-creating lazy wrappers
  */
 export function getLazyComponent(stepId: string) {
-  if (!stepComponents[stepId]) {
-    console.warn(`[LazyLoader] No lazy component found for step: ${stepId}`)
-    return null
+  let loader = stepComponents[stepId]
+  
+  // Try fallback for numeric slides if not found in explicit mapping
+  if (!loader) {
+    loader = createFallbackLoader(stepId)
+    if (loader) {
+      // Cache the fallback loader for future use
+      stepComponents[stepId] = loader
+    } else {
+      console.warn(`[LazyLoader] No lazy component found for step: ${stepId}`)
+      return null
+    }
   }
   
   // Check cache first
@@ -139,10 +170,18 @@ export function getLazyComponent(stepId: string) {
  * This fetches the component code but doesn't render it
  */
 export async function preloadStep(stepId: string) {
-  const loader = stepComponents[stepId]
+  let loader = stepComponents[stepId]
+  
+  // Try fallback for numeric slides if not found in explicit mapping
   if (!loader) {
-    console.warn(`[LazyLoader] Cannot preload unknown step: ${stepId}`)
-    return
+    loader = createFallbackLoader(stepId)
+    if (loader) {
+      // Cache the fallback loader for future use
+      stepComponents[stepId] = loader
+    } else {
+      console.warn(`[LazyLoader] Cannot preload unknown step: ${stepId}`)
+      return
+    }
   }
   
   try {
@@ -273,5 +312,9 @@ export function getStepsToPreload(currentStepId: string, formData: any): string[
   }
   
   // Filter out invalid steps and the current step
-  return stepsToPreload.filter(id => id !== currentStepId && stepComponents[id])
+  // Include steps that can be loaded via fallback (slideNN pattern)
+  return stepsToPreload.filter(id => {
+    if (id === currentStepId) return false
+    return stepComponents[id] || createFallbackLoader(id) !== null
+  })
 }
