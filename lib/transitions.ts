@@ -6,6 +6,7 @@ export const TRANSITION_CONFIG = {
     duration: 500, // milliseconds
     timingFunction: 'ease-in-out',
     staggerDelay: 50, // delay between elements
+    enterDelay: 100, // delay for step transitions
   },
   
   // Animation states

@@ -245,23 +245,21 @@ export function StepRenderer() {
     goToNext()
   }, [verifyOtp, goToNext])
   
-  // Wrap in Suspense for lazy-loaded components with premium fade transitions
+  // Simple premium transitions without loading interference
   return (
-    <Suspense fallback={<StepLoadingFallback />}>
-      <SlideTransition stepId={currentStepId}>
-        <Component
-          formData={formData}
-          updateFormData={updateFormData}
-          onNext={goToNext}
-          onBack={goToPrevious}
-          goToStep={goToStep}
-          email={formData.email}
-          onVerified={handleOtpVerified}
-          verifyOtp={verifyOtp}
-          sendOtp={sendOtp}
-        />
-      </SlideTransition>
-    </Suspense>
+    <SlideTransition stepId={currentStepId}>
+      <Component
+        formData={formData}
+        updateFormData={updateFormData}
+        onNext={goToNext}
+        onBack={goToPrevious}
+        goToStep={goToStep}
+        email={formData.email}
+        onVerified={handleOtpVerified}
+        verifyOtp={verifyOtp}
+        sendOtp={sendOtp}
+      />
+    </SlideTransition>
   )
 }
 
