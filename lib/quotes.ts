@@ -15,7 +15,6 @@ export const quotes = [
   `Style is a way to say who you are without having to speak." - Rachel Zoe`,
   `To be creative means to be in love with life." - Osho`,
   `Nature gives you the face you have at twenty; it is up to you to merit the face you have at fifty." - Coco Chanel`,
-  `The most beautiful makeup of a woman is passion. But cosmetics are easier to buy." - Yves Saint Laurent`,
   `A thing of beauty is a joy for ever." - John Keats`,
   `The way to get started is to quit talking and begin doing." - Walt Disney`,
   `Beauty is power; a smile is its sword." - John Ray`,
@@ -29,7 +28,6 @@ export const quotes = [
   `Confidence is the best accessory.`,
   `Art is not what you see, but what you make others see." - Edgar Degas`,
   `The details are not the details. They make the design." - Charles Eames`,
-  `Beauty, to me, is about being comfortable in your own skin. That, or a kick-ass red lipstick." - Gwyneth Paltrow`,
   `Do one thing every day that scares you." - Eleanor Roosevelt`,
   `Passion is the genesis of genius." - Tony Robbins`,
   `The artist is nothing without the gift, but the gift is nothing without work." - Émile Zola`,
@@ -45,7 +43,6 @@ export const quotes = [
   `Your vision will become clear only when you can look into your own heart." - Carl Jung`,
   `Less is more." - Ludwig Mies van der Rohe`,
   `A woman's perfume tells more about her than her handwriting." - Christian Dior`,
-  `I believe in manicures. I believe in overdressing. I believe in primping at leisure and wearing lipstick." - Audrey Hepburn`,
   `You can't use up creativity. The more you use, the more you have." - Maya Angelou`,
   `The beautiful is always bizarre." - Charles Baudelaire`,
   `Make your product easier to buy than your competition, or you will find your customers buying from them, not you." - Mark Cuban`,
@@ -55,7 +52,6 @@ export const quotes = [
   `Every great dream begins with a dreamer." - Harriet Tubman`,
   `The essence of strategy is choosing what not to do." - Michael Porter`,
   `To live a creative life, we must lose our fear of being wrong." - Joseph Chilton Pearce`,
-  `Makeup is art. Beauty is spirit.`,
   `Imperfection is beauty, madness is genius and it's better to be absolutely ridiculous than absolutely boring." - Marilyn Monroe`,
   `What you do today can improve all your tomorrows." - Ralph Marston`,
   `There is beauty in simplicity.`,
@@ -77,7 +73,6 @@ export const quotes = [
   `Beauty is an attitude." - Estée Lauder`,
   `The function of design is letting design function." - Micha Commeren`,
   `I have no special talent. I am only passionately curious." - Albert Einstein`,
-  `A smile is the best makeup any girl can wear." - Marilyn Monroe`,
   `Great things in business are never done by one person. They're done by a team of people." - Steve Jobs`,
   `Logic will get you from A to B. Imagination will take you everywhere." - Albert Einstein`,
   `Style is knowing who you are, what you want to say, and not giving a damn." - Orson Welles`,
@@ -86,7 +81,6 @@ export const quotes = [
   `Beauty without expression is boring." - Ralph Waldo Emerson`,
   `Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away." - Antoine de Saint-Exupéry`,
   `The journey of a thousand miles begins with a single step." - Lao Tzu`,
-  `Makeup is a way for a woman to look and feel like herself, only prettier and more confident." - Bobbi Brown`,
   `The soul that sees beauty may sometimes walk alone." - Johann Wolfgang von Goethe`,
   `It’s not about ideas. It’s about making ideas happen." - Scott Belsky`,
   `Creativity is a wild mind and a disciplined eye." - Dorothy Parker`,
@@ -97,7 +91,6 @@ export const quotes = [
   `A flower does not think of competing with the flower next to it. It just blooms." - Zen Shin`,
   `Art enables us to find ourselves and lose ourselves at the same time." - Thomas Merton`,
   `Success is liking yourself, liking what you do, and liking how you do it." - Maya Angelou`,
-  `Treat your makeup like jewelry for the face." - François Nars`,
   `A big business starts small." - Richard Branson`,
   `For beautiful eyes, look for the good in others; for beautiful lips, speak only words of kindness." - Audrey Hepburn`,
   `The only source of knowledge is experience." - Albert Einstein`,
@@ -138,10 +131,8 @@ export const quotes = [
   `Beauty of style and harmony and grace and good rhythm depend on simplicity." - Plato`,
   `If you are not willing to risk the usual, you will have to settle for the ordinary." - Jim Rohn`,
   `Creativity is not the finding of a thing, but the making something out of it after it is found." - James Russell Lowell`,
-  `Joy is the best makeup." - Anne Lamott`,
   `Simplicity is about subtracting the obvious and adding the meaningful." - John Maeda`,
   `Obsessed is just a word the lazy use to describe the dedicated." - Russell Warren`,
-  `I believe that all women are pretty without makeup - but with the right makeup can be pretty powerful." - Bobbi Brown`,
   `What makes you different or weird, that's your strength." - Meryl Streep`,
   `Design creates culture. Culture shapes values. Values determine the future." - Robert L. Peters`,
   `An idea can turn to dust or magic, depending on the talent that rubs against it." - Bill Bernbach`,
@@ -187,7 +178,6 @@ export const quotes = [
   `Art washes away from the soul the dust of everyday life." - Pablo Picasso`,
   `To be beautiful means to be yourself. You don't need to be accepted by others. You need to accept yourself." - Thich Nhat Hanh`,
   `The chief enemy of creativity is good sense." - Pablo Picasso`,
-  `You can't buy happiness, but you can buy makeup, which is kind of the same thing.`,
   `You miss 100% of the shots you don't take." - Wayne Gretzky`,
   `A true masterpiece does not tell everything." - Albert Camus`,
   `Beauty isn't about having a pretty face. It's about having a pretty mind, a pretty heart, and a pretty soul.`,
@@ -202,12 +192,7 @@ export const quotes = [
   `A successful man is one who can lay a firm foundation with the bricks others have thrown at him." - David Brinkley`,
   `The essence of interior design will always be about people and how they live." - Albert Hadley`,
   `Let's invent tomorrow instead of worrying about what happened yesterday." - Steve Jobs`
-];
-
-// Type safety - ensure we have quotes available
-if (quotes.length === 0) {
-  throw new Error('No quotes available in quotes array');
-}
+] as const;
 
 // Function to get a random quote
 export function getRandomQuote(): string {
