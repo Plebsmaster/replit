@@ -109,6 +109,7 @@ const stepComponents: Record<string, LazyStepComponent> = {
   'slide51': () => import('@/components/steps/Slide51'),
   'slide52': () => import('@/components/steps/Slide52'),
   'slide53': () => import('@/components/steps/Slide53'),
+  'slide54': () => import('@/components/steps/Slide54'),
   'slide55': () => import('@/components/steps/Slide55'),
   
   // Dashboard Steps

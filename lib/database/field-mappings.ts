@@ -90,6 +90,7 @@ export interface DatabaseRecord {
   no_yellow_claims?: Record<string, any>
   'Quote'?: string | null
   'Logo of merknaam'?: string | null
+  'Merknaam'?: string | null
 }
 
 // ===== Transformation Functions =====
@@ -231,6 +232,13 @@ export const FIELD_MAPPINGS: FieldMappings = {
   // Logo/Merknaam Choice (Slide 51)
   logoOfMerknaam: {
     dbField: 'Logo of merknaam',
+    defaultValue: null,
+    transform: toNullableString,
+  },
+  
+  // Merknaam Input (Slide 52)
+  merknaam: {
+    dbField: 'Merknaam',
     defaultValue: null,
     transform: toNullableString,
   },

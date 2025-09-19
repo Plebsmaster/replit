@@ -39,6 +39,7 @@ import {
   slide46CountrySelectionSchema,
   slide49QuoteSchema,
   slide51LogoMerknaamSchema,
+  slide52MerknaamSchema,
   ingredientsSchema,
   agreementsSchema,
   FormData,
@@ -807,8 +808,19 @@ export const stepRegistry: Map<string, StepDefinition> = new Map([
   ['slide52', {
     id: 'slide52',
     key: 'slide52',
-    title: 'Merknaam Gekozen',
+    title: 'Merknaam',
+    schema: slide52MerknaamSchema,
     componentFile: 'Slide52.tsx',
+    showGlobalNext: true, // Manual continue
+    showGlobalPrev: true,
+    nextStep: (): string => 'slide54',
+  }],
+  
+  ['slide54', {
+    id: 'slide54',
+    key: 'slide54',
+    title: 'Merknaam Voltooid',
+    componentFile: 'Slide54.tsx',
     showGlobalNext: true, // Manual continue
     showGlobalPrev: true,
     nextStep: (): string => 'dashboard-login',
