@@ -1,0 +1,43 @@
+// No Yellow Shampoo claims
+const noYellowShampooClaims = [
+  { text: 'Reinigt, hydrateert en verheldert geblondeerd, blond en grijs haar', dbValue: '"1. Reinigt, hydrateert en verheldert geblondeerd, blond en grijs haar"', selected: true },
+  { text: 'Verhelderende en neutraliserende shampoo speciaal voor blond en grijs haar', dbValue: '"2. Verhelderende en neutraliserende shampoo speciaal voor blond en grijs haar"' },
+  { text: 'Toningshampoo voor grijs, blond en geblondeerd haar', dbValue: '"3. Toningshampoo voor grijs, blond en geblondeerd haar"' },
+  { text: 'Milde reiniging en verheldering van blonde en grijze tinten', dbValue: '"4. Milde reiniging en verheldering van blonde en grijze tinten"' },
+  { text: 'Reinigt en hydrateert het haar, terwijl het warme tinten in blond en grijs haar elimineert', dbValue: '"5. Reinigt en hydrateert het haar, terwijl het warme tinten in blond en grijs haar elimineert"' },
+  { text: 'Reinigt het haar en verwijdert onmiddellijk gele tinten uit blond en grijs haar', dbValue: '"6. Reinigt het haar en verwijdert onmiddellijk gele tinten uit blond en grijs haar"' },
+  { text: 'Vermindert de warme, gele tinten in blond haar en biedt milde reiniging', dbValue: '"7. Vermindert de warme, gele tinten in blond haar en biedt milde reiniging"' },
+  { text: 'Reinigt, verbetert de elasticiteit en behoudt de koele tint en glans van blond en grijs haar', dbValue: '"8. Reinigt, verbetert de elasticiteit en behoudt de koele tint en glans van blond en grijs haar"' },
+  { text: 'Reinigt het haar, beschermt tegen externe schade en behoudt de koele tint', dbValue: '"9. Reinigt het haar, beschermt tegen externe schade en behoudt de koele tint"' },
+  { text: 'Biedt een langdurige, stralende kleur zonder gele ondertonen', dbValue: '"10. Biedt een langdurige, stralende kleur zonder gele ondertonen"' }
+];
+
+// No Yellow Conditioner claims
+const noYellowConditionerClaims = [
+  { text: 'Hydrateert, herstelt en verheldert blond, grijs en geblondeerd haar', dbValue: '"1. Hydrateert, herstelt en verheldert blond, grijs en geblondeerd haar"', selected: true },
+  { text: 'Neutraliserende en verhelderende conditioner voor blond en grijs haar', dbValue: '"2. Neutraliserende en verhelderende conditioner voor blond en grijs haar"' },
+  { text: 'Toningsconditioner voor grijs, blond en geblondeerd haar', dbValue: '"3. Toningsconditioner voor grijs, blond en geblondeerd haar"' },
+  { text: 'Verzacht het haar en verheldert blonde en grijze tinten', dbValue: '"4. Verzacht het haar en verheldert blonde en grijze tinten"' },
+  { text: 'Hydrateert het haar en elimineert gele tinten in blond en grijs haar', dbValue: '"5. Hydrateert het haar en elimineert gele tinten in blond en grijs haar"' },
+  { text: 'Biedt zachte verzorging en vermindert warme gele tonen in blond haar', dbValue: '"6. Biedt zachte verzorging en vermindert warme gele tonen in blond haar"' },
+  { text: 'Zorgt voor een langdurige, stralende kleur zonder gele ondertonen', dbValue: '"7. Zorgt voor een langdurige, stralende kleur zonder gele ondertonen"' },
+  { text: 'Conditioneert en verbetert de elasticiteit, terwijl het de koele tint en glans behoudt', dbValue: '"8. Conditioneert en verbetert de elasticiteit, terwijl het de koele tint en glans behoudt"' },
+  { text: 'Verzorgt het haar, beschermt tegen externe schade en behoudt de koele tint', dbValue: '"9. Verzorgt het haar, beschermt tegen externe schade en behoudt de koele tint"' },
+  { text: 'Zorgt voor een langdurige, stralende kleur zonder gele ondertonen', dbValue: '"10. Zorgt voor een langdurige, stralende kleur zonder gele ondertonen"' }
+];
+
+// Database columns: 'Standaard Claim No Yellow Shampoo' and 'Standaard Claim No Yellow Conditioner'
+// Default selections: option 1 for both (as shown in code)
+// Next slide: Slide40 after both selections made
+const handleNoYellowShampooClaimSelection = (claim) => {
+  updateDatabase('Standaard Claim No Yellow Shampoo', claim.dbValue);
+};
+
+const handleNoYellowConditionerClaimSelection = (claim) => {
+  updateDatabase('Standaard Claim No Yellow Conditioner', claim.dbValue);
+};
+
+const handleContinue = () => {
+  // Continue to next slide after both claims selected
+  navigateToSlide('Slide40');
+};

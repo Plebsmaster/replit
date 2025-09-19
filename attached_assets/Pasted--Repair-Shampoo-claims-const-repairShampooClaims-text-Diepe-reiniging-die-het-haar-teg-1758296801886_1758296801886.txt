@@ -1,0 +1,61 @@
+// Repair Shampoo claims
+const repairShampooClaims = [
+  { text: 'Diepe reiniging die het haar tegelijkertijd herstelt en voedt', dbValue: '"1. Diepe reiniging die het haar tegelijkertijd herstelt en voedt"', selected: true },
+  { text: 'Versterkt zwak haar en voorkomt haarbreuk', dbValue: '"2. Versterkt zwak haar en voorkomt haarbreuk"' },
+  { text: 'Reinigt en herstelt beschadigd haar van wortel tot punt', dbValue: '"3. Reinigt en herstelt beschadigd haar van wortel tot punt"' },
+  { text: 'Verbetert de algehele gezondheid en uitstraling van het haar', dbValue: '"4. Verbetert de algehele gezondheid en uitstraling van het haar"' },
+  { text: 'Herstelt de natuurlijke glans en zachtheid van het haar', dbValue: '"5. Herstelt de natuurlijke glans en zachtheid van het haar"' },
+  { text: 'Bevordert een gezonde hoofdhuid voor sterkere haargroei', dbValue: '"6. Bevordert een gezonde hoofdhuid voor sterkere haargroei"' },
+  { text: 'Beschermt tegen toekomstige schade en gespleten haarpunten', dbValue: '"7. Beschermt tegen toekomstige schade en gespleten haarpunten"' },
+  { text: 'Hydrateert en herstelt droog en broos haar', dbValue: '"8. Hydrateert en herstelt droog en broos haar"' },
+  { text: 'Verbetert de handelbaarheid en elasticiteit van het haar', dbValue: '"9. Verbetert de handelbaarheid en elasticiteit van het haar"' },
+  { text: 'Zorgt voor gezond en vitaal haar, ideaal voor dagelijks gebruik', dbValue: '"10. Zorgt voor gezond en vitaal haar, ideaal voor dagelijks gebruik"' }
+];
+
+// Repair Conditioner claims
+const repairConditionerClaims = [
+  { text: 'Intensieve hydratatie en diepgaand herstel van beschadigd haar', dbValue: '"1. Intensieve hydratatie en diepgaand herstel van beschadigd haar"', selected: true },
+  { text: 'Voedt en versterkt het haar voor verbeterde veerkracht', dbValue: '"2. Voedt en versterkt het haar voor verbeterde veerkracht"' },
+  { text: 'Herstelt schade veroorzaakt door hitte en chemische behandelingen', dbValue: '"3. Herstelt schade veroorzaakt door hitte en chemische behandelingen"' },
+  { text: 'Verbetert de algehele gezondheid en uitstraling van het haar', dbValue: '"4. Verbetert de algehele gezondheid en uitstraling van het haar"' },
+  { text: 'Herstelt de natuurlijke glans en zachtheid van het haar', dbValue: '"5. Herstelt de natuurlijke glans en zachtheid van het haar"' },
+  { text: 'Bevordert langdurige reparatie en bescherming voor sterker haar', dbValue: '"6. Bevordert langdurige reparatie en bescherming voor sterker haar"' },
+  { text: 'Beschermt tegen toekomstige schade en gespleten haarpunten', dbValue: '"7. Beschermt tegen toekomstige schade en gespleten haarpunten"' },
+  { text: 'Hydrateert en herstelt droog en broos haar', dbValue: '"8. Hydrateert en herstelt droog en broos haar"' },
+  { text: 'Verbetert de handelbaarheid en elasticiteit van het haar', dbValue: '"9. Verbetert de handelbaarheid en elasticiteit van het haar"' },
+  { text: 'Zorgt voor gezond en vitaal haar, ideaal voor dagelijks gebruik', dbValue: '"10. Zorgt voor gezond en vitaal haar, ideaal voor dagelijks gebruik"' }
+];
+
+// Repair Mask claims
+const repairMaskClaims = [
+  { text: 'Intensief herstellend masker voor beschadigd en verzwakt haar', dbValue: '"1. Intensief herstellend masker voor beschadigd en verzwakt haar"', selected: true },
+  { text: 'Krachtige formule die de haarvezel van binnenuit versterkt', dbValue: '"2. Krachtige formule die de haarvezel van binnenuit versterkt"' },
+  { text: 'Diepgaand herstel voor door hitte en chemisch behandeld haar', dbValue: '"3. Diepgaand herstel voor door hitte en chemisch behandeld haar"' },
+  { text: 'Verbetert de haarstructuur en vitaliteit met intensieve voeding', dbValue: '"4. Verbetert de haarstructuur en vitaliteit met intensieve voeding"' },
+  { text: 'Herstelt de natuurlijke veerkracht en glans van het haar', dbValue: '"5. Herstelt de natuurlijke veerkracht en glans van het haar"' },
+  { text: 'Versterkt de haarvezels en voorkomt toekomstige beschadiging', dbValue: '"6. Versterkt de haarvezels en voorkomt toekomstige beschadiging"' },
+  { text: 'Intensieve verzorging tegen gespleten haarpunten en broosheid', dbValue: '"7. Intensieve verzorging tegen gespleten haarpunten en broosheid"' },
+  { text: 'Voedt en revitaliseert extreem beschadigd haar', dbValue: '"8. Voedt en revitaliseert extreem beschadigd haar"' },
+  { text: 'Verbetert de elasticiteit en stevigheid van het haar', dbValue: '"9. Verbetert de elasticiteit en stevigheid van het haar"' },
+  { text: 'Biedt intensieve verzorging voor direct zichtbaar gezonder en sterker haar', dbValue: '"10. Biedt intensieve verzorging voor direct zichtbaar gezonder en sterker haar"' }
+];
+
+// Database columns: 'Standaard Claim Repair Shampoo', 'Standaard Claim Repair Conditioner', 'Standaard Claim Repair Mask'
+// Default selections: option 1 for all three (as shown in code)
+// Next slide: Slide41 after all three selections made
+const handleRepairShampooClaimSelection = (claim) => {
+  updateDatabase('Standaard Claim Repair Shampoo', claim.dbValue);
+};
+
+const handleRepairConditionerClaimSelection = (claim) => {
+  updateDatabase('Standaard Claim Repair Conditioner', claim.dbValue);
+};
+
+const handleRepairMaskClaimSelection = (claim) => {
+  updateDatabase('Standaard Claim Repair Mask', claim.dbValue);
+};
+
+const handleContinue = () => {
+  // Continue to next slide after all three claims selected
+  navigateToSlide('Slide41');
+};

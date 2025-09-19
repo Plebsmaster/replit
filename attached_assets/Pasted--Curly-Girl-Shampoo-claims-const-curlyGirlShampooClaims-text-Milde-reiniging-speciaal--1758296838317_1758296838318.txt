@@ -1,0 +1,61 @@
+// Curly Girl Shampoo claims
+const curlyGirlShampooClaims = [
+  { text: 'Milde reiniging speciaal ontwikkeld voor krullend en golvend haar', dbValue: '"1. Milde reiniging speciaal ontwikkeld voor krullend en golvend haar"', selected: true },
+  { text: 'Rijk aan natuurlijke extracten die krullen voeden en beschermen', dbValue: '"2. Rijk aan natuurlijke extracten die krullen voeden en beschermen"' },
+  { text: 'Verrijkt met voedende ingrediënten voor zachte en pluisvrije krullen', dbValue: '"3. Verrijkt met voedende ingrediënten voor zachte en pluisvrije krullen"' },
+  { text: 'Helpt het natuurlijke krulpatroon te versterken en definiëren', dbValue: '"4. Helpt het natuurlijke krulpatroon te versterken en definiëren"' },
+  { text: 'Beschermt tegen uitdroging en vermindert pluisvorming', dbValue: '"5. Beschermt tegen uitdroging en vermindert pluisvorming"' },
+  { text: 'Geeft krullen glans, veerkracht en souplesse', dbValue: '"6. Geeft krullen glans, veerkracht en souplesse"' },
+  { text: 'Verbetert de elasticiteit en vitaliteit van je krullen', dbValue: '"7. Verbetert de elasticiteit en vitaliteit van je krullen"' },
+  { text: 'Biedt dagelijkse verzorging voor zichtbaar gezonde en gedefinieerde krullen', dbValue: '"8. Biedt dagelijkse verzorging voor zichtbaar gezonde en gedefinieerde krullen"' },
+  { text: 'Speciaal ontwikkelde shampoo volgens de Curly Girl Methode', dbValue: '"9. Speciaal ontwikkelde shampoo volgens de Curly Girl Methode"' },
+  { text: 'Geeft krullen energie, souplesse en een frisse uitstraling', dbValue: '"10. Geeft krullen energie, souplesse en een frisse uitstraling"' }
+];
+
+// Curly Girl Conditioner claims
+const curlyGirlConditionerClaims = [
+  { text: 'Intensief voedende conditioner die krullen onwart en hydrateert', dbValue: '"1. Intensief voedende conditioner die krullen onwart en hydrateert"', selected: true },
+  { text: 'Verzacht en maakt krullen direct makelijk doorkambaar', dbValue: '"2. Verzacht en maakt krullen direct makelijk doorkambaar"' },
+  { text: 'Herstelt de natuurlijke elasticiteit en veerkracht van krullen', dbValue: '"3. Herstelt de natuurlijke elasticiteit en veerkracht van krullen"' },
+  { text: 'Geeft krullen souplesse, glans en definitie', dbValue: '"4. Geeft krullen souplesse, glans en definitie"' },
+  { text: 'Voorkomt pluis en houdt krullen luchtig en soepel', dbValue: '"5. Voorkomt pluis en houdt krullen luchtig en soepel"' },
+  { text: 'Ondersteunt gezond, sterk en veerkrachtig krullend haar', dbValue: '"6. Ondersteunt gezond, sterk en veerkrachtig krullend haar"' },
+  { text: 'Intensieve verzorging speciaal ontwikkeld voor alle krultypes', dbValue: '"7. Intensieve verzorging speciaal ontwikkeld voor alle krultypes"' },
+  { text: 'Laat krullen zijdezacht aanvoelen met een natuurlijke glans', dbValue: '"8. Laat krullen zijdezacht aanvoelen met een natuurlijke glans"' },
+  { text: 'Intensieve verzorging speciaal ontwikkeld voor alle krultypes', dbValue: '"9. Intensieve verzorging speciaal ontwikkeld voor alle krultypes"' },
+  { text: 'Geeft krullen een zijdezachte touch zonder te verzwaren', dbValue: '"10. Geeft krullen een zijdezachte touch zonder te verzwaren"' }
+];
+
+// Curly Girl Mask claims
+const curlyGirlMaskClaims = [
+  { text: 'Intensief herstellend masker dat krullen diep van binnenuit voedt', dbValue: '"1. Intensief herstellend masker dat krullen diep van binnenuit voedt"', selected: true },
+  { text: 'Herstelt de kracht en elasticiteit van vermoeide en droge krullen', dbValue: '"2. Herstelt de kracht en elasticiteit van vermoeide en droge krullen"' },
+  { text: 'Geeft krullen een intensieve vochtboost voor langdurige hydratatie', dbValue: '"3. Geeft krullen een intensieve vochtboost voor langdurige hydratatie"' },
+  { text: 'Geeft krullen nieuwe energie, souplesse en veerkracht', dbValue: '"4. Geeft krullen nieuwe energie, souplesse en veerkracht"' },
+  { text: 'Herstelt de natuurlijke glans en zachtheid van krullen', dbValue: '"5. Herstelt de natuurlijke glans en zachtheid van krullen"' },
+  { text: 'Laat krullen sterker aanvoelen en beter bestand tegen breuk', dbValue: '"6. Laat krullen sterker aanvoelen en beter bestand tegen breuk"' },
+  { text: 'Intensieve verzorging voor een langdurig levendige haarkleur', dbValue: '"7. Intensieve verzorging voor een langdurig levendige haarkleur"' },
+  { text: 'Biedt langdurige pluiscontrole en betere kruldefinitie', dbValue: '"8. Biedt langdurige pluiscontrole en betere kruldefinitie"' },
+  { text: 'Geeft krullen zichtbaar meer vitaliteit en een gezonde uitstraling', dbValue: '"9. Geeft krullen zichtbaar meer vitaliteit en een gezonde uitstraling"' },
+  { text: 'Geeft krullen een intensieve reset voor zichtbaar gezonder en sterker haar', dbValue: '"10. Geeft krullen een intensieve reset voor zichtbaar gezonder en sterker haar"' }
+];
+
+// Database columns: 'Standaard Claim Curly Girl Shampoo', 'Standaard Claim Curly Girl Conditioner', 'Standaard Claim Curly Girl Mask'
+// Default selections: option 1 for all three (as shown in code)
+// Next slide: Slide43 after all three selections made
+const handleCurlyGirlShampooClaimSelection = (claim) => {
+  updateDatabase('Standaard Claim Curly Girl Shampoo', claim.dbValue);
+};
+
+const handleCurlyGirlConditionerClaimSelection = (claim) => {
+  updateDatabase('Standaard Claim Curly Girl Conditioner', claim.dbValue);
+};
+
+const handleCurlyGirlMaskClaimSelection = (claim) => {
+  updateDatabase('Standaard Claim Curly Girl Mask', claim.dbValue);
+};
+
+const handleContinue = () => {
+  // Continue to next slide after all three claims selected
+  navigateToSlide('Slide43');
+};

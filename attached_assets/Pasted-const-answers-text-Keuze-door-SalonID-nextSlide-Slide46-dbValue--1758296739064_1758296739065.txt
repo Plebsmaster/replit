@@ -1,0 +1,42 @@
+const answers = [
+  { 
+    text: 'Keuze door SalonID', 
+    nextSlide: 'Slide46', 
+    dbValue: 'SalonID',
+    // When this option is selected, auto-fill claim database columns:
+    autoFillClaims: {
+      'Standaard Claim No Yellow Shampoo': '"1. Reinigt, hydrateert en verheldert geblondeerd, blond en grijs haar"',
+      'Standaard Claim No Yellow Conditioner': '"1. Hydrateert, herstelt en verheldert blond, grijs en geblondeerd haar"',
+      'Standaard Claim Repair Shampoo': '"1. Diepe reiniging die het haar tegelijkertijd herstelt en voedt"',
+      'Standaard Claim Repair Conditioner': '"1. Intensieve hydratatie en diepgaand herstel van beschadigd haar"',
+      'Standaard Claim Repair Mask': '"1. Intensief herstellend masker voor beschadigd en verzwakt haar"',
+      'Standaard Claim Color Shampoo': '"1. Milde reiniging, verlengt de levensduur van haarkleuring en behoudt levendigheid"',
+      'Standaard Claim Color Conditioner': '"1. Helpt bij het behouden van een levendige en langdurige haarkleur"',
+      'Standaard Claim Color Mask': '"1. Intensief verzorgend masker dat de haarkleur beschermt en verlengt"',
+      'Standaard Claim Curly Girl Shampoo': '"1. Milde reiniging speciaal ontwikkeld voor krullend en golvend haar"',
+      'Standaard Claim Curly Girl Conditioner': '"1. Intensief voedende conditioner die krullen onwart en hydrateert"',
+      'Standaard Claim Curly Girl Mask': '"1. Intensief herstellend masker dat krullen diep van binnenuit voedt"',
+      'Standaard Claim Mannen Shampoo': '"1. Verfrissende shampoo speciaal ontwikkeld voor mannenhaar"',
+      'Standaard Claim Haarserum': '"1. Geeft directe glans en zachtheid"',
+      'Standaard Claim Haarlak': '"1. Sterk fixerende haarspray voor een natuurlijke uitstraling en langdurige hold"',
+      'Standaard Claim Mousse': '"1. Geeft fijn futloos haar meer volume en body"',
+      'Standaard Claim Droog Shampoo': '"1. Zorgt direct voor een fris gevoel en geeft het haar extra volume en textuur"'
+    }
+  },
+  { 
+    text: 'Ik bepaal zelf', 
+    nextSlide: 'Slide39', 
+    dbValue: null 
+  }
+];
+// Database columns: All product claim columns when SalonID selected, none when self-selected
+const handleAnswer = (answer) => {
+  if (answer.autoFillClaims) {
+    // Fill multiple claim database columns at once for SalonID choice
+    Object.entries(answer.autoFillClaims).forEach(([product, claim]) => {
+      updateDatabase(product, claim);
+    });
+  }
+  // No database storage for 'Ik bepaal zelf' - claim data will be filled later
+  navigateToSlide(answer.nextSlide);
+};

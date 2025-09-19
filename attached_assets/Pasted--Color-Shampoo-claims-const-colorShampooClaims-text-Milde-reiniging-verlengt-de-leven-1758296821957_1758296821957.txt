@@ -1,0 +1,61 @@
+// Color Shampoo claims
+const colorShampooClaims = [
+  { text: 'Milde reiniging, verlengt de levensduur van haarkleuring en behoudt levendigheid', dbValue: '"1. Milde reiniging, verlengt de levensduur van haarkleuring en behoudt levendigheid"', selected: true },
+  { text: 'Reinigt zachtjes zonder de kleur te vervagen', dbValue: '"2. Reinigt zachtjes zonder de kleur te vervagen"' },
+  { text: 'Verrijkt met UV-filters om kleurvervaging door de zon te voorkomen', dbValue: '"3. Verrijkt met UV-filters om kleurvervaging door de zon te voorkomen"' },
+  { text: 'Reinigt en hydrateert het haar, terwijl het de glans van gekleurd haar behoudt', dbValue: '"4. Reinigt en hydrateert het haar, terwijl het de glans van gekleurd haar behoudt"' },
+  { text: 'Versterkt en beschermt het haar tegen kleurverlies met milde reiniging', dbValue: '"5. Versterkt en beschermt het haar tegen kleurverlies met milde reiniging"' },
+  { text: 'Behoudt de diepte en rijkdom van de haarkleur en reinigt het haar mild', dbValue: '"6. Behoudt de diepte en rijkdom van de haarkleur en reinigt het haar mild"' },
+  { text: 'Verzacht en versterkt gekleurd haar voor een gezonde, stralende uitstraling', dbValue: '"7. Verzacht en versterkt gekleurd haar voor een gezonde, stralende uitstraling"' },
+  { text: 'Verbetert de levendigheid en intensiteit van de haarkleur na elke wasbeurt', dbValue: '"8. Verbetert de levendigheid en intensiteit van de haarkleur na elke wasbeurt"' },
+  { text: 'Verbetert de algehele gezondheid van gekleurd haar', dbValue: '"9. Verbetert de algehele gezondheid van gekleurd haar"' },
+  { text: 'Laat het haar zacht en beheerbaar aanvoelen met een levendige kleur', dbValue: '"10. Laat het haar zacht en beheerbaar aanvoelen met een levendige kleur"' }
+];
+
+// Color Conditioner claims
+const colorConditionerClaims = [
+  { text: 'Helpt bij het behouden van een levendige en langdurige haarkleur', dbValue: '"1. Helpt bij het behouden van een levendige en langdurige haarkleur"', selected: true },
+  { text: 'Geschikt voor dagelijks gebruik zonder de kleur te vervagen', dbValue: '"2. Geschikt voor dagelijks gebruik zonder de kleur te vervagen"' },
+  { text: 'Herstelt en beschermt het haar tegen UV-schade door de zon', dbValue: '"3. Herstelt en beschermt het haar tegen UV-schade door de zon"' },
+  { text: 'Hydrateert het haar en behoudt de glans van gekleurd haar', dbValue: '"4. Hydrateert het haar en behoudt de glans van gekleurd haar"' },
+  { text: 'Versterkt en beschermt het haar tegen kleurverlies', dbValue: '"5. Versterkt en beschermt het haar tegen kleurverlies"' },
+  { text: 'Bevordert glans en elasticiteit in gekleurd haar', dbValue: '"6. Bevordert glans en elasticiteit in gekleurd haar"' },
+  { text: 'Verbetert de zachtheid en geeft gekleurd haar een gezonde uitstraling', dbValue: '"7. Verbetert de zachtheid en geeft gekleurd haar een gezonde uitstraling"' },
+  { text: 'Verbetert de levendigheid en intensiteit van de haarkleur', dbValue: '"8. Verbetert de levendigheid en intensiteit van de haarkleur"' },
+  { text: 'Verbetert de algehele gezondheid van gekleurd haar', dbValue: '"9. Verbetert de algehele gezondheid van gekleurd haar"' },
+  { text: 'Laat het haar zacht en beheerbaar aanvoelen met een levendige kleur', dbValue: '"10. Laat het haar zacht en beheerbaar aanvoelen met een levendige kleur"' }
+];
+
+// Color Mask claims
+const colorMaskClaims = [
+  { text: 'Intensief verzorgend masker dat de haarkleur beschermt en verlengt', dbValue: '"1. Intensief verzorgend masker dat de haarkleur beschermt en verlengt"', selected: true },
+  { text: 'Kleurintensiverende formule met UV-bescherming', dbValue: '"2. Kleurintensiverende formule met UV-bescherming"' },
+  { text: 'Diepwerkend masker voor optimaal kleurbehoud', dbValue: '"3. Diepwerkend masker voor optimaal kleurbehoud"' },
+  { text: 'Voedt intensief terwijl het de kleurintensiteit versterkt', dbValue: '"4. Voedt intensief terwijl het de kleurintensiteit versterkt"' },
+  { text: 'Beschermt gekleurd haar tegen vervaging en externe invloeden', dbValue: '"5. Beschermt gekleurd haar tegen vervaging en externe invloeden"' },
+  { text: 'Verbetert de glans en veerkracht van gekleurd haar', dbValue: '"6. Verbetert de glans en veerkracht van gekleurd haar"' },
+  { text: 'Intensieve verzorging voor een langdurig levendige haarkleur', dbValue: '"7. Intensieve verzorging voor een langdurig levendige haarkleur"' },
+  { text: 'Versterkt de kleurdiepte en verbetert de haarstructuur', dbValue: '"8. Versterkt de kleurdiepte en verbetert de haarstructuur"' },
+  { text: 'Herstelt de vitaliteit van gekleurd haar zonder kleurverlies', dbValue: '"9. Herstelt de vitaliteit van gekleurd haar zonder kleurverlies"' },
+  { text: 'Geeft gekleurd haar een intense verzorging en stralende glans', dbValue: '"10. Geeft gekleurd haar een intense verzorging en stralende glans"' }
+];
+
+// Database columns: 'Standaard Claim Color Shampoo', 'Standaard Claim Color Conditioner', 'Standaard Claim Color Mask'
+// Default selections: option 1 for all three (as shown in code)
+// Next slide: Slide42 after all three selections made
+const handleColorShampooClaimSelection = (claim) => {
+  updateDatabase('Standaard Claim Color Shampoo', claim.dbValue);
+};
+
+const handleColorConditionerClaimSelection = (claim) => {
+  updateDatabase('Standaard Claim Color Conditioner', claim.dbValue);
+};
+
+const handleColorMaskClaimSelection = (claim) => {
+  updateDatabase('Standaard Claim Color Mask', claim.dbValue);
+};
+
+const handleContinue = () => {
+  // Continue to next slide after all three claims selected
+  navigateToSlide('Slide42');
+};
