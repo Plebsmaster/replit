@@ -51,12 +51,22 @@ export function WizardProvider({ children }: { children: ReactNode }) {
     const flowPath = getFlowPath(state.context.formData)
     if (!flowPath.length) return 0
     
+    // For style-selection (first real content step), start at 0%
+    if (state.context.currentStepId === 'style-selection') {
+      // Don't count the current step when on style-selection
+      const visitedCount = flowPath.filter((stepId) =>
+        state.context.visitedSteps.includes(stepId) && stepId !== 'style-selection'
+      ).length
+      return Math.round((visitedCount / flowPath.length) * 100)
+    }
+    
+    // For all other steps, use normal calculation
     const visitedCount = flowPath.filter((stepId) =>
       state.context.visitedSteps.includes(stepId)
     ).length
     
     return Math.round((visitedCount / flowPath.length) * 100)
-  }, [state.context.formData, state.context.visitedSteps])
+  }, [state.context.formData, state.context.visitedSteps, state.context.currentStepId])
   
   // Get current step component (lazy loaded)
   const getCurrentStepComponent = React.useCallback(() => {
