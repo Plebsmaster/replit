@@ -136,15 +136,16 @@ function createFallbackLoader(stepId: string): LazyStepComponent | null {
  * Get a lazy-loaded component for a given step ID
  * Components are cached after first creation to avoid re-creating lazy wrappers
  */
-export function getLazyComponent(stepId: string) {
+export function getLazyComponent(stepId: string): ReturnType<typeof lazy> | null {
   let loader = stepComponents[stepId]
   
   // Try fallback for numeric slides if not found in explicit mapping
   if (!loader) {
-    loader = createFallbackLoader(stepId)
-    if (loader) {
+    const fallbackLoader = createFallbackLoader(stepId)
+    if (fallbackLoader) {
       // Cache the fallback loader for future use
-      stepComponents[stepId] = loader
+      stepComponents[stepId] = fallbackLoader
+      loader = fallbackLoader
     } else {
       console.warn(`[LazyLoader] No lazy component found for step: ${stepId}`)
       return null
@@ -179,10 +180,11 @@ export async function preloadStep(stepId: string) {
   
   // Try fallback for numeric slides if not found in explicit mapping
   if (!loader) {
-    loader = createFallbackLoader(stepId)
-    if (loader) {
+    const fallbackLoader = createFallbackLoader(stepId)
+    if (fallbackLoader) {
       // Cache the fallback loader for future use
-      stepComponents[stepId] = loader
+      stepComponents[stepId] = fallbackLoader
+      loader = fallbackLoader
     } else {
       console.warn(`[LazyLoader] Cannot preload unknown step: ${stepId}`)
       return

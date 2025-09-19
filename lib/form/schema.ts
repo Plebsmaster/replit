@@ -694,6 +694,32 @@ export const getDefaultFormData = (): FormData => {
     naamCurlyGirlConditioner: '',
     naamCurlyGirlMask: '',
     
+    // Country Selection (Slide 46)
+    verkoopland: 'NL' as const,
+    
+    // Quote/Slogan Input (Slide 49)
+    quote: '',
+    
+    // Logo/Merknaam Choice (Slide 51)
+    logoOfMerknaam: null,
+    
+    // Merknaam Input (Slide 52)
+    merknaam: '',
+    
+    // Logo Upload (Slide 53)
+    naamLogo: '',
+    afbeeldingsURL: '',
+    
+    // QR-Code Website Input (Slide 55)
+    qrCode: '',
+    
+    // Process Completion (Slide 56)
+    processCompleted: false,
+    processCompletedAt: '',
+    
+    // Ingredient Choice (Slide 29)
+    ingredientChoice: undefined,
+
     // Curly Girl ingredient selections
     curlyGirlIngredients: { shampoo: 'Hyaluronzuur', conditioner: 'Vitamine E', mask: 'Vitamine E' },
     marketingIngredientenCurlyGirlShampoo: 'Hyaluronzuur',
@@ -721,11 +747,61 @@ export const getDefaultFormData = (): FormData => {
     marketingIngredientenMannenShampoo: '',
     haarserumIngredient: '',
     marketingIngredientenHaarserum: '',
+    
+    // Styling Products Ingredients
+    stylingProductsIngredients: { 
+      haarlak: 'UV Filter', 
+      mousse: 'Vitamine B5', 
+      droogshampoo: 'Arganolie', 
+      gel: 'Vitamine B5', 
+      clayPaste: 'Vitamine E', 
+      fiberPaste: 'Vitamine E' 
+    },
+    marketingIngredientenHaarlak: 'UV Filter',
+    marketingIngredientenMousse: 'Vitamine B5',
+    marketingIngredientenDroogshampoo: 'Arganolie',
+    marketingIngredientenGel: 'Vitamine B5',
+    marketingIngredientenClayPaste: 'Vitamine E',
+    marketingIngredientenFiberPaste: 'Vitamine E',
+    
+    // Met/Zonder Claim Selection
+    metZonderClaim: null,
+    
+    // Claim Choice (Step 38)
+    claimChoice: null,
+    
+    // 16 Standard Claim fields (auto-filled when SalonID is chosen)
+    standaardClaimNoYellowShampoo: '',
+    standaardClaimNoYellowConditioner: '',
+    standaardClaimRepairShampoo: '',
+    standaardClaimRepairConditioner: '',
+    standaardClaimRepairMask: '',
+    standaardClaimColorShampoo: '',
+    standaardClaimColorConditioner: '',
+    standaardClaimColorMask: '',
+    standaardClaimCurlyGirlShampoo: '',
+    standaardClaimCurlyGirlConditioner: '',
+    standaardClaimCurlyGirlMask: '',
+    standaardClaimMannenShampoo: '',
+    standaardClaimHaarserum: '',
+    standaardClaimHaarlak: '',
+    standaardClaimMousse: '',
+    standaardClaimDroogShampoo: '',
+    
     noYellowClaims: { shampoo: '', conditioner: '' },
+    
+    // Repair Claims Selection (custom claims when user chooses 'self')
+    repairClaims: { shampoo: '', conditioner: '', mask: '' },
+    
+    // Color Claims Selection (custom claims when user chooses 'self')
+    colorClaims: { shampoo: '', conditioner: '', mask: '' },
+    
+    // Curly Girl Claims Selection (custom claims when user chooses 'self')
+    curlyGirlClaims: { shampoo: '', conditioner: '', mask: '' },
+    
     mannenClaims: { shampoo: '' },
     haarseurumClaims: { serum: '' },
     stylingClaims: { haarlak: '', mousse: '', droogshampoo: '' },
-    metZonderClaim: null,
     agreeTerms: false,
     subscribeNewsletter: false,
   }
