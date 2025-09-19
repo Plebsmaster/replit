@@ -132,39 +132,40 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
   }
 
   return (
-    <div className="space-y-8">
-      <div className="text-center">
-        <h2 className={getTypographyClasses("title", { alignment: "center" })}>Welkom bij SalonID</h2>
-        <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} max-w-2xl mx-auto`}>
-          Voer je e-mailadres in om te beginnen. Als je al een account hebt, log je automatisch in op je dashboard.
-        </p>
-      </div>
-
-      <div className="bg-white rounded-lg p-8 max-w-md mx-auto">
-        <div className="relative">
-          <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400 z-10" />
-          <Input
-            type="email"
-            placeholder="je@email.com"
-            value={email}
-            onChange={(e) => handleEmailChange(e.target.value)}
-            onBlur={() => setTouched(true)}
-            onKeyPress={handleKeyPress}
-            className={`${getInputClassName()} pl-12 pr-12`}
-            autoFocus
-          />
-          <div className="absolute right-4 top-1/2 transform -translate-y-1/2">{getValidationIcon()}</div>
+    <div className="min-h-[calc(100vh-12rem)] flex items-center justify-center py-8">
+      <div className="space-y-8 w-full max-w-2xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-8">
+          <h2 className={getTypographyClasses("title", { alignment: "center" })}>Welkom bij SalonID</h2>
+          <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} max-w-2xl mx-auto`}>
+            Voer je e-mailadres in om te beginnen. Als je al een account hebt, log je automatisch in op je dashboard.
+          </p>
         </div>
 
-        {error && (
-          <p className="text-red-500 text-sm mt-2 flex items-center gap-1">
-            <AlertCircle className="w-4 h-4" />
-            {error}
-          </p>
-        )}
+        <div className="bg-white rounded-lg p-8 max-w-md mx-auto">
+          <div className="relative">
+            <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400 z-10" />
+            <Input
+              type="email"
+              placeholder="je@email.com"
+              value={email}
+              onChange={(e) => handleEmailChange(e.target.value)}
+              onBlur={() => setTouched(true)}
+              onKeyPress={handleKeyPress}
+              className={`${getInputClassName()} pl-12 pr-12`}
+              autoFocus
+            />
+            <div className="absolute right-4 top-1/2 transform -translate-y-1/2">{getValidationIcon()}</div>
+          </div>
 
-        <div className="mt-6">
-          <Button
+          {error && (
+            <p className="text-red-500 text-sm mt-2 flex items-center gap-1">
+              <AlertCircle className="w-4 h-4" />
+              {error}
+            </p>
+          )}
+
+          <div className="mt-6">
+            <Button
             onClick={handleNext}
             disabled={validationState !== "valid" || isLoading}
             className="w-full bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 text-base disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
@@ -180,13 +181,14 @@ export function EmailStep({ formData, updateFormData, onNext }: StepProps) {
                 <ArrowRight className="w-5 h-5 ml-2" />
               </>
             )}
-          </Button>
-        </div>
+            </Button>
+          </div>
 
-        <div className="mt-4 text-center">
-          <p className={getTypographyClasses("paragraph", { alignment: "center", removeSpacing: true })}>
-            Nieuw hier? We vragen je daarna om je naam en telefoonnummer.
-          </p>
+          <div className="mt-4 text-center">
+            <p className={getTypographyClasses("paragraph", { alignment: "center", removeSpacing: true })}>
+              Nieuw hier? We vragen je daarna om je naam en telefoonnummer.
+            </p>
+          </div>
         </div>
       </div>
     </div>

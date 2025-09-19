@@ -149,18 +149,19 @@ export function NamePhoneStep({ formData, updateFormData, onNext }: StepProps) {
   }
 
   return (
-    <div className="space-y-8">
-      <div className="text-center">
-        <h2 className={getTypographyClasses("title", { alignment: "center" })}>Vertel ons over jezelf</h2>
-        <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} max-w-xl mx-auto`}>
-          We hebben je naam en telefoonnummer nodig om je account aan te maken en contact met je op te nemen over je
-          ontwerpen.
-        </p>
-      </div>
+    <div className="min-h-[calc(100vh-12rem)] flex items-center justify-center py-8">
+      <div className="space-y-8 w-full max-w-2xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-8">
+          <h2 className={getTypographyClasses("title", { alignment: "center" })}>Vertel ons over jezelf</h2>
+          <p className={`${getTypographyClasses("paragraph", { alignment: "center" })} max-w-xl mx-auto`}>
+            We hebben je naam en telefoonnummer nodig om je account aan te maken en contact met je op te nemen over je
+            ontwerpen.
+          </p>
+        </div>
 
-      <div className="bg-white rounded-lg p-6 space-y-6">
-        {/* Name Fields */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-white rounded-lg p-6 space-y-6 max-w-2xl mx-auto">
+          {/* Name Fields */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="relative">
             <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 z-10" />
             <Input
@@ -250,6 +251,7 @@ export function NamePhoneStep({ formData, updateFormData, onNext }: StepProps) {
             Doorgaan
             <ArrowRight className="w-5 h-5 ml-2" />
           </Button>
+        </div>
         </div>
       </div>
     </div>
