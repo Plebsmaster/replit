@@ -77,6 +77,46 @@ export const variantContent: Record<string, any> = {
       { key: 'modern3-1', label: 'Modern 3.1', dbValue: 'Modern 3.1', imageSrc: '/img/slide15/modern-3-1.jpg' },
       { key: 'modern3-2', label: 'Modern 3.2', dbValue: 'Modern 3.2', imageSrc: '/img/slide15/modern-3-2.jpg' }
     ]
+  },
+  // Aliases for step IDs to match content configurations
+  'modern1-variant': {
+    title: 'Kies je Modern template variant',
+    description: 'Selecteer een modern variant die het beste bij jouw salon past.',
+    nextStep: 'color-scheme',
+    columns: 3,
+    options: [
+      { key: 'modern1', label: 'Modern 1.1', dbValue: 'modern1', imageSrc: '/img/slide12/modern1.jpg' },
+      { key: 'modern2', label: 'Modern 1.2', dbValue: 'modern2', imageSrc: '/img/slide12/modern2.jpg' },
+      { key: 'modern3', label: 'Modern 1.3', dbValue: 'modern3', imageSrc: '/img/slide12/modern3.jpg' }
+    ]
+  },
+  'modern2-variant': {
+    title: 'Kies je Modern template variant 2',
+    description: 'Selecteer een modern variant die het beste bij jouw salon past.',
+    nextStep: 'color-scheme',
+    columns: 2,
+    options: [
+      { key: 'modern6', label: 'Modern 2.1', dbValue: 'modern6', imageSrc: '/img/slide13/modern6.jpg' }
+    ]
+  },
+  'modern3-variant': {
+    title: 'Kies je Modern template variant 3',
+    description: 'Selecteer een modern variant die het beste bij jouw salon past.',
+    nextStep: 'color-scheme',
+    columns: 2,
+    options: [
+      { key: 'modern3-1', label: 'Modern 3.1', dbValue: 'Modern 3.1', imageSrc: '/img/slide15/modern-3-1.jpg' },
+      { key: 'modern3-2', label: 'Modern 3.2', dbValue: 'Modern 3.2', imageSrc: '/img/slide15/modern-3-2.jpg' }
+    ]
+  },
+  'modern6-variant': {
+    title: 'Kies je Modern template variant 6',
+    description: 'Selecteer een modern variant die het beste bij jouw salon past.',
+    nextStep: 'color-scheme',
+    columns: 2,
+    options: [
+      { key: 'modern6', label: 'Modern 6.1', dbValue: 'modern6', imageSrc: '/img/slide13/modern6.jpg' }
+    ]
   }
 }
 
