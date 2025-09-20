@@ -71,7 +71,7 @@ export const variantContent: Record<string, any> = {
   'slide12': {
     title: 'Kies je Modern template variant',
     description: 'Selecteer een modern variant die het beste bij jouw salon past.',
-    nextStep: 'modern2-variant',
+    nextStep: 'color-scheme',
     columns: 3,
     options: [
       { key: 'modern1', label: 'Modern 1.1', dbValue: 'modern1', imageSrc: '/img/slide12/modern1.jpg' },
