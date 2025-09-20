@@ -60,92 +60,57 @@ const stepComponents: Record<string, LazyStepComponent> = {
   'style-selection': () => import('@/components/steps/Slide2'),
   'slide2': () => import('@/components/steps/Slide2'),
   
-  // Elegant Style Flow (with semantic IDs) - CONSOLIDATED
-  'elegant-styles': () => import('@/components/steps/VariantPicker'),
-  'slide3': () => import('@/components/steps/VariantPicker'),
-  'elegant-variant1': () => import('@/components/steps/VariantPicker'),
-  'slide4': () => import('@/components/steps/VariantPicker'),
-  'elegant-variant2': () => import('@/components/steps/VariantPicker'),
-  'slide5': () => import('@/components/steps/VariantPicker'),
+  // Elegant Style Flow (with semantic IDs)
+  'elegant-styles': () => import('@/components/steps/Slide3'),
+  'slide3': () => import('@/components/steps/Slide3'),
+  'elegant-variant1': () => import('@/components/steps/Slide4'),
+  'slide4': () => import('@/components/steps/Slide4'),
+  'elegant-variant2': () => import('@/components/steps/Slide5'),
+  'slide5': () => import('@/components/steps/Slide5'),
   
-  // Modern Style Flow (with semantic IDs) - CONSOLIDATED
-  'modern-styles': () => import('@/components/steps/VariantPicker'),
-  'slide11': () => import('@/components/steps/VariantPicker'),
-  'modern1-variant': () => import('@/components/steps/VariantPicker'),
-  'slide12': () => import('@/components/steps/VariantPicker'),
-  'modern2-variant': () => import('@/components/steps/VariantPicker'),
-  'slide13': () => import('@/components/steps/VariantPicker'),
-  'modern3-variant': () => import('@/components/steps/VariantPicker'),
+  // Modern Style Flow (with semantic IDs)
+  'modern-styles': () => import('@/components/steps/Slide11'),
+  'slide11': () => import('@/components/steps/Slide11'),
+  'modern1-variant': () => import('@/components/steps/Slide12'),
+  'slide12': () => import('@/components/steps/Slide12'),
+  'modern2-variant': () => import('@/components/steps/Slide13'),
+  'slide13': () => import('@/components/steps/Slide13'),
+  'modern3-variant': () => import('@/components/steps/Slide14'),
   'slide14': () => import('@/components/steps/Slide14'),
-  'modern6-variant': () => import('@/components/steps/VariantPicker'),
-  'slide15': () => import('@/components/steps/VariantPicker'),
+  'modern6-variant': () => import('@/components/steps/Slide15'),
+  'slide15': () => import('@/components/steps/Slide15'),
   
-  // Color Configuration Flow (with semantic IDs) - CONSOLIDATED
-  'color-scheme': () => import('@/components/steps/ColorChoice'),
-  'slide6': () => import('@/components/steps/ColorChoice'),
-  'final-color': () => import('@/components/steps/ColorChoice'),
-  'slide7': () => import('@/components/steps/ColorChoice'),
-  'color-palette': () => import('@/components/steps/ColorConfigurator'),
-  'slide8': () => import('@/components/steps/ColorConfigurator'),
+  // Color Configuration Flow (with semantic IDs)
+  'color-scheme': () => import('@/components/steps/Slide6'),
+  'slide6': () => import('@/components/steps/Slide6'),
+  'final-color': () => import('@/components/steps/Slide7'),
+  'slide7': () => import('@/components/steps/Slide7'),
+  'color-palette': () => import('@/components/steps/Slide8'),
+  'slide8': () => import('@/components/steps/Slide8'),
   
   // Icon Flow (with semantic IDs)
-  'icon-choice': () => import('@/components/steps/IconYesNoSlide'),
-  'slide9': () => import('@/components/steps/IconYesNoSlide'),
-  'icon-selection': () => import('@/components/steps/IconPickerSlide'),
-  'slide10': () => import('@/components/steps/IconPickerSlide'),
+  'icon-choice': () => import('@/components/steps/Slide9'),
+  'slide9': () => import('@/components/steps/Slide9'),
+  'icon-selection': () => import('@/components/steps/Slide10'),
+  'slide10': () => import('@/components/steps/Slide10'),
   
-  // Final Steps (with semantic IDs) - CONSOLIDATED 
-  'ingredients': () => import('@/components/steps/IngredientsSelector'),
-  'slide30': () => import('@/components/steps/IngredientsSelector'),
+  // Final Steps (with semantic IDs)
+  'ingredients': () => import('@/components/steps/Slide30'),
+  'slide30': () => import('@/components/steps/Slide30'),
   
-  // Consolidated components
-  'slide16': () => import('@/components/steps/ColorChoice'),
-  'slide17': () => import('@/components/steps/ColorChoice'),
-  'slide18': () => import('@/components/steps/ColorConfigurator'), // Same as slide8
-  'slide19': () => import('@/components/steps/IconYesNoSlide'), // Same as slide9
-  'slide20': () => import('@/components/steps/IconPickerSlide'), // Same as slide10
+  // Explicit mappings for critical slides (will be supplemented by fallback)
+  'slide22': () => import('@/components/steps/Slide22'),
   
-  // Product naming flow - CONSOLIDATED
-  'slide21': () => import('@/components/steps/SourceChoice'),
-  'slide22': () => import('@/components/steps/ProductNameSelector'),
-  'slide23': () => import('@/components/steps/ProductNameSelector'),
-  'slide24': () => import('@/components/steps/ProductNameSelector'),
-  'slide25': () => import('@/components/steps/ProductNameSelector'),
-  'slide26': () => import('@/components/steps/ProductNameSelector'),
-  'slide27': () => import('@/components/steps/ProductNameSelector'),
-  'slide28': () => import('@/components/steps/ProductNameSelector'),
-  'slide29': () => import('@/components/steps/SourceChoice'),
-  
-  // Ingredients flow - CONSOLIDATED
-  'slide31': () => import('@/components/steps/IngredientsSelector'),
-  'slide32': () => import('@/components/steps/IngredientsSelector'),
-  'slide33': () => import('@/components/steps/IngredientsSelector'),
-  'slide34': () => import('@/components/steps/IngredientsSelector'),
-  'slide35': () => import('@/components/steps/IngredientsSelector'),
-  'slide36': () => import('@/components/steps/IngredientsSelector'),
-  
-  // Claims flow - CONSOLIDATED
-  'slide37': () => import('@/components/steps/BinaryChoice'),
-  'slide38': () => import('@/components/steps/SourceChoice'),
-  'slide39': () => import('@/components/steps/ClaimsSelector'),
-  'slide40': () => import('@/components/steps/ClaimsSelector'),
-  'slide41': () => import('@/components/steps/ClaimsSelector'),
-  'slide42': () => import('@/components/steps/ClaimsSelector'),
-  'slide43': () => import('@/components/steps/ClaimsSelector'),
-  'slide44': () => import('@/components/steps/ClaimsSelector'),
-  'slide45': () => import('@/components/steps/ClaimsSelector'),
-  
-  // Final Flow (46-55) - Country, Slogan, QR-Code - CONSOLIDATED
-  'slide46': () => import('@/components/steps/SingleChoice'),
-  'slide48': () => import('@/components/steps/BinaryChoice'),
-  'slide49': () => import('@/components/steps/TextInput'),
-  'slide50': () => import('@/components/steps/BinaryChoice'),
-  'slide51': () => import('@/components/steps/BinaryChoice'),
-  'slide52': () => import('@/components/steps/TextInput'),
-  'slide53': () => import('@/components/steps/FileUpload'),
-  'slide54': () => import('@/components/steps/Confirmation'),
-  'slide55': () => import('@/components/steps/Slide55'), // Keep unique finalization
-  'slide56': () => import('@/components/steps/Slide56'), // Keep unique
+  // New Slides (46-55) - Country Selection, Slogan and QR-Code Flow
+  'slide46': () => import('@/components/steps/Slide46'),
+  'slide48': () => import('@/components/steps/Slide48'),
+  'slide49': () => import('@/components/steps/Slide49'),
+  'slide50': () => import('@/components/steps/Slide50'),
+  'slide51': () => import('@/components/steps/Slide51'),
+  'slide52': () => import('@/components/steps/Slide52'),
+  'slide53': () => import('@/components/steps/Slide53'),
+  'slide54': () => import('@/components/steps/Slide54'),
+  'slide55': () => import('@/components/steps/Slide55'),
   
   // Dashboard Steps
   'dashboard-login': () => import('@/components/steps/DashboardLoginStep'),
@@ -171,16 +136,15 @@ function createFallbackLoader(stepId: string): LazyStepComponent | null {
  * Get a lazy-loaded component for a given step ID
  * Components are cached after first creation to avoid re-creating lazy wrappers
  */
-export function getLazyComponent(stepId: string): ReturnType<typeof lazy> | null {
+export function getLazyComponent(stepId: string) {
   let loader = stepComponents[stepId]
   
   // Try fallback for numeric slides if not found in explicit mapping
   if (!loader) {
-    const fallbackLoader = createFallbackLoader(stepId)
-    if (fallbackLoader) {
+    loader = createFallbackLoader(stepId)
+    if (loader) {
       // Cache the fallback loader for future use
-      stepComponents[stepId] = fallbackLoader
-      loader = fallbackLoader
+      stepComponents[stepId] = loader
     } else {
       console.warn(`[LazyLoader] No lazy component found for step: ${stepId}`)
       return null
@@ -215,11 +179,10 @@ export async function preloadStep(stepId: string) {
   
   // Try fallback for numeric slides if not found in explicit mapping
   if (!loader) {
-    const fallbackLoader = createFallbackLoader(stepId)
-    if (fallbackLoader) {
+    loader = createFallbackLoader(stepId)
+    if (loader) {
       // Cache the fallback loader for future use
-      stepComponents[stepId] = fallbackLoader
-      loader = fallbackLoader
+      stepComponents[stepId] = loader
     } else {
       console.warn(`[LazyLoader] Cannot preload unknown step: ${stepId}`)
       return

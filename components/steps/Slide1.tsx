@@ -7,7 +7,7 @@ import { getTypographyClasses } from "@/lib/typography"
 import type { StepProps } from "@/lib/form/steps"
 import Image from "next/image"
 
-export function WelcomeStep({ onNext, goToStep }: StepProps) {
+export function WelcomeStep({ onNext }: StepProps) {
   return (
     <div className="min-h-[calc(100vh-12rem)] flex items-center justify-center py-8">
       <SlideContainer width="standard">
@@ -52,7 +52,7 @@ export function WelcomeStep({ onNext, goToStep }: StepProps) {
 
           <div className="pt-8">
             <Button
-              onClick={() => goToStep('style-selection')}
+              onClick={onNext}
               variant="default"
               size="lg"
               className="bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 text-base font-medium"

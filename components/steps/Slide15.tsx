@@ -14,7 +14,7 @@ type Props = {
   onSelectionChange?: (variant: string | null) => void
 }
 
-export default function Slide14({ formData, updateFormData, onBack, onNext, selectedVariant: globalSelectedVariant, onSelectionChange }: Props) {
+export default function Slide15({ formData, updateFormData, onBack, onNext, selectedVariant: globalSelectedVariant, onSelectionChange }: Props) {
   const [selectedStyle, setSelectedStyle] = useState<string>("")
   const [localSelectedVariant, setLocalSelectedVariant] = useState<string | null>(formData.styleVariant || globalSelectedVariant || null)
   
@@ -34,14 +34,14 @@ export default function Slide14({ formData, updateFormData, onBack, onNext, sele
     {
       key: "1",
       label: "Uitlijning links",
-      imageSrc: "/img/slide14/black.jpg",
-      alt: "Modern 3 Variant 1 - Left alignment",
+      imageSrc: "/img/slide15/variant1.jpg",
+      alt: "Modern 6 Variant 1 - Left alignment",
     },
     {
       key: "2",
       label: "Uitlijning midden",
-      imageSrc: "/img/slide14/color.jpg",
-      alt: "Modern 3 Variant 2 - Center alignment",
+      imageSrc: "/img/slide15/variant2.jpg",
+      alt: "Modern 6 Variant 2 - Center alignment",
     },
   ]
 
