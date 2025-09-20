@@ -163,12 +163,22 @@ export const colorChoiceContent: Record<string, any> = {
   },
   'slide17': {
     title: 'Bepaal je kleurenpalet',
-    description: 'Kies het kleurenpalet dat past bij jouw salon.',
+    description: 'Kies het kleurenpalet dat pas bij jouw salon.',
     columns: 3,
     options: [
       { key: 'soft-tones', label: 'Soft Tones', dbValue: 'Soft Tones', imageSrc: '/img/slide17/soft-tones.jpg', nextStep: 'color-palette' },
       { key: 'warm-naturals', label: 'Warm Naturals', dbValue: 'Warm Naturals', imageSrc: '/img/slide17/warm-naturals.jpg', nextStep: 'color-palette' },
       { key: 'deep-elegance', label: 'Deep Elegance', dbValue: 'Deep Elegance', imageSrc: '/img/slide17/deep-elegance.jpg', nextStep: 'color-palette' }
+    ]
+  },
+  'final-color': {
+    title: 'Bepaal je kleurenpalet',
+    description: 'Kies het kleurenpalet dat past bij jouw salon.',
+    columns: 3,
+    options: [
+      { key: 'soft-tones', label: 'Soft Tones', dbValue: 'Soft Tones', imageSrc: '/img/slide7/soft-tones.jpg', nextStep: 'color-palette' },
+      { key: 'warm-naturals', label: 'Warm Naturals', dbValue: 'Warm Naturals', imageSrc: '/img/slide7/warm-naturals.jpg', nextStep: 'color-palette' },
+      { key: 'deep-elegance', label: 'Deep Elegance', dbValue: 'Deep Elegance', imageSrc: '/img/slide7/deep-elegance.jpg', nextStep: 'color-palette' }
     ]
   }
 }
