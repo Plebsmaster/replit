@@ -20,10 +20,15 @@ export default function VariantPicker({ formData, updateFormData, goToStep, step
     'slide15': 'modern3-variant'
   }
   
-  // Determine if we're on elegant or modern path based on formData
-  const isElegant = formData.style === "elegant" || formData.elegantStyle
-  const rawStepKey = stepKey || (isElegant ? "elegant-variant1" : "modern-variant1")
+  // Determine step key and type properly
+  const rawStepKey = stepKey || "elegant-variant1"
   const currentStepKey = keyAliases[rawStepKey] || rawStepKey
+  
+  // Determine if we're on elegant or modern path based on form data and step
+  const isElegant = formData.style === "elegant" || currentStepKey.includes('elegant')
+  
+  // Detect if this is a style gateway step vs variant step
+  const isStyleGateway = ['elegant-styles', 'modern-styles'].includes(currentStepKey)
   
   // Get the variant options for this step from config
   let config = variantContent[currentStepKey as keyof typeof variantContent]
@@ -39,7 +44,10 @@ export default function VariantPicker({ formData, updateFormData, goToStep, step
     console.log(`Using fallback config for ${fallbackKey}`)
   }
 
-  const currentValue = isElegant ? formData.elegantStyle : formData.modernStyle
+  // Initialize selection based on step type
+  const currentValue = isStyleGateway 
+    ? (isElegant ? formData.elegantStyle : formData.modernStyle)
+    : formData.styleVariant
   const [selectedVariant, setSelectedVariant] = useState(currentValue || null)
 
   const handleVariantChoice = (variantKey: string) => {
@@ -48,15 +56,22 @@ export default function VariantPicker({ formData, updateFormData, goToStep, step
 
     setSelectedVariant(variant.dbValue)
     
-    // Update the appropriate field based on path
-    if (isElegant) {
-      updateFormData({ elegantStyle: variant.dbValue })
+    // Update the appropriate field based on step type
+    if (isStyleGateway) {
+      // For style gateway steps, update the style selection field and ensure style is set
+      if (isElegant) {
+        updateFormData({ elegantStyle: variant.dbValue, style: 'elegant' })
+      } else {
+        updateFormData({ modernStyle: variant.dbValue, style: 'modern' })
+      }
     } else {
-      updateFormData({ modernStyle: variant.dbValue })
+      // For variant steps, update the styleVariant field
+      updateFormData({ styleVariant: variant.dbValue })
     }
     
-    // Navigate to next step
-    goToStep(config.nextStep)
+    // Navigate to next step - support per-option navigation or fallback to config default
+    const nextStep = variant.nextStep || config.nextStep
+    goToStep(nextStep)
   }
 
   return (
